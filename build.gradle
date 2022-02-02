@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2022.2.1"
+    id 'com.github.sherter.google-java-format' version '0.9'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -85,3 +86,14 @@ jar {
 deployArtifact.jarTask = jar
 wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
+
+gradle.startParameter.excludedTaskNames << "verifyGoogleJavaFormat"
+task format(type: com.github.sherter.googlejavaformatgradleplugin.GoogleJavaFormat) {
+  source 'src/main'
+  include '**/*.java'
+}
+task verifyFormat(type: com.github.sherter.googlejavaformatgradleplugin.VerifyGoogleJavaFormat) {
+  source 'src/main'
+  include '**/*.java'
+}
+build.dependsOn "format"
