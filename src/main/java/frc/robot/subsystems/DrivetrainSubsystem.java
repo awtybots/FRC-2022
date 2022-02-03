@@ -34,7 +34,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     drivetrain = new DifferentialDrive(leftDrive, rightDrive);
   }
 
-  public void arcadeDrive(double forward, double rotate) {
-    drivetrain.arcadeDrive(forward, rotate, true);
+  public void drive(double forward, double rotate) {
+    drivetrain.curvatureDrive(forward, rotate, true);
   }
 }

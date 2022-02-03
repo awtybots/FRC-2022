@@ -26,9 +26,13 @@ public class TeleopDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double forward = m_Controller.getLeftY();
-    double rotate = m_Controller.getRightX();
-    m_Drive.arcadeDrive(forward, rotate);
+    // Split Arcade
+    // double forward = m_Controller.getLeftY();
+    // double rotate = m_Controller.getRightX();
+    // RC Car
+    double forward = m_Controller.getRightTriggerAxis() - m_Controller.getLeftTriggerAxis();
+    double rotate = m_Controller.getLeftX();
+    m_Drive.drive(forward, rotate);
   }
 
   // Called once the command ends or is interrupted.
