@@ -29,12 +29,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     leftDrive = new MotorControllerGroup(leftFront, leftBack);
     rightDrive = new MotorControllerGroup(rightFront, rightBack);
+
     rightDrive.setInverted(true);
 
     drivetrain = new DifferentialDrive(leftDrive, rightDrive);
   }
 
   public void drive(double forward, double rotate) {
+    // we use this because it behaves like a differential in a car.
+    // the forward velocity of the robot is maintained through a turn, only
+    // changing the turn rate
+    // in short: leftspeed = forward + rotate; rightspeed = forward - rotate
     drivetrain.curvatureDrive(forward, rotate, true);
+    // If desired, during a turn, the forward speed of the robot can be reduced
+    // by only adjusting one wheel speed. For example, during a left turn, the
+    // right wheel speed remains at the straightline speed while the left wheel
+    // slows down to make the turn. this reduces the forward speed of the robot
+    // drivetrain.arcadeDrive(forward,rotate,true);
   }
 }
