@@ -15,6 +15,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final boolean DEBUG_MODE = true;
+
   public static final class Drivetrain {
     public static final int kLeftFront = 0;
     public static final int kLeftBack = 1;

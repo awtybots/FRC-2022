@@ -16,6 +16,7 @@
     "WPILib-License.md": true,
     "**/*~": true
   },
+  "editor.tabSize": 2,
   "java.test.config": [
     {
       "name": "WPIlibUnitTests",
@@ -27,5 +28,5 @@
       }
     },
   ],
-  "java.test.defaultConfig": "WPIlibUnitTests"
+  "java.test.defaultConfig": "WPIlibUnitTests",
 }
