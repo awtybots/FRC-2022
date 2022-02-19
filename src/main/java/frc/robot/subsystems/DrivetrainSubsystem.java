@@ -36,15 +36,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void drive(double forward, double rotate) {
-    // we use this because it behaves like a differential in a car.
-    // the forward velocity of the robot is maintained through a turn, only
-    // changing the turn rate
+    // We use this because it behaves like a differential in a car.
+    // The forward velocity of the robot is maintained through a turn, only
+    // adjusting the turn rate.
     // in short: leftspeed = forward + rotate; rightspeed = forward - rotate
     drivetrain.curvatureDrive(forward, rotate, true);
     // If desired, during a turn, the forward speed of the robot can be reduced
     // by only adjusting one wheel speed. For example, during a left turn, the
     // right wheel speed remains at the straightline speed while the left wheel
-    // slows down to make the turn. this reduces the forward speed of the robot
+    // slows down to make the turn. this reduces the forward speed of the robot.
+    // In short, on a left turn: leftspeed = forward - rotate; rightspeed = forward
+    // This behaviour can be enabled by uncommenting the line below.
     // drivetrain.arcadeDrive(forward,rotate,true);
   }
 }

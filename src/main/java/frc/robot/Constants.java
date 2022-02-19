@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -18,10 +19,10 @@ public final class Constants {
   public static final boolean DEBUG_MODE = true;
 
   public static final class Drivetrain {
-    public static final int kLeftFront = 0;
-    public static final int kLeftBack = 1;
-    public static final int kRightFront = 2;
-    public static final int kRightBack = 3;
+    public static final int kRightFront = 0;
+    public static final int kRightBack = 1;
+    public static final int kLeftFront = 2;
+    public static final int kLeftBack = 3;
 
     public static final TalonFXConfiguration motorConfig() {
       TalonFXConfiguration conf = new TalonFXConfiguration();
@@ -29,5 +30,24 @@ public final class Constants {
       conf.openloopRamp = 1.0;
       return conf;
     }
+  }
+
+  public static final class Tower {
+    public static final int kUpperMotor = 7;
+    public static final int kLowerMotor = 5;
+  }
+
+  public static final class Turret {
+    public static final int kMotor = 9;
+
+    public static final TalonSRXConfiguration motorConfig() {
+      TalonSRXConfiguration conf = new TalonSRXConfiguration();
+      conf.voltageCompSaturation = 12.0;
+      return conf;
+    }
+  }
+
+  public static final class Intake {
+    public static final int kMotor = 8;
   }
 }
