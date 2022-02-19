@@ -17,20 +17,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final DifferentialDrive drivetrain;
 
   public DrivetrainSubsystem() {
-    leftFront = new WPI_TalonFX(0);
-    leftBack = new WPI_TalonFX(1);
-    rightFront = new WPI_TalonFX(2);
-    rightBack = new WPI_TalonFX(3);
+    leftFront = new WPI_TalonFX(Drivetrain.kLeftFront);
+    leftBack = new WPI_TalonFX(Drivetrain.kLeftBack);
+    rightFront = new WPI_TalonFX(Drivetrain.kRightFront);
+    rightBack = new WPI_TalonFX(Drivetrain.kRightBack);
 
     leftFront.configAllSettings(Drivetrain.motorConfig());
     rightFront.configAllSettings(Drivetrain.motorConfig());
     leftBack.configAllSettings(Drivetrain.motorConfig());
     rightBack.configAllSettings(Drivetrain.motorConfig());
 
+    rightFront.setInverted(true);
+    rightBack.setInverted(false);
+    leftFront.setInverted(false);
+    leftBack.setInverted(true);
+
     leftDrive = new MotorControllerGroup(leftFront, leftBack);
     rightDrive = new MotorControllerGroup(rightFront, rightBack);
-
-    rightDrive.setInverted(true);
 
     drivetrain = new DifferentialDrive(leftDrive, rightDrive);
   }
