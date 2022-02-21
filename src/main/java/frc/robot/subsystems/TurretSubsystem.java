@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Turret;
@@ -14,11 +15,11 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotor);
-
     configMotors();
   }
 
   private void configMotors() {
     motor.configAllSettings(Turret.motorConfig());
+    motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
   }
 }

@@ -52,7 +52,24 @@ public final class Constants {
     }
   }
 
+  public static final class Shooter {
+    public static final int kFlywheelMotor = -1;
+
+    public static final TalonFXConfiguration motorConfig() {
+      TalonFXConfiguration conf = new TalonFXConfiguration();
+      conf.voltageCompSaturation = 12.0;
+      return conf;
+    }
+  }
+
   public static final class Intake {
     public static final int kMotor = 8;
+    public static final int kSolenoidUp = -1;
+    public static final int kSolenoidDown = -1;
+
+    public static TalonSRXConfiguration motorConfig() {
+      TalonSRXConfiguration conf = new TalonSRXConfiguration();
+      return conf;
+    }
   }
 }
