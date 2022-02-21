@@ -14,6 +14,11 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotor);
+
+    configMotors();
+  }
+
+  private void configMotors() {
     motor.configAllSettings(Turret.motorConfig());
   }
 }

@@ -35,6 +35,11 @@ public final class Constants {
   public static final class Tower {
     public static final int kUpperMotor = 7;
     public static final int kLowerMotor = 5;
+
+    public static final TalonSRXConfiguration motorConfig() {
+      TalonSRXConfiguration conf = new TalonSRXConfiguration();
+      return conf;
+    }
   }
 
   public static final class Turret {

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -22,20 +23,27 @@ public class DrivetrainSubsystem extends SubsystemBase {
     rightFront = new WPI_TalonFX(Drivetrain.kRightFront);
     rightBack = new WPI_TalonFX(Drivetrain.kRightBack);
 
-    leftFront.configAllSettings(Drivetrain.motorConfig());
-    rightFront.configAllSettings(Drivetrain.motorConfig());
-    leftBack.configAllSettings(Drivetrain.motorConfig());
-    rightBack.configAllSettings(Drivetrain.motorConfig());
-
-    rightFront.setInverted(true);
-    rightBack.setInverted(false);
-    leftFront.setInverted(false);
-    leftBack.setInverted(true);
+    configMotors();
 
     leftDrive = new MotorControllerGroup(leftFront, leftBack);
     rightDrive = new MotorControllerGroup(rightFront, rightBack);
 
     drivetrain = new DifferentialDrive(leftDrive, rightDrive);
+  }
+
+  private void configMotors() {
+    leftFront.configAllSettings(Drivetrain.motorConfig());
+    rightFront.configAllSettings(Drivetrain.motorConfig());
+    leftBack.configAllSettings(Drivetrain.motorConfig());
+    rightBack.configAllSettings(Drivetrain.motorConfig());
+
+    rightFront.setSensorPhase(true);
+    leftBack.setSensorPhase(true);
+
+    rightFront.setInverted(TalonFXInvertType.Clockwise);
+    rightBack.setInverted(TalonFXInvertType.CounterClockwise);
+    leftFront.setInverted(TalonFXInvertType.CounterClockwise);
+    leftBack.setInverted(TalonFXInvertType.Clockwise);
   }
 
   public void drive(double forward, double rotate) {
