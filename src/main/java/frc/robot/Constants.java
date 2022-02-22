@@ -53,7 +53,7 @@ public final class Constants {
   }
 
   public static final class Shooter {
-    public static final int kFlywheelMotor = -1;
+    public static final int kFlywheelMotor = 13;
 
     public static final TalonFXConfiguration motorConfig() {
       TalonFXConfiguration conf = new TalonFXConfiguration();
