@@ -24,7 +24,7 @@ public final class Constants {
     public static final int kLeftFront = 2;
     public static final int kLeftBack = 3;
 
-    public static final TalonFXConfiguration motorConfig() {
+    public static TalonFXConfiguration motorConfig() {
       TalonFXConfiguration conf = new TalonFXConfiguration();
       conf.voltageCompSaturation = 12.0;
       conf.openloopRamp = 1.0;
@@ -36,7 +36,7 @@ public final class Constants {
     public static final int kUpperMotor = 7;
     public static final int kLowerMotor = 5;
 
-    public static final TalonSRXConfiguration motorConfig() {
+    public static TalonSRXConfiguration motorConfig() {
       TalonSRXConfiguration conf = new TalonSRXConfiguration();
       return conf;
     }
@@ -45,7 +45,7 @@ public final class Constants {
   public static final class Turret {
     public static final int kMotor = 9;
 
-    public static final TalonSRXConfiguration motorConfig() {
+    public static TalonSRXConfiguration motorConfig() {
       TalonSRXConfiguration conf = new TalonSRXConfiguration();
       conf.voltageCompSaturation = 12.0;
       return conf;
@@ -55,7 +55,7 @@ public final class Constants {
   public static final class Shooter {
     public static final int kFlywheelMotor = -1;
 
-    public static final TalonFXConfiguration motorConfig() {
+    public static TalonFXConfiguration motorConfig() {
       TalonFXConfiguration conf = new TalonFXConfiguration();
       conf.voltageCompSaturation = 12.0;
       return conf;
@@ -69,6 +69,16 @@ public final class Constants {
 
     public static TalonSRXConfiguration motorConfig() {
       TalonSRXConfiguration conf = new TalonSRXConfiguration();
+      return conf;
+    }
+  }
+
+  public static final class Climber {
+    public static final int kLeftMotor = -1;
+    public static final int kRightMotor = -1;
+
+    public static TalonFXConfiguration motorConfig() {
+      TalonFXConfiguration conf = new TalonFXConfiguration();
       return conf;
     }
   }

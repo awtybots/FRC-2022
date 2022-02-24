@@ -10,16 +10,15 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class TeleopDrive extends CommandBase {
 
-  private final DrivetrainSubsystem m_Drive;
-  private final XboxController m_Controller;
+  private final DrivetrainSubsystem drivetrainSubsystem;
+  private final XboxController controller;
 
   public TeleopDrive(XboxController controller, DrivetrainSubsystem drive) {
     addRequirements(drive);
-    this.m_Drive = drive;
-    this.m_Controller = controller;
+    this.drivetrainSubsystem = drive;
+    this.controller = controller;
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
@@ -27,19 +26,17 @@ public class TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     // Split Arcade
-    // double forward = m_Controller.getLeftY();
-    // double rotate = m_Controller.getRightX();
+    // double forward = controller.getLeftY();
+    // double rotate = controller.getRightX();
     // RC Car
-    double forward = m_Controller.getRightTriggerAxis() - m_Controller.getLeftTriggerAxis();
-    double rotate = m_Controller.getLeftX();
-    m_Drive.drive(forward, rotate);
+    double forward = controller.getRightTriggerAxis() - controller.getLeftTriggerAxis();
+    double rotate = controller.getLeftX();
+    drivetrainSubsystem.drive(forward, rotate);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

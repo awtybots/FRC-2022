@@ -5,22 +5,18 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Tower;
 
 public class TowerSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
-  private final MotorControllerGroup motors;
 
   public TowerSubsystem() {
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotor);
     lowerMotor = new WPI_TalonSRX(Tower.kLowerMotor);
 
     configMotors();
-
-    motors = new MotorControllerGroup(upperMotor, lowerMotor);
   }
 
   private void configMotors() {
