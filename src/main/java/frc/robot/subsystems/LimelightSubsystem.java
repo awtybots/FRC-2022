@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
-import frc.robot.Constants.Limelight;
 import frc.robot.Constants.Field;
+import frc.robot.Constants.Limelight;
 import frc.robot.util.math.Vector2;
 import frc.robot.util.vision.VisionTarget;
 
@@ -17,7 +17,7 @@ public class LimelightSubsystem extends frc.robot.util.vision.Limelight {
 
   @Override
   public double targetXOffset() {
-    switch(Limelight.mountingDirection) {
+    switch (Limelight.mountingDirection) {
       case kLandscape:
         return -super.targetXOffset();
       case kPortrait:
@@ -28,7 +28,7 @@ public class LimelightSubsystem extends frc.robot.util.vision.Limelight {
 
   @Override
   public double targetYOffset() {
-    switch(Limelight.mountingDirection) {
+    switch (Limelight.mountingDirection) {
       case kLandscape:
         return -super.targetYOffset();
       case kPortrait:
@@ -40,5 +40,4 @@ public class LimelightSubsystem extends frc.robot.util.vision.Limelight {
   public Vector2 getGoalDisplacement() {
     return visionTarget.getGoalDisplacement();
   }
-  
 }
