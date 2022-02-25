@@ -10,14 +10,14 @@ public class LimelightSubsystem extends frc.robot.util.vision.Limelight {
   private final VisionTarget visionTarget;
 
   public LimelightSubsystem() {
-    super(Limelight.mountingHeight, Limelight.mountingAngle);
+    super(Limelight.kMountingHeight, Limelight.kMountingAngle);
 
-    visionTarget = new VisionTarget(this, Field.visionTargetHeight, Field.goalHeight);
+    visionTarget = new VisionTarget(this, Field.kVisionTargetHeight, Field.kGoalHeight);
   }
 
   @Override
   public double targetXOffset() {
-    switch (Limelight.mountingDirection) {
+    switch (Limelight.kMountingDirection) {
       case kLandscape:
         return -super.targetXOffset();
       case kPortrait:
@@ -28,7 +28,7 @@ public class LimelightSubsystem extends frc.robot.util.vision.Limelight {
 
   @Override
   public double targetYOffset() {
-    switch (Limelight.mountingDirection) {
+    switch (Limelight.kMountingDirection) {
       case kLandscape:
         return -super.targetYOffset();
       case kPortrait:
