@@ -17,24 +17,28 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid pistons;
   private final WPI_TalonSRX motor;
 
+  private final double kMotorSpeed = 0.5; // TODO
+
   public IntakeSubsystem() {
     pistons =
         new DoubleSolenoid(PneumaticsModuleType.REVPH, Intake.kSolenoidDown, Intake.kSolenoidUp);
     motor = new WPI_TalonSRX(Intake.kMotor);
     configMotors();
 
-    togglePistons(false);
+    stop();
   }
 
   private void configMotors() {
     motor.configAllSettings(Intake.motorConfig());
   }
 
-  public void togglePistons(boolean on) {
-    pistons.set(on ? Value.kForward : Value.kReverse);
+  public void start() {
+    pistons.set(Value.kForward);
+    motor.set(ControlMode.PercentOutput, kMotorSpeed);
   }
 
-  public void toggleWheels(boolean on) {
-    motor.set(ControlMode.PercentOutput, on ? Intake.kMotorSpeed : 0.0);
+  public void stop() {
+    pistons.set(Value.kReverse);
+    motor.set(ControlMode.PercentOutput, 0.0);
   }
 }

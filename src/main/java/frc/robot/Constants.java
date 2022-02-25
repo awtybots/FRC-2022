@@ -6,6 +6,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+import java.util.HashMap;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -65,6 +69,13 @@ public final class Constants {
   public static final class Field {
     public static final double kVisionTargetHeight = 2.605; // meters from ground
     public static final double kGoalHeight = 2.630; // meters from ground
+
+    public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
+
+    static {
+      kBallColors.put(Alliance.Blue, new Color(0.0, 0.0, 1.0)); // TODO
+      kBallColors.put(Alliance.Red, new Color(1.0, 0.0, 0.0)); // TODO
+    }
   }
 
   public static final class Limelight {
@@ -81,12 +92,15 @@ public final class Constants {
     }
   }
 
+  public static final class ColorSensors {
+    public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard; // TODO swap if needed
+    public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP; // TODO swap if needed
+  }
+
   public static final class Intake {
     public static final int kMotor = 8;
     public static final int kSolenoidUp = -1;
     public static final int kSolenoidDown = -1;
-
-    public static final double kMotorSpeed = 0.5; // TODO
 
     public static TalonSRXConfiguration motorConfig() {
       TalonSRXConfiguration conf = new TalonSRXConfiguration();

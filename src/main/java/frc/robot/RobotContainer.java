@@ -4,11 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.teleop.Drive;
-import frc.robot.commands.teleop.ToggleIntake;
+import frc.robot.commands.Drive;
+import frc.robot.commands.Intake;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
 
@@ -29,6 +31,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
@@ -36,6 +39,10 @@ public class RobotContainer {
   public RobotContainer() {
     addAutonomousChoices();
     configureButtonBindings();
+  }
+
+  public Alliance getTeamColor() {
+    return DriverStation.getAlliance();
   }
 
   private void addAutonomousChoices() {
@@ -50,7 +57,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drivetrainSubsystem.setDefaultCommand(new Drive(controllerDriver, drivetrainSubsystem));
 
-    controllerDriver.bumperRight.whenHeld(new ToggleIntake(intakeSubsystem));
+    controllerDriver.bumperRight.whenHeld(
+        new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
 
     // controllerOperator.bumperRight.whenHeld(new shoot...)
   }
