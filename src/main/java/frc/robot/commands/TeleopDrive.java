@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.math.Vector2;
 
 public class TeleopDrive extends CommandBase {
 
@@ -19,19 +20,28 @@ public class TeleopDrive extends CommandBase {
     this.controller = controller;
   }
 
+  @SuppressWarnings("unused")
+  private Vector2 splitArcadeDrive() {
+    double forward = controller.getLeftY();
+    double rotate = controller.getRightX();
+
+    return new Vector2(forward, rotate);
+  }
+
+  private Vector2 gtaDrive() {
+    double forward = controller.getRightTriggerAxis() - controller.getLeftTriggerAxis();
+    double rotate = controller.getLeftX();
+
+    return new Vector2(forward, rotate);
+  }
+
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Split Arcade
-    // double forward = controller.getLeftY();
-    // double rotate = controller.getRightX();
-    // RC Car
-    double forward = controller.getRightTriggerAxis() - controller.getLeftTriggerAxis();
-    double rotate = controller.getLeftX();
-    drivetrainSubsystem.drive(forward, rotate);
+    Vector2 processedDriveInput = gtaDrive();
+    drivetrainSubsystem.drive(processedDriveInput.x, processedDriveInput.y);
   }
 
   @Override

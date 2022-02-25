@@ -7,6 +7,8 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
+import frc.robot.util.vision.VisionTarget;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -59,6 +61,24 @@ public final class Constants {
       TalonFXConfiguration conf = new TalonFXConfiguration();
       conf.voltageCompSaturation = 12.0;
       return conf;
+    }
+  }
+
+  public static final class Field {
+    public static final double visionTargetHeight = 2.605; // meters from ground
+    public static final double goalHeight = 2.630; // meters from ground
+  }
+
+  public static final class Limelight {
+    public static final double mountingAngle = 40.0; // degrees up from horizontal
+    public static final double mountingHeight = 0.7;// TODO find correct number - meters from ground
+    
+    public static final LimelightMountDirection mountingDirection = LimelightMountDirection.kLandscape;
+
+
+    public enum LimelightMountDirection {
+      kLandscape,
+      kPortrait;
     }
   }
 

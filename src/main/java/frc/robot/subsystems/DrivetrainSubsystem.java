@@ -65,6 +65,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // slows down to make the turn. this reduces the forward speed of the robot.
     // In short, on a left turn: leftspeed = forward - rotate; rightspeed = forward
     // This behaviour can be enabled by uncommenting the line below.
-    // drivetrain.arcadeDrive(forward,rotate,true);
+    // drivetrain.arcadeDrive(forward, rotate, true);
   }
 }

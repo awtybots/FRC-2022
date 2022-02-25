@@ -27,6 +27,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
