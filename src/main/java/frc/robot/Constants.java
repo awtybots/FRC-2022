@@ -63,16 +63,16 @@ public final class Constants {
   }
 
   public static final class Field {
-    public static final double visionTargetHeight = 2.605; // meters from ground
-    public static final double goalHeight = 2.630; // meters from ground
+    public static final double kVisionTargetHeight = 2.605; // meters from ground
+    public static final double kGoalHeight = 2.630; // meters from ground
   }
 
   public static final class Limelight {
-    public static final double mountingAngle = 40.0; // degrees up from horizontal
-    public static final double mountingHeight =
+    public static final double kMountingAngle = 40.0; // degrees up from horizontal
+    public static final double kMountingHeight =
         0.7; // TODO find correct number - meters from ground
 
-    public static final LimelightMountDirection mountingDirection =
+    public static final LimelightMountDirection kMountingDirection =
         LimelightMountDirection.kLandscape;
 
     public enum LimelightMountDirection {
@@ -85,6 +85,8 @@ public final class Constants {
     public static final int kMotor = 8;
     public static final int kSolenoidUp = -1;
     public static final int kSolenoidDown = -1;
+
+    public static final double kMotorSpeed = 0.5; // TODO
 
     public static TalonSRXConfiguration motorConfig() {
       TalonSRXConfiguration conf = new TalonSRXConfiguration();
