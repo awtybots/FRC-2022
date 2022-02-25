@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.teleop;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.util.Controller;
 import frc.robot.util.math.Vector2;
 
-public class TeleopDrive extends CommandBase {
+public class Drive extends CommandBase {
 
   private final DrivetrainSubsystem drivetrainSubsystem;
-  private final XboxController controller;
+  private final Controller controller;
 
-  public TeleopDrive(XboxController controller, DrivetrainSubsystem drive) {
+  public Drive(Controller controller, DrivetrainSubsystem drive) {
     addRequirements(drive);
     this.drivetrainSubsystem = drive;
     this.controller = controller;
@@ -29,7 +29,7 @@ public class TeleopDrive extends CommandBase {
   }
 
   private Vector2 gtaDrive() {
-    double forward = controller.getRightTriggerAxis() - controller.getLeftTriggerAxis();
+    double forward = controller.getRightTrigger() - controller.getLeftTrigger();
     double rotate = controller.getLeftX();
 
     return new Vector2(forward, rotate);

@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.teleop.Drive;
+import frc.robot.commands.teleop.ToggleIntake;
 import frc.robot.subsystems.*;
+import frc.robot.util.Controller;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,8 +19,8 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final XboxController controllerDriver = new XboxController(0);
-  private final XboxController controllerOperator = new XboxController(1);
+  private final Controller controllerDriver = new Controller(0);
+  private final Controller controllerOperator = new Controller(1);
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();
@@ -47,7 +48,11 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    drivetrainSubsystem.setDefaultCommand(new TeleopDrive(controllerDriver, drivetrainSubsystem));
+    drivetrainSubsystem.setDefaultCommand(new Drive(controllerDriver, drivetrainSubsystem));
+
+    controllerDriver.bumperRight.whenHeld(new ToggleIntake(intakeSubsystem));
+
+    // controllerOperator.bumperRight.whenHeld(new shoot...)
   }
 
   public Command getAutonomousCommand() {
