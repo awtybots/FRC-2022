@@ -41,10 +41,6 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  public Alliance getTeamColor() {
-    return DriverStation.getAlliance();
-  }
-
   private void addAutonomousChoices() {
     // autonChooser.setDefaultOption("name", command);
     // autonChooser.addOption("name", command);

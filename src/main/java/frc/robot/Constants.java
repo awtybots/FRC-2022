@@ -11,16 +11,8 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import java.util.HashMap;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
-  public static final boolean DEBUG_MODE = true;
+  public static final boolean TUNING_MODE = true; // TODO false for competition
 
   public static final class Drivetrain {
     public static final int kRightFront = 0;
@@ -93,8 +85,8 @@ public final class Constants {
   }
 
   public static final class ColorSensors {
-    public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard; // TODO swap if needed
-    public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP; // TODO swap if needed
+    public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
+    public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
   }
 
   public static final class Intake {
