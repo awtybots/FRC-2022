@@ -1,6 +1,6 @@
 package frc.robot.util.math;
 
-public class ProjectileMotionSimulation {
+public class ProjectileMotionSolver {
   private static final double g = 9.81; // acceleration due to gravity (m/s^2)
   private static final double rho = 1.225; // density of air (kg/m^3)
 
@@ -24,7 +24,7 @@ public class ProjectileMotionSimulation {
 
   private double launchAngle;
 
-  public ProjectileMotionSimulation(
+  public ProjectileMotionSolver(
       double projectileMass, double projectileFrontalArea, double projectileDragCoefficient) {
     this.projectileMass = projectileMass;
     this.projectileWeight = new Vector2(0, projectileMass * -g);
@@ -32,7 +32,7 @@ public class ProjectileMotionSimulation {
     this.projectileTerminalVelocity = Math.sqrt(projectileMass * g / projectileDragFactor);
   }
 
-  public ProjectileMotionSimulation(
+  public ProjectileMotionSolver(
       double projectileMass,
       double projectileFrontalArea,
       double projectileDragCoefficient,
@@ -73,13 +73,15 @@ public class ProjectileMotionSimulation {
   }
 
   /**
+   * Get the optimal launch velocity for a stationary shot.
+   *
    * @param goalPosition A Vector2 representing the goal's relative position from the launching
    *     position of the projectile, where x is the horizontal distance of the goal and y is the
    *     height of the goal.
    * @return The optimal launch velocity, in meters per second, for the projectile to reach that
    *     position. NOTE: may return NaN.
    */
-  public double getOptimalLaunchVelocity(Vector2 goalPosition) {
+  public double getOptimalLaunchVelocityStationary(Vector2 goalPosition) {
     Vector2 minLaunchVelocity = new Vector2();
     Vector2 maxLaunchVelocity = Vector2.fromPolar(projectileTerminalVelocity, launchAngle);
 
@@ -99,6 +101,19 @@ public class ProjectileMotionSimulation {
     }
 
     return minLaunchVelocity.plus(maxLaunchVelocity).scaled(0.5).getMagnitude();
+  }
+
+  /**
+   * Get the optimal launch velocity and turret offset angle for a moving shot.
+   *
+   * @param goalPosition A Vector2 representing the goal's relative position from the launching
+   *     position of the projectile, where x is the horizontal distance of the goal and y is the
+   *     height of the goal.
+   * @return A Vector2 where x is the launch velocity and y is the turret offset angle. NOTE: launch
+   *     velocity may be NaN.
+   */
+  public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalPosition) {
+    return null; // TODO
   }
 
   private double runSingleSimulation(double goalX, Vector2 launchVelocity) {

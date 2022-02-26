@@ -5,6 +5,7 @@ import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
 
+/** comprehensive intake command */
 public class Intake extends CommandBase {
   private final IntakeSubsystem intakeSubsystem;
   private final TowerSubsystem towerSubsystem;

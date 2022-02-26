@@ -4,13 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Intake;
+import frc.robot.commands.Shoot;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
 
@@ -56,7 +55,13 @@ public class RobotContainer {
     controllerDriver.bumperRight.whenHeld(
         new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
 
-    // controllerOperator.bumperRight.whenHeld(new shoot...)
+    controllerOperator.bumperRight.whenHeld(
+        new Shoot(
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            colorSensorsSubsystem,
+            limelightSubsystem));
   }
 
   public Command getAutonomousCommand() {

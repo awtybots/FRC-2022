@@ -5,8 +5,8 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -73,7 +73,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
       // TODO use proximity
 
-      if(Constants.TUNING_MODE) {
+      if (Constants.TUNING_MODE) {
         SmartDashboard.putString("TW - " + id + " raw color", detectedColor.toString());
         SmartDashboard.putNumber("TW - " + id + " confidence", match.confidence);
         SmartDashboard.putNumber("TW - " + id + " proximity", proximity);

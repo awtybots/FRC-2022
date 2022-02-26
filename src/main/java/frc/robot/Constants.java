@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.util.math.Vector2;
 import java.util.HashMap;
 
 public final class Constants {
@@ -62,6 +63,8 @@ public final class Constants {
     public static final double kVisionTargetHeight = 2.605; // meters from ground
     public static final double kGoalHeight = 2.630; // meters from ground
 
+    public static final double kBallRadius = 0.120; // meters
+    public static final double kBallMass = 0.270; // kg
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
     static {
@@ -72,11 +75,14 @@ public final class Constants {
 
   public static final class Limelight {
     public static final double kMountingAngle = 40.0; // degrees up from horizontal
-    public static final double kMountingHeight =
-        0.7; // TODO find correct number - meters from ground
+    public static final double kMountingHeight = 0.991; // meters from ground
+    public static final Vector2 kShooterOffset = new Vector2(0.152, -0.152);
 
     public static final LimelightMountDirection kMountingDirection =
         LimelightMountDirection.kLandscape;
+
+    public static final int kPipelineDriving = 0;
+    public static final int kPipelineShooting = 1;
 
     public enum LimelightMountDirection {
       kLandscape,

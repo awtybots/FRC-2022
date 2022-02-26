@@ -3,14 +3,19 @@ package frc.robot.util.vision;
 import frc.robot.util.math.Vector2;
 
 public class VisionTarget {
-  private final double visionTargetY;
-  private final double goalY;
   private final Limelight limelight;
 
-  public VisionTarget(Limelight limelight, double visionTargetHeight, double goalHeight) {
+  private final double visionTargetY;
+  private final double goalY;
+  private final Vector2 mechanismOffset;
+
+  public VisionTarget(
+      Limelight limelight, double visionTargetHeight, double goalHeight, Vector2 mechanismOffset) {
+    this.limelight = limelight;
+
     this.visionTargetY = visionTargetHeight;
     this.goalY = goalHeight;
-    this.limelight = limelight;
+    this.mechanismOffset = mechanismOffset;
   }
 
   /**
@@ -28,6 +33,6 @@ public class VisionTarget {
     double tangent = Math.tan(Math.toRadians(limelight.getMountingAngle() + angleY));
     double adjacent = opposite / tangent;
 
-    return new Vector2(adjacent, goalY - limelight.getMountingHeight());
+    return new Vector2(adjacent, goalY - limelight.getMountingHeight()).minus(mechanismOffset);
   }
 }
