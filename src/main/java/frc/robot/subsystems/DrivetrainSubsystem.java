@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -40,10 +41,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     rightFront.setSensorPhase(true);
     leftBack.setSensorPhase(true);
 
-    rightFront.setInverted(TalonFXInvertType.Clockwise);
-    rightBack.setInverted(TalonFXInvertType.CounterClockwise);
     leftFront.setInverted(TalonFXInvertType.CounterClockwise);
+    rightFront.setInverted(TalonFXInvertType.Clockwise);
     leftBack.setInverted(TalonFXInvertType.Clockwise);
+    rightBack.setInverted(TalonFXInvertType.CounterClockwise);
+
+    leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    leftBack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightBack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
   public void drive(double forward, double rotate) {
@@ -52,12 +58,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // adjusting the turn rate.
     // in short: leftspeed = forward + rotate; rightspeed = forward - rotate
     drivetrain.curvatureDrive(forward, rotate, true);
+
     // If desired, during a turn, the forward speed of the robot can be reduced
     // by only adjusting one wheel speed. For example, during a left turn, the
     // right wheel speed remains at the straightline speed while the left wheel
     // slows down to make the turn. this reduces the forward speed of the robot.
     // In short, on a left turn: leftspeed = forward - rotate; rightspeed = forward
     // This behaviour can be enabled by uncommenting the line below.
-    // drivetrain.arcadeDrive(forward,rotate,true);
+    // drivetrain.arcadeDrive(forward, rotate, true);
   }
 }

@@ -4,11 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.TeleopDrive;
-import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.commands.Drive;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Shoot;
+import frc.robot.subsystems.*;
+import frc.robot.util.Controller;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -17,25 +20,51 @@ import frc.robot.subsystems.DrivetrainSubsystem;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final XboxController m_Driver = new XboxController(0);
-  private final DrivetrainSubsystem m_DrivetrainSubsystem = new DrivetrainSubsystem();
+  private final Controller controllerDriver = new Controller(0);
+  private final Controller controllerOperator = new Controller(1);
+
+  private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final TowerSubsystem towerSubsystem = new TowerSubsystem();
+  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
+
+  private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_DrivetrainSubsystem.setDefaultCommand(new TeleopDrive(m_Driver, m_DrivetrainSubsystem));
+    addAutonomousChoices();
     configureButtonBindings();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {}
+  private void addAutonomousChoices() {
+    // autonChooser.setDefaultOption("name", command);
+    // autonChooser.addOption("name", command);
+    // autonChooser.addOption("name", command);
+    // autonChooser.addOption("name", command);
+
+    SmartDashboard.putData(autonChooser);
+  }
+
+  private void configureButtonBindings() {
+    drivetrainSubsystem.setDefaultCommand(new Drive(controllerDriver, drivetrainSubsystem));
+
+    controllerDriver.bumperRight.whenHeld(
+        new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
+
+    controllerOperator.bumperRight.whenHeld(
+        new Shoot(
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            colorSensorsSubsystem,
+            limelightSubsystem));
+  }
 
   public Command getAutonomousCommand() {
-    return null;
+    return autonChooser.getSelected();
   }
 }
