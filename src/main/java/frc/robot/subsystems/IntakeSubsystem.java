@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid pistons;
   private final WPI_TalonSRX motor;
 
-  private final double kMotorSpeed = 0.5; // TODO
+  private final double kMotorSpeed = 0.75; // FIXME determine appropriate intake motor speed
 
   public IntakeSubsystem() {
     pistons =
@@ -30,6 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private void configMotors() {
     motor.configAllSettings(Intake.motorConfig());
+    motor.setInverted(true);
   }
 
   public void start() {
