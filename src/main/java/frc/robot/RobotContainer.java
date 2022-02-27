@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveTurret;
 import frc.robot.commands.Intake;
-import frc.robot.commands.Shoot;
-import frc.robot.commands.TrackTurret;
 import frc.robot.commands.ShootRpm;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
@@ -57,15 +55,13 @@ public class RobotContainer {
     // === AUTO ===
     // turretSubsystem.setDefaultCommand(new TrackTurret(turretSubsystem, limelightSubsystem));
 
-
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
     driver.bumperRight.whenHeld(new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
 
-
     // === OPERATOR ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
-    
+
     operator.buttonA.whenHeld(new ShootRpm(3600, towerSubsystem, shooterSubsystem));
     operator.buttonB.whenHeld(new ShootRpm(4100, towerSubsystem, shooterSubsystem));
     operator.buttonX.whenHeld(new ShootRpm(4600, towerSubsystem, shooterSubsystem));
@@ -73,7 +69,8 @@ public class RobotContainer {
 
     operator.bumperLeft.whenHeld(
         new StartEndCommand(towerSubsystem::reverseBoth, towerSubsystem::stop, towerSubsystem));
-    // operator.bumperRight.whenHeld(new Shoot(towerSubsystem, shooterSubsystem, turretSubsystem, colorSensorsSubsystem, limelightSubsystem));
+    // operator.bumperRight.whenHeld(new Shoot(towerSubsystem, shooterSubsystem, turretSubsystem,
+    // colorSensorsSubsystem, limelightSubsystem));
   }
 
   public Command getAutonomousCommand() {

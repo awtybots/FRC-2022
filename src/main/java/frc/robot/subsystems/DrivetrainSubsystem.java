@@ -37,7 +37,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = 0.1;
-    
+
     leftFront.configAllSettings(config);
     rightFront.configAllSettings(config);
     leftBack.configAllSettings(config);

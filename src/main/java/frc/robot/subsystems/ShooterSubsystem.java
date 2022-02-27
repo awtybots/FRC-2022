@@ -43,35 +43,36 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheel.config_kP(0, kP_Flywheel);
   }
 
-@Override
-public void periodic() {
-  actualRpm = getRpm();
+  @Override
+  public void periodic() {
+    actualRpm = getRpm();
 
-  SmartDashboard.putNumber("SH - actual rpm", actualRpm);
-  SmartDashboard.putNumber("SH - goal rpm", goalRpm);
-  SmartDashboard.putBoolean("SH - at goal", isRpmAtGoal());
-}
+    SmartDashboard.putNumber("SH - actual rpm", actualRpm);
+    SmartDashboard.putNumber("SH - goal rpm", goalRpm);
+    SmartDashboard.putBoolean("SH - at goal", isRpmAtGoal());
+  }
 
-public void shootRpm(double rpm) {
-  flywheel.set(ControlMode.Velocity, Convert.rpmToEncoderVel(clampToBounds(rpm), Encoder.TalonFXIntegrated));
-}
+  public void shootRpm(double rpm) {
+    flywheel.set(
+        ControlMode.Velocity,
+        Convert.rpmToEncoderVel(clampToBounds(rpm), Encoder.TalonFXIntegrated));
+  }
 
-public void shootPercent(double percent) {
-  flywheel.set(ControlMode.PercentOutput, percent);
-}
+  public void shootPercent(double percent) {
+    flywheel.set(ControlMode.PercentOutput, percent);
+  }
 
-private double getRpm() {
-  return Convert.encoderVelToRpm(flywheel.getSelectedSensorVelocity(), Encoder.TalonFXIntegrated);
-}
+  private double getRpm() {
+    return Convert.encoderVelToRpm(flywheel.getSelectedSensorVelocity(), Encoder.TalonFXIntegrated);
+  }
 
-public void stop() {
-  flywheel.set(ControlMode.PercentOutput, 0);
-}
+  public void stop() {
+    flywheel.set(ControlMode.PercentOutput, 0);
+  }
 
-public boolean isRpmAtGoal() {
-  return Math.abs(actualRpm - goalRpm) < kMaxAcceptableRpmError;
-}
-
+  public boolean isRpmAtGoal() {
+    return Math.abs(actualRpm - goalRpm) < kMaxAcceptableRpmError;
+  }
 
   /**
    * To calculate the parameters for this function
