@@ -30,4 +30,8 @@ public final class Convert {
   public static final double degPerSecAccelToEncoder(double degPerSecPerSec, Encoder encoder) {
     return (degPerSecPerSec / 360.0) * (encoder.ticksPerRevolution / 10.0);
   }
+
+  public static double encoderVelToRPM(double sensorUnitsPer100ms, Encoder encoder) {
+    return ((sensorUnitsPer100ms * 10.0) / encoder.ticksPerRevolution) * 60.0;
+  }
 }
