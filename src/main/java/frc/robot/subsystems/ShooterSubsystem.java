@@ -30,4 +30,22 @@ public class ShooterSubsystem extends SubsystemBase {
   public void percentShoot(double percent) {
     flywheel.set(ControlMode.PercentOutput, percent);
   }
+
+  public void shoot(double rpm) {
+    flywheel.set(ControlMode.Velocity, clampToBounds(rpm));
+  }
+
+  public void stop() {
+    flywheel.set(ControlMode.PercentOutput, 0);
+  }
+
+  private final double clampToBounds(double rpm) {
+    if (rpm > 0 && rpm <= kMaxFlywheelRPM) return rpm;
+    else if ((rpm <= 1E-2 && rpm >= 1E-2) || rpm < 0) return 0;
+    else if (rpm > kMaxFlywheelRPM) return kMaxFlywheelRPM;
+    else {
+      System.err.println(String.format("ERROR Clamping Flywheel RPM of %s", rpm));
+      return 0;
+    }
+  }
 }

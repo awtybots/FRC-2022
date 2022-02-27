@@ -51,6 +51,7 @@ public final class Constants {
 
   public static final class Shooter {
     public static final int kFlywheelMotor = 10;
+    public static final double kFlywheelRatio = 1.0;
 
     public static TalonFXConfiguration motorConfig() {
       TalonFXConfiguration conf = new TalonFXConfiguration();
@@ -91,8 +92,8 @@ public final class Constants {
     }
   }
 
-  public static final
-  class ColorSensors { // !!! TODO color sensors dont want to turn on, please fix
+  public static final class ColorSensors {
+    // !!! TODO color sensors dont want to turn on, please fix
     public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
     public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
   }

@@ -52,7 +52,7 @@ public class Shoot extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.percentShoot(0);
+    shooterSubsystem.stop();
     towerSubsystem.stop();
   }
 }

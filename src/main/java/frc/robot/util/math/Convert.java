@@ -16,6 +16,11 @@ public final class Convert {
       this.ticksPerRevolution = ticksPerRevolution;
     }
   }
+
+  public static final double rpmToEncoderVel(double rpm, Encoder encoder) {
+    return (rpm / 60.0) * (encoder.ticksPerRevolution / 10.0);
+  }
+
   /** @return encoder ticks per 100ms */
   public static final double degPerSecToEncoderVel(double degPerSec, Encoder encoder) {
     return (degPerSec / 360.0) * (encoder.ticksPerRevolution / 10.0);
