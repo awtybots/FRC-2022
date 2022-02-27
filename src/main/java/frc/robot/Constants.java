@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
@@ -20,43 +18,19 @@ public final class Constants {
     public static final int kRightBack = 1;
     public static final int kLeftFront = 2;
     public static final int kLeftBack = 3;
-
-    public static TalonFXConfiguration motorConfig() {
-      TalonFXConfiguration conf = new TalonFXConfiguration();
-      conf.voltageCompSaturation = 12.0;
-      conf.openloopRamp = 1.0;
-      return conf;
-    }
   }
 
   public static final class Tower {
     public static final int kUpperMotor = 7;
     public static final int kLowerMotor = 5;
-
-    public static TalonSRXConfiguration motorConfig() {
-      TalonSRXConfiguration conf = new TalonSRXConfiguration();
-      return conf;
-    }
   }
 
   public static final class Turret {
     public static final int kMotor = 9;
-
-    public static TalonSRXConfiguration motorConfig() {
-      TalonSRXConfiguration conf = new TalonSRXConfiguration();
-      conf.voltageCompSaturation = 12.0;
-      return conf;
-    }
   }
 
   public static final class Shooter {
     public static final int kFlywheelMotor = -1;
-
-    public static TalonFXConfiguration motorConfig() {
-      TalonFXConfiguration conf = new TalonFXConfiguration();
-      conf.voltageCompSaturation = 12.0;
-      return conf;
-    }
   }
 
   public static final class Field {
@@ -99,20 +73,10 @@ public final class Constants {
     public static final int kMotor = 8;
     public static final int kSolenoidUp = -1;
     public static final int kSolenoidDown = -1;
-
-    public static TalonSRXConfiguration motorConfig() {
-      TalonSRXConfiguration conf = new TalonSRXConfiguration();
-      return conf;
-    }
   }
 
   public static final class Climber {
     public static final int kLeftMotor = -1;
     public static final int kRightMotor = -1;
-
-    public static TalonFXConfiguration motorConfig() {
-      TalonFXConfiguration conf = new TalonFXConfiguration();
-      return conf;
-    }
   }
 }

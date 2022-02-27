@@ -28,9 +28,7 @@ public class IntakeSubsystem extends SubsystemBase {
     stop();
   }
 
-  private void configMotors() {
-    motor.configAllSettings(Intake.motorConfig());
-  }
+  private void configMotors() {}
 
   public void start() {
     pistons.set(Value.kForward);

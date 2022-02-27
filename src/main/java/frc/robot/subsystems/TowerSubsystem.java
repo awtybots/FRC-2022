@@ -28,9 +28,6 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    upperMotor.configAllSettings(Tower.motorConfig());
-    lowerMotor.configAllSettings(Tower.motorConfig());
-
     upperMotor.setInverted(false);
     lowerMotor.setInverted(false);
 

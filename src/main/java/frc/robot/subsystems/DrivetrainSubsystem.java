@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -33,10 +34,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    leftFront.configAllSettings(Drivetrain.motorConfig());
-    rightFront.configAllSettings(Drivetrain.motorConfig());
-    leftBack.configAllSettings(Drivetrain.motorConfig());
-    rightBack.configAllSettings(Drivetrain.motorConfig());
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    config.voltageCompSaturation = 12.0;
+    config.openloopRamp = 0.1;
+    
+    leftFront.configAllSettings(config);
+    rightFront.configAllSettings(config);
+    leftBack.configAllSettings(config);
+    rightBack.configAllSettings(config);
 
     rightFront.setSensorPhase(true);
     leftBack.setSensorPhase(true);

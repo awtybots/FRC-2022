@@ -23,10 +23,8 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    leftMotor.configAllSettings(Climber.motorConfig());
     leftMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    rightMotor.configAllSettings(Climber.motorConfig());
     rightMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     rightMotor.setInverted(TalonFXInvertType.Clockwise);
   }
