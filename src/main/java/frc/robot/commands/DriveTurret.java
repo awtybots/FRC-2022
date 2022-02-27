@@ -29,7 +29,9 @@ public class DriveTurret extends CommandBase {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    turretSubsystem.drive(0);
+  }
 
   @Override
   public boolean isFinished() {
