@@ -9,11 +9,11 @@ import frc.robot.util.vision.VisionTarget;
 public class LimelightSubsystem extends SubsystemBase {
 
   private final frc.robot.util.vision.Limelight limelight;
-  private final VisionTarget visionTarget;
+  private final VisionTarget upperHub;
 
   public LimelightSubsystem() {
     limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
-    visionTarget =
+    upperHub =
         new VisionTarget(
             limelight, Field.kVisionTargetHeight, Field.kGoalHeight, Limelight.kShooterOffset);
 
@@ -22,7 +22,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
-    return visionTarget.getGoalDisplacement();
+    return upperHub.getGoalDisplacement();
   }
 
   public void drivingMode() {

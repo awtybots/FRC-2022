@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.Shooter;
 import frc.robot.util.math.Convert;
 import frc.robot.util.math.Convert.Encoder;
@@ -24,7 +25,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final double kP_Flywheel = 0.0;
   private final double kF_Flywheel = calculateKF(5500, 0.80);
 
-  private double goalRpm = 0.0;
+  private double targetRpm = 0.0;
   private double actualRpm = 0.0;
 
   public ShooterSubsystem() {
@@ -45,11 +46,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    actualRpm = getRpm();
-
-    SmartDashboard.putNumber("SH - actual rpm", actualRpm);
-    SmartDashboard.putNumber("SH - goal rpm", goalRpm);
-    SmartDashboard.putBoolean("SH - at goal", isRpmAtGoal());
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putBoolean("SH - at goal", isRpmAtTargt());
+      SmartDashboard.putNumber("SH - actual rpm", actualRpm);
+      SmartDashboard.putNumber("SH - goal rpm", targetRpm);
+    }
   }
 
   public void shootRpm(double rpm) {
@@ -70,8 +71,9 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheel.set(ControlMode.PercentOutput, 0);
   }
 
-  public boolean isRpmAtGoal() {
-    return Math.abs(actualRpm - goalRpm) < kMaxAcceptableRpmError;
+  public boolean isRpmAtTargt() {
+    actualRpm = getRpm();
+    return Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
   }
 
   /**

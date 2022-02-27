@@ -10,7 +10,7 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.util.math.ProjectileMotionSolver;
 import frc.robot.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
 
-public class Shoot extends CommandBase {
+public class AutoAimAndShoot extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
@@ -19,7 +19,7 @@ public class Shoot extends CommandBase {
 
   private final ProjectileMotionSolver projectileMotionSolver;
 
-  public Shoot(
+  public AutoAimAndShoot(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
@@ -43,7 +43,9 @@ public class Shoot extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // TODO write autoshooting code
+  }
 
   @Override
   public void execute() {}
