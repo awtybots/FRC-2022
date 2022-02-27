@@ -26,14 +26,15 @@ public class Intake extends CommandBase {
   @Override
   public void initialize() {
     intakeSubsystem.start();
-    towerSubsystem.startForIntaking();
+    towerSubsystem.intake();
   }
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      towerSubsystem.stopUpper();
-    }
+    // ? TODO add this back in when color sensors work properly
+    // if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //   towerSubsystem.stopUpper();
+    // }
   }
 
   @Override

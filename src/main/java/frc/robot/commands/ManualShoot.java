@@ -8,7 +8,7 @@ public class ManualShoot extends StartEndCommand {
   public ManualShoot(double rpm, ShooterSubsystem shooterSubsystem) {
     super(
         () -> {
-          shooterSubsystem.setRpm(rpm);
+          shooterSubsystem.shootRpm(rpm);
         },
         () -> {
           shooterSubsystem.stop();

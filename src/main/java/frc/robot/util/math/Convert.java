@@ -14,23 +14,21 @@ public final class Convert {
     }
   }
 
+  public static double rpmToEncoderVel(double rpm, Encoder encoder) {
+    return (rpm / 60.0) * (encoder.ticksPerRevolution / 10.0);
+  }
+
   /** @return encoder ticks per 100ms */
-  public static final double degPerSecToEncoderVel(double degPerSec, Encoder encoder) {
+  public static double degPerSecToEncoderVel(double degPerSec, Encoder encoder) {
     return (degPerSec / 360.0) * (encoder.ticksPerRevolution / 10.0);
   }
 
   /** @return (encoder ticks per 100ms) per second */
-  public static final double degPerSecPerSecToEncoderAccel(double degPerSecPerSec, Encoder encoder) {
+  public static double degPerSecPerSecToEncoderAccel(double degPerSecPerSec, Encoder encoder) {
     return (degPerSecPerSec / 360.0) * (encoder.ticksPerRevolution / 10.0);
   }
 
-  /** @return encoder ticks per 100ms */
-  public static final double rpmToEncoderVel(double rpm, Encoder encoder) {
-    return (rpm / 60.0) * (encoder.ticksPerRevolution / 10.0);
-  }
-
-  /** @return rpm */
-  public static final double encoderVelToRpm(double encoderVel, Encoder encoder) {
-    return encoderVel * (10.0 / encoder.ticksPerRevolution) * 60.0;
+  public static double encoderVelToRpm(double sensorUnitsPer100ms, Encoder encoder) {
+    return ((sensorUnitsPer100ms * 10.0) / encoder.ticksPerRevolution) * 60.0;
   }
 }

@@ -7,10 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveTurret;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.TrackTurret;
+import frc.robot.commands.ShootRpm;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
 
@@ -21,8 +24,8 @@ import frc.robot.util.Controller;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Controller controllerDriver = new Controller(0);
-  private final Controller controllerOperator = new Controller(1);
+  private final Controller driver = new Controller(0);
+  private final Controller operator = new Controller(1);
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();
@@ -51,19 +54,26 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    drivetrainSubsystem.setDefaultCommand(new Drive(controllerDriver, drivetrainSubsystem));
+    // === AUTO ===
     // turretSubsystem.setDefaultCommand(new TrackTurret(turretSubsystem, limelightSubsystem));
 
-    controllerDriver.bumperRight.whenHeld(
-        new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
 
-    controllerOperator.bumperRight.whenHeld(
-        new Shoot(
-            towerSubsystem,
-            shooterSubsystem,
-            turretSubsystem,
-            colorSensorsSubsystem,
-            limelightSubsystem));
+    // === DRIVER ===
+    drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
+    driver.bumperRight.whenHeld(new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
+
+
+    // === OPERATOR ===
+    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
+    
+    operator.buttonA.whenHeld(new ShootRpm(3600, towerSubsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(new ShootRpm(4100, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(new ShootRpm(4600, towerSubsystem, shooterSubsystem));
+    operator.buttonY.whenHeld(new ShootRpm(5700, towerSubsystem, shooterSubsystem));
+
+    operator.bumperLeft.whenHeld(
+        new StartEndCommand(towerSubsystem::reverseBoth, towerSubsystem::stop, towerSubsystem));
+    // operator.bumperRight.whenHeld(new Shoot(towerSubsystem, shooterSubsystem, turretSubsystem, colorSensorsSubsystem, limelightSubsystem));
   }
 
   public Command getAutonomousCommand() {

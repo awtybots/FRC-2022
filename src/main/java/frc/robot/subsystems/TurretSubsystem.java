@@ -18,10 +18,14 @@ public class TurretSubsystem extends SubsystemBase {
   private final double kAngleMax = 195.0;
   private final double kAngleStart = 0.0; // TODO best start angle
 
+  private final double kGearRatio = 1.0; // TODO
+
   private final double kP = 0.0;
   private final double kD = 0.0;
-  private final double kMaxDegPerSec = 0.0;
+  private final double kMaxDegPerSec = 10.0;
   private final double kMaxDegPerSecPerSec = 0.0;
+
+  private final double kMaxPercentOutput = 10.0; // TODO temp
 
   private final WPI_TalonSRX motor;
 
@@ -33,13 +37,27 @@ public class TurretSubsystem extends SubsystemBase {
   private void configMotors() {
     motor.configVoltageCompSaturation(12.0);
     motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
+  
     motor.config_kP(0, kP);
     motor.config_kD(0, kD);
     motor.configMotionCruiseVelocity(Convert.degPerSecToEncoderVel(kMaxDegPerSec, Encoder.VersaPlanetaryIntegrated));
     motor.configMotionAcceleration(Convert.degPerSecPerSecToEncoderAccel(kMaxDegPerSecPerSec, Encoder.VersaPlanetaryIntegrated));
+
+    motor.setSelectedSensorPosition(0); // TODO use gear ratio to set start at actual start in case it's not 0
   }
 
-  // TODO
+  @Override
+  public void periodic() {
+    // ! stop if turret not in bounds
+    // if (motor.getSelectedSensorPosition())
+  }
+
+  /** positive is clockwise (-1 to 1) */
+  public void drive(double rate) {
+    motor.set(ControlMode.PercentOutput, rate * kMaxPercentOutput);
+  }
+
+  // TODO automatic turret angle
 
   public void stop() {
     motor.set(ControlMode.PercentOutput, 0.0);

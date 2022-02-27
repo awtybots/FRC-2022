@@ -46,7 +46,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   }
 
   private class ColorSensor {
-    private final double minimumConfidence = 0.8; // TODO
+    // FIXME set correct confidence threshold for color sensors
+    private final double minimumConfidence = 0.8;
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch;
@@ -70,8 +71,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       Color detectedColor = sensor.getColor();
       ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
+      // TODO use proximity value from sensor for better detection accuracy
       double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
-      // TODO use proximity
 
       if (Constants.TUNING_MODE) {
         SmartDashboard.putString("TW - " + id + " raw color", detectedColor.toString());

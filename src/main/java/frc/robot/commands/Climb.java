@@ -13,7 +13,7 @@ public class Climb extends CommandBase {
 
   @Override
   public void initialize() {
-    // TODO
+    // TODO write climbing code
   }
 
   @Override

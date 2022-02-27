@@ -11,7 +11,7 @@ import frc.robot.util.math.Vector2;
 import java.util.HashMap;
 
 public final class Constants {
-  public static final boolean TUNING_MODE = true; // TODO false for competition
+  public static final boolean TUNING_MODE = true; // * TODO disable debug mode for competition
 
   public static final class Drivetrain {
     public static final int kRightFront = 0;
@@ -30,7 +30,8 @@ public final class Constants {
   }
 
   public static final class Shooter {
-    public static final int kFlywheelMotor = -1;
+    public static final int kFlywheelMotor = 10;
+    public static final double kFlywheelRatio = 1.0;
   }
 
   public static final class Field {
@@ -41,9 +42,9 @@ public final class Constants {
     public static final double kBallMass = 0.270; // kg
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
-    static {
-      kBallColors.put(Alliance.Blue, new Color(0.0, 0.0, 1.0)); // TODO
-      kBallColors.put(Alliance.Red, new Color(1.0, 0.0, 0.0)); // TODO
+    static { // ! FIXME set correct color for blue and red ball
+      kBallColors.put(Alliance.Blue, new Color(0.0, 0.0, 1.0));
+      kBallColors.put(Alliance.Red, new Color(1.0, 0.0, 0.0));
     }
   }
 
@@ -55,6 +56,7 @@ public final class Constants {
     public static final LimelightMountDirection kMountingDirection =
         LimelightMountDirection.kLandscape;
 
+    // ! TODO create limelight pipelines on the limelight dashboard
     public static final int kPipelineDriving = 0;
     public static final int kPipelineShooting = 1;
 
@@ -65,18 +67,19 @@ public final class Constants {
   }
 
   public static final class ColorSensors {
+    // !!! TODO color sensors dont want to turn on, please fix
     public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
     public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
   }
 
   public static final class Intake {
     public static final int kMotor = 8;
-    public static final int kSolenoidUp = -1;
-    public static final int kSolenoidDown = -1;
+    public static final int kSolenoidUp = 1;
+    public static final int kSolenoidDown = 2;
   }
 
   public static final class Climber {
-    public static final int kLeftMotor = -1;
-    public static final int kRightMotor = -1;
+    public static final int kLeftMotor = 18;
+    public static final int kRightMotor = 19;
   }
 }
