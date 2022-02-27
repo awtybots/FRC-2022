@@ -46,10 +46,13 @@ public class Shoot extends CommandBase {
   public void initialize() {}
 
   @Override
-  public void execute() {}
+  public void execute() {
+    shooterSubsystem.percentShoot(0.25); // ! FIXME write shooting code
+  }
 
   @Override
   public void end(boolean interrupted) {
+    shooterSubsystem.percentShoot(0);
     towerSubsystem.stop();
   }
 }
