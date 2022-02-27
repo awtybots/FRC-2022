@@ -1,6 +1,6 @@
 package frc.robot.util.math;
 
-// ! FIXME This is for at home testing only for programmers, do not use at competition
+/** This is for at home testing only for programmers, do not use at competition */
 public class ProjectileMotionSolver {
   private static final double g = 9.81; // acceleration due to gravity (m/s^2)
   private static final double rho = 1.225; // density of air (kg/m^3)

@@ -16,8 +16,8 @@ import frc.robot.util.math.Convert.Encoder;
 public class ShooterSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX flywheel;
-  private final double kMaxFlywheelRPM = 5600; // ! FIXME! find correct max flywheel rpm
-  private final double kMaxAcceptableRPMError = 150.0; // TODO! we can do better
+  private final double kMaxFlywheelRPM = 6400; // * TODO find correct max flywheel rpm
+  private final double kMaxAcceptableRPMError = 150.0; // FIXME! we can do better
   private final double kF_Flywheel = calculateKF(5500, 0.80);
   private final double kP_Flywheel = 0.0;
 
