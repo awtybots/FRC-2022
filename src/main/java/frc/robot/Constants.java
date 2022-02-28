@@ -67,19 +67,19 @@ public final class Constants {
   }
 
   public static final class ColorSensors {
-    // !!! TODO color sensors dont want to turn on, please fix
+    // !!! TODO color sensor lower dont want to turn on, please fix
     public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
     public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
   }
 
   public static final class Intake {
     public static final int kMotor = 8;
-    public static final int kSolenoidUp = 1;
-    public static final int kSolenoidDown = 2;
+    public static final int kSolenoidUp = 0;
+    public static final int kSolenoidDown = 15;
   }
 
   public static final class Climber {
     public static final int kLeftMotor = 18;
-    public static final int kRightMotor = 19;
+    public static final int kRightMotor = 19; // TODO
   }
 }

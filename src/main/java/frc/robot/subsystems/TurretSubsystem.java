@@ -18,16 +18,19 @@ public class TurretSubsystem extends SubsystemBase {
   private final double kAngleMax = 195.0;
   private final double kAngleStart = 0.0; // TODO best start angle
 
-  private final double kGearRatio = 1.0; // TODO
+  private final double kGearRatio = 1.0 / 10.8;
 
   private final double kP = 0.0;
   private final double kD = 0.0;
   private final double kMaxDegPerSec = 10.0;
   private final double kMaxDegPerSecPerSec = 0.0;
 
-  private final double kMaxManualPercentOutput = 10.0;
+  private final double kMaxManualPercentOutput = 0.2;
 
   private final WPI_TalonSRX motor;
+
+  private double currentAngle = kAngleStart;
+  private double goalAngle = currentAngle;
 
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotor);
@@ -52,8 +55,13 @@ public class TurretSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     // ! stop if turret not in bounds
     // if (motor.getSelectedSensorPosition())
+  }
+
+  public void turnBy(double deltaAngle) {
+
   }
 
   /** positive is clockwise (-1 to 1) */

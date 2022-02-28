@@ -28,7 +28,7 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    upperMotor.setInverted(true);
+    upperMotor.setInverted(false);
     lowerMotor.setInverted(false);
 
     upperMotor.setNeutralMode(NeutralMode.Brake);

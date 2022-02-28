@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final double kMaxAcceptableRpmError = 150.0; // FIXME! we can do better
 
   private final double kP_Flywheel = 0.0;
-  private final double kF_Flywheel = calculateKF(5500, 0.80);
+  private final double kF_Flywheel = calculateKF(2150, 0.40);
 
   private double targetRpm = 0.0;
   private double actualRpm = 0.0;
@@ -54,12 +54,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void shootRpm(double rpm) {
+    targetRpm = rpm;
     flywheel.set(
         ControlMode.Velocity,
         Convert.rpmToEncoderVel(clampToBounds(rpm), Encoder.TalonFXIntegrated));
   }
 
   public void shootPercent(double percent) {
+    targetRpm = percent;
     flywheel.set(ControlMode.PercentOutput, percent);
   }
 
@@ -68,6 +70,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void stop() {
+    targetRpm = 0;
     flywheel.set(ControlMode.PercentOutput, 0);
   }
 
