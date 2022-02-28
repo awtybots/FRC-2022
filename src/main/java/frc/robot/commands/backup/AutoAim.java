@@ -1,4 +1,4 @@
-package frc.robot.commands.main;
+package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -20,7 +20,15 @@ public class AutoAim extends CommandBase {
 
   @Override
   public void execute() {
-    
+    if (!limelightSubsystem.hasVisibleTarget()) {
+      if (turretSubsystem.isAtTarget()) {
+        turretSubsystem.turnBy(5.0);
+      }
+      return;
+    }
+
+    double deltaAngle = limelightSubsystem.getTargetXOffset();
+    turretSubsystem.turnBy(deltaAngle);
   }
 
   @Override
