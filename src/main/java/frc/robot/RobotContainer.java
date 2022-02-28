@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.*;
+import frc.robot.commands.main.*;
+import frc.robot.commands.backup.*;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
 
@@ -50,7 +51,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // === AUTO ===
-    // turretSubsystem.setDefaultCommand(new TrackTurret(turretSubsystem, limelightSubsystem));
+    // turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
 
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
