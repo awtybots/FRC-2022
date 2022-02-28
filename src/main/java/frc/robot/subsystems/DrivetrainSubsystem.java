@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -16,6 +17,8 @@ import frc.robot.Constants.Drivetrain;
 public class DrivetrainSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX leftFront, leftBack, rightFront, rightBack;
+  private final WPI_TalonFX[] motors;
+
   private final MotorControllerGroup leftDrive, rightDrive;
   private final DifferentialDrive drivetrain;
 
@@ -24,6 +27,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     leftBack = new WPI_TalonFX(Drivetrain.kLeftBack);
     rightFront = new WPI_TalonFX(Drivetrain.kRightFront);
     rightBack = new WPI_TalonFX(Drivetrain.kRightBack);
+
+    motors = new WPI_TalonFX[] {leftFront, leftBack, rightFront, rightBack};
 
     configMotors();
 
@@ -38,23 +43,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = 0.1;
 
-    leftFront.configAllSettings(config);
-    rightFront.configAllSettings(config);
-    leftBack.configAllSettings(config);
-    rightBack.configAllSettings(config);
+    for (WPI_TalonFX motor : motors) {
+      motor.configAllSettings(config);
+      motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+      motor.setSelectedSensorPosition(0.0);
+      motor.setNeutralMode(NeutralMode.Brake);
+    }
 
-    rightFront.setSensorPhase(true);
-    leftBack.setSensorPhase(true);
-
-    leftFront.setInverted(TalonFXInvertType.CounterClockwise);
     rightFront.setInverted(TalonFXInvertType.Clockwise);
     leftBack.setInverted(TalonFXInvertType.Clockwise);
-    rightBack.setInverted(TalonFXInvertType.CounterClockwise);
-
-    leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    leftBack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    rightBack.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
   }
 
   public void drive(double forward, double rotate) {

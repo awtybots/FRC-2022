@@ -19,10 +19,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX flywheel;
 
-  private final double kMaxFlywheelRpm = 6400; // * TODO find correct max flywheel rpm
-  private final double kMaxAcceptableRpmError = 150.0; // FIXME! we can do better
+  private final double kGearRatio = 1.0;
 
-  private final double kP_Flywheel = 0.0;
+  private final double kMaxFlywheelRpm = 6400; // TODO find correct max flywheel rpm
+  private final double kMaxAcceptableRpmError = 50.0; // TODO we can still maybe do better
+
+  private final double kP_Flywheel = 0.0; // TODO add P term
   private final double kF_Flywheel = calculateKF(2150, 0.40);
 
   private double targetRpm = 0.0;
@@ -46,8 +48,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    actualRpm = getRpm();
+
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putBoolean("SH - at goal", isRpmAtTargt());
+      SmartDashboard.putBoolean("SH - at goal", isRpmAtTarget());
       SmartDashboard.putNumber("SH - actual rpm", actualRpm);
       SmartDashboard.putNumber("SH - goal rpm", targetRpm);
     }
@@ -57,7 +61,7 @@ public class ShooterSubsystem extends SubsystemBase {
     targetRpm = rpm;
     flywheel.set(
         ControlMode.Velocity,
-        Convert.rpmToEncoderVel(clampToBounds(rpm), Encoder.TalonFXIntegrated));
+        Convert.rpmToEncoderVel(clampToBounds(rpm), kGearRatio, Encoder.TalonFXIntegrated));
   }
 
   public void shootPercent(double percent) {
@@ -66,7 +70,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private double getRpm() {
-    return Convert.encoderVelToRpm(flywheel.getSelectedSensorVelocity(), Encoder.TalonFXIntegrated);
+    return Convert.encoderVelToRpm(
+        flywheel.getSelectedSensorVelocity(), kGearRatio, Encoder.TalonFXIntegrated);
   }
 
   public void stop() {
@@ -74,8 +79,7 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheel.set(ControlMode.PercentOutput, 0);
   }
 
-  public boolean isRpmAtTargt() {
-    actualRpm = getRpm();
+  public boolean isRpmAtTarget() {
     return Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
   }
 
@@ -94,7 +98,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
     double sensorVelAtPercentOut =
         Shooter.kFlywheelRatio
-            * Convert.rpmToEncoderVel(rpmAtPercentOut, Encoder.TalonFXIntegrated);
+            * Convert.rpmToEncoderVel(rpmAtPercentOut, kGearRatio, Encoder.TalonFXIntegrated);
     return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 

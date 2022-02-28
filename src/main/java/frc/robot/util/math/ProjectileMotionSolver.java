@@ -105,15 +105,18 @@ public class ProjectileMotionSolver {
   }
 
   /**
-   * Get the optimal launch velocity and turret offset angle for a moving shot.
+   * Get the optimal launch velocity and turret offset angle for a moving shot. ALl units are in
+   * meters.
    *
    * @param goalPosition A Vector2 representing the goal's relative position from the launching
    *     position of the projectile, where x is the horizontal distance of the goal and y is the
    *     height of the goal.
+   * @param robotVelocity A Vector2 of the robot's velocity, where the x term is in units parallel
+   *     to the goal direction, and the y term is in units perpendicular to the goal direction.
    * @return A Vector2 where x is the launch velocity and y is the turret offset angle. NOTE: launch
    *     velocity may be NaN.
    */
-  public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalPosition) {
+  public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalPosition, Vector2 robotVelocity) {
     return null; // TODO solve launch velocities for nonstationary conditions
   }
 

@@ -25,6 +25,15 @@ public class LimelightSubsystem extends SubsystemBase {
     return upperHub.getGoalDisplacement();
   }
 
+  public boolean hasVisibleTarget() {
+    return limelight.hasVisibleTarget();
+  }
+
+  /** degrees NOTE: check for target existing first */
+  public double getTargetXOffset() {
+    return limelight.targetXOffset();
+  }
+
   public void drivingMode() {
     limelight.setPipeline(Limelight.kPipelineDriving);
   }

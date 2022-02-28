@@ -11,12 +11,12 @@ public class IntakeAndShoot extends CommandBase {
   private final ShooterSubsystem shooterSubsystem;
   private final double rpm;
 
-  public IntakeAndShoot(double rpm,
+  public IntakeAndShoot(
+      double rpm,
       IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem) {
-    addRequirements(
-        intakeSubsystem, towerSubsystem, shooterSubsystem);
+    addRequirements(intakeSubsystem, towerSubsystem, shooterSubsystem);
 
     this.intakeSubsystem = intakeSubsystem;
     this.towerSubsystem = towerSubsystem;
@@ -32,9 +32,7 @@ public class IntakeAndShoot extends CommandBase {
   }
 
   @Override
-  public void execute() {
-    
-  }
+  public void execute() {}
 
   @Override
   public void end(boolean interrupted) {

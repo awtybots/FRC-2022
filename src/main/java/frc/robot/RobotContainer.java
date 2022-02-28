@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.main.*;
 import frc.robot.commands.backup.*;
+import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
 import frc.robot.util.Controller;
 
@@ -55,16 +55,23 @@ public class RobotContainer {
 
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
-    // driver.bumperRight.whenHeld(new Intake(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
-    driver.bumperRight.whenHeld(new IntakeAndShoot(0.4, intakeSubsystem, towerSubsystem, shooterSubsystem));
+    // driver.bumperRight.whenHeld(new Intake(intakeSubsystem, towerSubsystem,
+    // colorSensorsSubsystem));
+    driver.bumperRight.whenHeld(
+        new IntakeAndShoot(0.4, intakeSubsystem, towerSubsystem, shooterSubsystem));
 
     // === OPERATOR ===
-    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
+    // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
+    climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem)); // TODO temp
 
-    operator.buttonA.whenHeld(new IntakeAndShoot(1000, intakeSubsystem,towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(new IntakeAndShoot(1500, intakeSubsystem,towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(new IntakeAndShoot(2300, intakeSubsystem,towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(new IntakeAndShoot(2400, intakeSubsystem,towerSubsystem, shooterSubsystem));
+    operator.buttonA.whenHeld(
+        new IntakeAndShoot(1000, intakeSubsystem, towerSubsystem, shooterSubsystem)); // TODO temp
+    operator.buttonB.whenHeld(
+        new IntakeAndShoot(1500, intakeSubsystem, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(
+        new IntakeAndShoot(2300, intakeSubsystem, towerSubsystem, shooterSubsystem));
+    operator.buttonY.whenHeld(
+        new IntakeAndShoot(2400, intakeSubsystem, towerSubsystem, shooterSubsystem));
 
     operator.bumperLeft.whenHeld(
         new StartEndCommand(towerSubsystem::reverseBoth, towerSubsystem::stop, towerSubsystem));
