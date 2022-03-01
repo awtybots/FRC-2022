@@ -44,15 +44,39 @@ public class ClimbSubsystem extends SubsystemBase {
     motors = new WPI_TalonFX[] {leftMotor, rightMotor};
 
     configMotors();
+
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putNumber("CL - set target pos", actualPosition);
+    }
   }
 
   @Override
   public void periodic() {
+    actualPosition = getPosition();
+
     if (Constants.TUNING_MODE) {
+      // moveClimb(
+      //     Convert.inchesToMeters(
+      //         SmartDashboard.getNumber(
+      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove
+
       SmartDashboard.putBoolean("CL - at goal", isAtTarget());
       SmartDashboard.putNumber("CL - actual pos", Convert.metersToInches(actualPosition));
       SmartDashboard.putNumber("CL - target pos", Convert.metersToInches(targetPosition));
     }
+  }
+
+  private double getPosition() {
+    double sum = 0.0;
+    for (WPI_TalonFX motor : motors) {
+      sum +=
+          Convert.encoderPosToDistance(
+              motor.getSelectedSensorPosition(),
+              kGearRatio,
+              kWinchDiameter,
+              Encoder.TalonFXIntegrated);
+    }
+    return sum / motors.length;
   }
 
   public boolean isAtTarget() {
@@ -79,18 +103,21 @@ public class ClimbSubsystem extends SubsystemBase {
     }
   }
 
-  public void raiseClimb() {
-    targetPosition = kClimbDistance;
+  private void moveClimb(double pos) {
+    targetPosition = pos;
     for (WPI_TalonFX motor : motors)
       motor.set(
           ControlMode.Position,
           Convert.distanceToEncoderPos(
-              kClimbDistance, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated));
+              targetPosition, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated));
+  }
+
+  public void raiseClimb() {
+    moveClimb(kClimbDistance);
   }
 
   public void retractClimb() {
-    targetPosition = 0.0;
-    for (WPI_TalonFX motor : motors) motor.set(ControlMode.Position, 0.0);
+    moveClimb(0.0);
   }
 
   public void drive(double pct) {

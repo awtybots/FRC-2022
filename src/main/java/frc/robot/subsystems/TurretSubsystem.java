@@ -40,6 +40,10 @@ public class TurretSubsystem extends SubsystemBase {
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotor);
     configMotors();
+
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putNumber("TU - set target angle", kAngleStart);
+    }
   }
 
   private void configMotors() {
@@ -63,11 +67,14 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     actualAngle = getAngle();
 
-    if(actualAngle < kAngleMin - kMaxAcceptableAngleError || actualAngle > kAngleMax + kMaxAcceptableAngleError) {
+    if (actualAngle < kAngleMin - kMaxAcceptableAngleError
+        || actualAngle > kAngleMax + kMaxAcceptableAngleError) {
       stop(); // ? maybe remove for competition
     }
 
     if (Constants.TUNING_MODE) {
+      turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle)); // ! remove
+
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
       SmartDashboard.putNumber("TU - actual angle", actualAngle);
       SmartDashboard.putNumber("TU - target angle", targetAngle);
