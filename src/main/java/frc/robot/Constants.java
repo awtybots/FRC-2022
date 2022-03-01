@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.util.math.Convert;
 import frc.robot.util.math.Vector2;
 import java.util.HashMap;
 
@@ -32,6 +33,8 @@ public final class Constants {
   public static final class Shooter {
     public static final int kFlywheelMotor = 10;
     public static final double kFlywheelRatio = 1.0;
+    public static final double kLaunchAngle = 20.0; // TODO verify - degrees
+    public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
   }
 
   public static final class Field {
@@ -56,7 +59,6 @@ public final class Constants {
     public static final LimelightMountDirection kMountingDirection =
         LimelightMountDirection.kLandscape;
 
-    // ! TODO create limelight pipelines on the limelight dashboard
     public static final int kPipelineDriving = 0;
     public static final int kPipelineShooting = 1;
 

@@ -51,7 +51,7 @@ public class ShooterSubsystem extends SubsystemBase {
     actualRpm = getRpm();
 
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putBoolean("SH - at goal", isRpmAtTarget());
+      SmartDashboard.putBoolean("SH - at goal", isAtTarget());
       SmartDashboard.putNumber("SH - actual rpm", actualRpm);
       SmartDashboard.putNumber("SH - goal rpm", targetRpm);
     }
@@ -79,7 +79,7 @@ public class ShooterSubsystem extends SubsystemBase {
     flywheel.set(ControlMode.PercentOutput, 0);
   }
 
-  public boolean isRpmAtTarget() {
+  public boolean isAtTarget() {
     return Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
   }
 

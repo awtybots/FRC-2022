@@ -24,7 +24,7 @@ public class ShootRpm extends CommandBase {
 
   @Override
   public void execute() {
-    if (shooterSubsystem.isRpmAtTarget()) {
+    if (shooterSubsystem.isAtTarget()) {
       towerSubsystem.feedShooter();
     }
   }

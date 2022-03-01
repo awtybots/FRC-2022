@@ -102,9 +102,15 @@ public class TurretSubsystem extends SubsystemBase {
     return Math.abs(actualAngle - targetAngle) < kMaxAcceptableAngleError;
   }
 
+  /** this is only for use in the subsystem once per frame to prevent CAN overloading */
   private double getAngle() {
     return Convert.encoderPosToAngle(
         motor.getSelectedSensorPosition(), kGearRatio, Encoder.VersaPlanetaryIntegrated);
+  }
+
+  /** public accessor method */
+  public double getActualAngle() {
+    return actualAngle;
   }
 
   /** positive is clockwise (-1 to 1) */

@@ -1,6 +1,5 @@
 package frc.robot.util.math;
 
-/** This is for at home testing only for programmers, do not use at competition */
 public class ProjectileMotionSolver {
   private static final double g = 9.81; // acceleration due to gravity (m/s^2)
   private static final double rho = 1.225; // density of air (kg/m^3)
@@ -105,7 +104,7 @@ public class ProjectileMotionSolver {
   }
 
   /**
-   * Get the optimal launch velocity and turret offset angle for a moving shot. ALl units are in
+   * Get the optimal launch velocity and turret offset angle for a moving shot. All units are in
    * meters.
    *
    * @param goalPosition A Vector2 representing the goal's relative position from the launching
@@ -113,8 +112,8 @@ public class ProjectileMotionSolver {
    *     height of the goal.
    * @param robotVelocity A Vector2 of the robot's velocity, where the x term is in units parallel
    *     to the goal direction, and the y term is in units perpendicular to the goal direction.
-   * @return A Vector2 where x is the launch velocity and y is the turret offset angle. NOTE: launch
-   *     velocity may be NaN.
+   * @return A Vector2 where x is the launch velocity and y is the turret offset angle. NOTE: may be
+   *     null
    */
   public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalPosition, Vector2 robotVelocity) {
     return null; // TODO solve launch velocities for nonstationary conditions
