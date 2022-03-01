@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import frc.robot.commands.auton.sequences.AutonSequenceCommand;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
@@ -32,7 +33,8 @@ public class RobotContainer {
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
 
-  private final SendableChooser<Command> autonChooser = new SendableChooser<Command>();
+  private final SendableChooser<AutonSequenceCommand> autonChooser =
+      new SendableChooser<AutonSequenceCommand>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -80,6 +82,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getSelected();
+    AutonSequenceCommand autonCommand = autonChooser.getSelected();
+    drivetrainSubsystem.initOdometry(autonCommand.getInitialPose());
+    return autonCommand;
   }
 }
