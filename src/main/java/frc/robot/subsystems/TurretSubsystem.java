@@ -63,6 +63,10 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     actualAngle = getAngle();
 
+    if(actualAngle < kAngleMin - kMaxAcceptableAngleError || actualAngle > kAngleMax + kMaxAcceptableAngleError) {
+      stop(); // ? maybe remove for competition
+    }
+
     if (Constants.TUNING_MODE) {
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
       SmartDashboard.putNumber("TU - actual angle", actualAngle);
