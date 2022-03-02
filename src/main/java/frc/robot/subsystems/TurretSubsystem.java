@@ -38,7 +38,7 @@ public class TurretSubsystem extends SubsystemBase {
   private double targetAngle = actualAngle;
 
   public TurretSubsystem() {
-    motor = new WPI_TalonSRX(Turret.kMotor);
+    motor = new WPI_TalonSRX(Turret.kMotorCanId);
     configMotors();
 
     if (Constants.TUNING_MODE) {

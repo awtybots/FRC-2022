@@ -3,23 +3,34 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorSensors;
 import frc.robot.Constants.Field;
+import frc.robot.Constants.Tower;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
-  private final ColorSensor lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, "lower");
-  private final ColorSensor upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, "upper");
+
+  private final PowerDistribution pdp; // ? uses PDP current instead of color for lower ball
+
+  private final ColorSensor lowerSensor;
+  private final ColorSensor upperSensor;
 
   private Alliance lowerBall = Alliance.Invalid;
   private Alliance upperBall = Alliance.Invalid;
+
+  public ColorSensorsSubsystem() {
+    pdp = new PowerDistribution();
+
+    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, "lower");
+    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, "upper");
+  }
 
   public boolean isLowerBallPresent() {
     return lowerBall != Alliance.Invalid;
@@ -41,6 +52,15 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   public void periodic() {
     lowerBall = lowerSensor.getDetectedBall();
     upperBall = upperSensor.getDetectedBall();
+
+    double lowerTowerCurrent = pdp.getCurrent(Tower.kLowerMotorChannel);
+    if (lowerTowerCurrent < TowerSubsystem.kLowerCurrentLimit) {
+      lowerBall = Alliance.Invalid;
+    }
+
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putNumber("TW - lower current", lowerTowerCurrent);
+    }
 
     SmartDashboard.putString("TW - lower ball", lowerBall.toString());
     SmartDashboard.putString("TW - upper ball", upperBall.toString());
@@ -80,7 +100,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
       }
 
-      if(match.confidence > minimumConfidence) {
+      if (match.confidence > minimumConfidence) {
         for (Alliance alliance : Field.kBallColors.keySet()) {
           if (match.color == Field.kBallColors.get(alliance)) {
             return alliance;
@@ -90,7 +110,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
       return Alliance.Invalid;
     }
-    
+
     private String colorToString(Color c) {
       return String.format("rgb(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
     }

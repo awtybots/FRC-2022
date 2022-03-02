@@ -15,26 +15,41 @@ public final class Constants {
   public static final boolean TUNING_MODE = true; // * TODO disable debug mode for competition
 
   public static final class Drivetrain {
-    public static final int kRightFront = 0;
-    public static final int kRightBack = 1;
-    public static final int kLeftFront = 2;
-    public static final int kLeftBack = 3;
+    public static final int kRightFrontCanId = 0;
+    public static final int kRightBackCanId = 1;
+    public static final int kLeftFrontCanId = 2;
+    public static final int kLeftBackCanId = 3;
   }
 
   public static final class Tower {
-    public static final int kUpperMotor = 7;
-    public static final int kLowerMotor = 5;
+    public static final int kUpperMotorCanId = 7;
+    public static final int kLowerMotorCanId = 5;
+
+    public static final int kLowerMotorChannel = 16;
   }
 
   public static final class Turret {
-    public static final int kMotor = 9;
+    public static final int kMotorCanId = 9;
   }
 
   public static final class Shooter {
-    public static final int kFlywheelMotor = 10;
+    public static final int kFlywheelMotorCanId = 10;
+
     public static final double kFlywheelRatio = 1.0;
     public static final double kLaunchAngle = 20.0; // TODO verify - degrees
     public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
+  }
+
+  public static final class Intake {
+    public static final int kMotorCanId = 8;
+
+    public static final int kSolenoidUp = 0;
+    public static final int kSolenoidDown = 15;
+  }
+
+  public static final class Climber {
+    public static final int kLeftMotorCanId = 11;
+    public static final int kRightMotorCanId = 12; // TODO
   }
 
   public static final class Field {
@@ -71,16 +86,5 @@ public final class Constants {
   public static final class ColorSensors {
     public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
     public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
-  }
-
-  public static final class Intake {
-    public static final int kMotor = 8;
-    public static final int kSolenoidUp = 0;
-    public static final int kSolenoidDown = 15;
-  }
-
-  public static final class Climber {
-    public static final int kLeftMotor = 11;
-    public static final int kRightMotor = 12; // TODO
   }
 }

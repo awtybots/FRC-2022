@@ -33,6 +33,10 @@ public class IntakeAndIngest extends CommandBase {
   public void execute() {
     if (colorSensorsSubsystem.isUpperBallPresent()) {
       towerSubsystem.stopUpper();
+
+      if (colorSensorsSubsystem.isLowerBallPresent()) {
+        cancel();
+      }
     }
   }
 

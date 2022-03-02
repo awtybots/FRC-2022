@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private double actualRpm = 0.0;
 
   public ShooterSubsystem() {
-    flywheel = new WPI_TalonFX(Shooter.kFlywheelMotor);
+    flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
     configMotors();
   }
 

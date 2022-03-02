@@ -39,8 +39,8 @@ public class ClimbSubsystem extends SubsystemBase {
   private double actualPosition = 0.0;
 
   public ClimbSubsystem() {
-    leftMotor = new WPI_TalonFX(Climber.kLeftMotor);
-    rightMotor = new WPI_TalonFX(Climber.kRightMotor);
+    leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
+    rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
     motors = new WPI_TalonFX[] {leftMotor, rightMotor};
 
     configMotors();

@@ -22,7 +22,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public IntakeSubsystem() {
     pistons =
         new DoubleSolenoid(PneumaticsModuleType.REVPH, Intake.kSolenoidDown, Intake.kSolenoidUp);
-    motor = new WPI_TalonSRX(Intake.kMotor);
+    motor = new WPI_TalonSRX(Intake.kMotorCanId);
     configMotors();
 
     stop();

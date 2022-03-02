@@ -39,10 +39,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final AHRS navX = new AHRS(Port.kMXP);
 
   public DrivetrainSubsystem() {
-    leftFront = new WPI_TalonFX(Drivetrain.kLeftFront);
-    leftBack = new WPI_TalonFX(Drivetrain.kLeftBack);
-    rightFront = new WPI_TalonFX(Drivetrain.kRightFront);
-    rightBack = new WPI_TalonFX(Drivetrain.kRightBack);
+    leftFront = new WPI_TalonFX(Drivetrain.kLeftFrontCanId);
+    leftBack = new WPI_TalonFX(Drivetrain.kLeftBackCanId);
+    rightFront = new WPI_TalonFX(Drivetrain.kRightFrontCanId);
+    rightBack = new WPI_TalonFX(Drivetrain.kRightBackCanId);
 
     leftMotors = new WPI_TalonFX[] {leftFront, leftBack};
     rightMotors = new WPI_TalonFX[] {rightFront, rightBack};

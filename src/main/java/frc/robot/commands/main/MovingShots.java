@@ -63,7 +63,7 @@ public class MovingShots extends CommandBase {
     limelightSubsystem.shootingMode();
   }
 
-  private void executeShoot() {
+  private void executeShoot(boolean idling) {
     if (!limelightSubsystem.hasVisibleTarget()) {
       if (turretSubsystem.isAtTarget()) {
         turretSubsystem.turnBy(5.0); // seeking
@@ -91,7 +91,10 @@ public class MovingShots extends CommandBase {
     double launchRpm = launchVelocity / (Shooter.kFlywheelDiameter * Math.PI) * 60.0;
 
     turretSubsystem.turnBy(visionTargetXOffset - horizontalLaunchAngle);
-    shooterSubsystem.shootRpm(launchRpm);
+    if(idling)
+      shooterSubsystem.stop();
+    else
+      shooterSubsystem.shootRpm(launchRpm);
   }
 
   private void executeSpit() {
@@ -103,7 +106,7 @@ public class MovingShots extends CommandBase {
   public void execute() {
     if (colorSensorsSubsystem.isUpperBallPresent()) {
       if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot();
+        executeShoot(false);
       } else {
         executeSpit();
       }
@@ -112,8 +115,13 @@ public class MovingShots extends CommandBase {
         towerSubsystem.feedShooter();
       } else {
         towerSubsystem.stopUpper();
+
+        if(colorSensorsSubsystem.isLowerBallPresent()) {
+          towerSubsystem.stop();
+        }
       }
     } else {
+      executeShoot(true);
       towerSubsystem.intake();
     }
   }

@@ -14,13 +14,16 @@ public class TowerSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
-  private final double kSpeedLower = 0.75; // * FIXME determine correct lower tower speed
-  private final double kIntakingSpeedUpper = 0.3; // * FIXME determine correct upper tower speed
-  private final double kShootingSpeedUpper = 0.9; // * FIXME determine correct upper tower speed
+  private static final double kSpeedLower = 0.75; // * FIXME determine correct lower tower speed
+  private static final double kIntakingSpeedUpper = 0.3;
+  private static final double kShootingSpeedUpper =
+      0.9; // * FIXME determine correct upper tower speed
+
+  public static final double kLowerCurrentLimit = 10.0 * kSpeedLower; // ! FIXME (amps)
 
   public TowerSubsystem() {
-    upperMotor = new WPI_TalonSRX(Tower.kUpperMotor);
-    lowerMotor = new WPI_TalonSRX(Tower.kLowerMotor);
+    upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
+    lowerMotor = new WPI_TalonSRX(Tower.kLowerMotorCanId);
 
     configMotors();
 
@@ -35,6 +38,7 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.setInverted(false);
 
     upperMotor.setNeutralMode(NeutralMode.Brake);
+    lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
   public void intake() {
