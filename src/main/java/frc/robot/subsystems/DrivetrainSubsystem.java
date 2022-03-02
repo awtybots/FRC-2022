@@ -24,7 +24,7 @@ import frc.robot.util.math.Convert.Encoder;
 
 public class DrivetrainSubsystem extends SubsystemBase {
 
-  private final double kGearRatio = 1.0; // ! TODO
+  private final double kGearRatio = 8.0 / 36.0 * 18.0 / 36.0;
   private final double kWheelDiameter = Convert.inchesToMeters(6.0);
 
   private final WPI_TalonFX leftFront, leftBack, rightFront, rightBack;
@@ -68,6 +68,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private void configMotors() {
     for (WPI_TalonFX motor : allMotors) {
+      motor.configFactoryDefault();
+
       motor.configOpenloopRamp(0.1);
       motor.configVoltageCompSaturation(12.0);
       motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);

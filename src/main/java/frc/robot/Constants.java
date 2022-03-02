@@ -45,9 +45,9 @@ public final class Constants {
     public static final double kBallMass = 0.270; // kg
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
-    static { // ! FIXME set correct color for blue and red ball
-      kBallColors.put(Alliance.Blue, new Color(0.0, 0.0, 1.0));
-      kBallColors.put(Alliance.Red, new Color(1.0, 0.0, 0.0));
+    static {
+      kBallColors.put(Alliance.Blue, new Color(0.15, 0.41, 0.44));
+      kBallColors.put(Alliance.Red, new Color(0.47, 0.37, 0.15));
     }
   }
 
@@ -69,7 +69,6 @@ public final class Constants {
   }
 
   public static final class ColorSensors {
-    // !!! TODO color sensor lower dont want to turn on, please fix
     public static final I2C.Port kUpperSensorPort = I2C.Port.kOnboard;
     public static final I2C.Port kLowerSensorPort = I2C.Port.kMXP;
   }
@@ -81,7 +80,7 @@ public final class Constants {
   }
 
   public static final class Climber {
-    public static final int kLeftMotor = 18;
-    public static final int kRightMotor = 19; // TODO
+    public static final int kLeftMotor = 11;
+    public static final int kRightMotor = 12; // TODO
   }
 }

@@ -15,7 +15,7 @@ public class TowerSubsystem extends SubsystemBase {
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
   private final double kSpeedLower = 0.75; // * FIXME determine correct lower tower speed
-  private final double kIntakingSpeedUpper = 0.75; // * FIXME determine correct upper tower speed
+  private final double kIntakingSpeedUpper = 0.3; // * FIXME determine correct upper tower speed
   private final double kShootingSpeedUpper = 0.9; // * FIXME determine correct upper tower speed
 
   public TowerSubsystem() {
@@ -28,6 +28,9 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
+    upperMotor.configFactoryDefault();
+    lowerMotor.configFactoryDefault();
+
     upperMotor.setInverted(false);
     lowerMotor.setInverted(false);
 

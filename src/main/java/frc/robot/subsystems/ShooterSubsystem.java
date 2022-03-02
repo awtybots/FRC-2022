@@ -36,6 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
+    flywheel.configFactoryDefault();
+
     flywheel.configVoltageCompSaturation(12.0);
     flywheel.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 

@@ -47,6 +47,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
+    motor.configFactoryDefault();
+
     motor.configVoltageCompSaturation(12.0);
     motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
 

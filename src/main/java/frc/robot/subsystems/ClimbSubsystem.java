@@ -31,7 +31,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private final double kClimbDistance = Convert.inchesToMeters(25.0); // TODO correct values
   private final double kWinchDiameter = Convert.inchesToMeters(1.5); // TODO
-  private final double kGearRatio = 1.0; // TODO
+  private final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0; // TODO
 
   private final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
 
@@ -84,6 +84,9 @@ public class ClimbSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
+    leftMotor.configFactoryDefault();
+    rightMotor.configFactoryDefault();
+
     rightMotor.setInverted(TalonFXInvertType.Clockwise);
 
     for (WPI_TalonFX motor : motors) {

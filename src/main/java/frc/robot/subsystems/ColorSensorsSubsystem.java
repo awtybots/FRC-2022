@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
@@ -42,12 +43,11 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     upperBall = upperSensor.getDetectedBall();
 
     SmartDashboard.putString("TW - lower ball", lowerBall.toString());
-    SmartDashboard.putString("TW - upper ball", upperSensor.toString());
+    SmartDashboard.putString("TW - upper ball", upperBall.toString());
   }
 
   private class ColorSensor {
-    // FIXME set correct confidence threshold for color sensors
-    private final double minimumConfidence = 0.8;
+    private final double minimumConfidence = 0.87;
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch;
@@ -71,22 +71,28 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       Color detectedColor = sensor.getColor();
       ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
-      // TODO use proximity value from sensor for better detection accuracy
+      // ? use proximity value from sensor for better detection accuracy
       double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
 
       if (Constants.TUNING_MODE) {
-        SmartDashboard.putString("TW - " + id + " raw color", detectedColor.toString());
+        SmartDashboard.putString("TW - " + id + " color", colorToString(detectedColor));
         SmartDashboard.putNumber("TW - " + id + " confidence", match.confidence);
         SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
       }
 
-      for (Alliance alliance : Field.kBallColors.keySet()) {
-        if (match.color == Field.kBallColors.get(alliance)) {
-          return alliance;
+      if(match.confidence > minimumConfidence) {
+        for (Alliance alliance : Field.kBallColors.keySet()) {
+          if (match.color == Field.kBallColors.get(alliance)) {
+            return alliance;
+          }
         }
       }
 
       return Alliance.Invalid;
+    }
+    
+    private String colorToString(Color c) {
+      return String.format("rgb(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
     }
   }
 }

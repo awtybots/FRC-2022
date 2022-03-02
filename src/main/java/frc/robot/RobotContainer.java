@@ -60,7 +60,7 @@ public class RobotContainer {
     // driver.bumperRight.whenHeld(new Intake(intakeSubsystem, towerSubsystem,
     // colorSensorsSubsystem));
     driver.bumperRight.whenHeld(
-        new IntakeAndShoot(0.4, intakeSubsystem, towerSubsystem, shooterSubsystem));
+        new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
 
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
