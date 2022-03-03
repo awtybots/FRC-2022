@@ -13,7 +13,7 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class Spit extends SequentialCommandGroup {
 
-  public static final double kRpm = 1000.0;
+  public static final double kRpm = 500.0;
   public static final double kDuration = 3.0;
 
   public Spit(

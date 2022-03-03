@@ -3,6 +3,7 @@ package frc.robot.commands.main;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Shooter;
+import frc.robot.commands.backup.IdleShooter;
 import frc.robot.commands.backup.Spit;
 import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -63,11 +64,17 @@ public class MovingShots extends CommandBase {
     limelightSubsystem.shootingMode();
   }
 
+  private void idle() {
+    shooterSubsystem.shootRpm(IdleShooter.kIdleRpm);
+    // shooterSubsystem.stop();
+  }
+
   private void executeShoot(boolean idling) {
     if (!limelightSubsystem.hasVisibleTarget()) {
       if (turretSubsystem.isAtTarget()) {
         turretSubsystem.turnBy(5.0); // seeking
       }
+      idle();
       return;
     }
 
@@ -81,7 +88,7 @@ public class MovingShots extends CommandBase {
     Vector2 optimalLaunchVelocity =
         projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
     if (optimalLaunchVelocity == null) {
-      // ?
+      idle();
       return;
     }
 
@@ -91,18 +98,18 @@ public class MovingShots extends CommandBase {
     double launchRpm = launchVelocity / (Shooter.kFlywheelDiameter * Math.PI) * 60.0;
 
     turretSubsystem.turnBy(visionTargetXOffset - horizontalLaunchAngle);
-    if(idling)
-      shooterSubsystem.stop();
-    else
-      shooterSubsystem.shootRpm(launchRpm);
+    shooterSubsystem.shootRpm(launchRpm);
+
+    // if (idling) idle();
+    // else shooterSubsystem.shootRpm(launchRpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.turnTo(180.0);
+    turretSubsystem.turnTo(180.0); // ? any better idea?
     shooterSubsystem.shootRpm(Spit.kRpm);
   }
 
-  @Override // TODO make sure intake can run at the same time
+  @Override
   public void execute() {
     if (colorSensorsSubsystem.isUpperBallPresent()) {
       if (colorSensorsSubsystem.isUpperBallOurs()) {
@@ -116,7 +123,7 @@ public class MovingShots extends CommandBase {
       } else {
         towerSubsystem.stopUpper();
 
-        if(colorSensorsSubsystem.isLowerBallPresent()) {
+        if (colorSensorsSubsystem.isLowerBallPresent()) {
           towerSubsystem.stop();
         }
       }

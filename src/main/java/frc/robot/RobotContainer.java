@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
-import frc.robot.commands.auton.sequences.AutonSequenceCommand;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
@@ -33,8 +31,7 @@ public class RobotContainer {
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
 
-  private final SendableChooser<AutonSequenceCommand> autonChooser =
-      new SendableChooser<AutonSequenceCommand>();
+  private final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -53,6 +50,15 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // === AUTO ===
+    // shooterSubsystem.setDefaultCommand(
+    //     new MovingShots(
+    //         towerSubsystem,
+    //         shooterSubsystem,
+    //         turretSubsystem,
+    //         drivetrainSubsystem,
+    //         colorSensorsSubsystem,
+    //         limelightSubsystem));
+    // shooterSubsystem.setDefaultCommand(new IdleShooter(shooterSubsystem));
     // turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
 
     // === DRIVER ===
@@ -66,24 +72,15 @@ public class RobotContainer {
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem)); // TODO temp
 
-    operator.buttonA.whenHeld(
-        new IntakeAndShoot(1000, intakeSubsystem, towerSubsystem, shooterSubsystem)); // TODO temp
-    operator.buttonB.whenHeld(
-        new IntakeAndShoot(1500, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(
-        new IntakeAndShoot(2300, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(
-        new IntakeAndShoot(2400, intakeSubsystem, towerSubsystem, shooterSubsystem));
+    operator.buttonA.whenHeld(new ShootRpmOrSpit(1000, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonB.whenHeld(new ShootRpmOrSpit(1500, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonX.whenHeld(new ShootRpmOrSpit(2300, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonY.whenHeld(new ShootRpmOrSpit(3000, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
-    operator.bumperLeft.whenHeld(
-        new StartEndCommand(towerSubsystem::reverseBoth, towerSubsystem::stop, towerSubsystem));
-    // operator.bumperRight.whenHeld(new Shoot(towerSubsystem, shooterSubsystem, turretSubsystem,
-    // colorSensorsSubsystem, limelightSubsystem));
+    operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
   }
 
   public Command getAutonomousCommand() {
-    AutonSequenceCommand autonCommand = autonChooser.getSelected();
-    drivetrainSubsystem.initOdometry(autonCommand.getInitialPose());
-    return autonCommand;
+    return autonChooser.getSelected();
   }
 }

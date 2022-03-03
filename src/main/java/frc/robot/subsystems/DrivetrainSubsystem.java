@@ -12,6 +12,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -24,8 +25,14 @@ import frc.robot.util.math.Convert.Encoder;
 
 public class DrivetrainSubsystem extends SubsystemBase {
 
-  private final double kGearRatio = 8.0 / 36.0 * 18.0 / 36.0;
-  private final double kWheelDiameter = Convert.inchesToMeters(6.0);
+  private static final double kGearRatio = 8.0 / 36.0 * 18.0 / 36.0;
+  private static final double kWheelDiameter = Convert.inchesToMeters(6.0);
+  public static final double kTrackWidth = 0.0; // ! TODO sysId
+
+  public static final double kS = 0.0; // ! TODO sysId
+  public static final double kV = 0.0;
+  public static final double kA = 0.0;
+  public static final double kP = 0.0;
 
   private final WPI_TalonFX leftFront, leftBack, rightFront, rightBack;
   private final WPI_TalonFX[] leftMotors, rightMotors;
@@ -59,8 +66,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void initOdometry(Pose2d initialPose) {
-    odometry.resetPosition(initialPose, new Rotation2d(Math.toRadians(navX.getAngle())));
+    odometry.resetPosition(initialPose, new Rotation2d(0.0));
 
+    navX.reset();
     for (WPI_TalonFX motor : allMotors) {
       motor.setSelectedSensorPosition(0.0);
     }
@@ -85,7 +93,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
     double leftDistance = getAverageDistance(leftMotors); // meters
     double rightDistance = getAverageDistance(rightMotors); // meters
-    double gyroAngle = navX.getAngle(); // ! TODO
+    double gyroAngle = -navX.getAngle(); // degrees
 
     odometry.update(new Rotation2d(Math.toRadians(gyroAngle)), leftDistance, rightDistance);
 
@@ -93,17 +101,38 @@ public class DrivetrainSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("DT - left distance", leftDistance);
       SmartDashboard.putNumber("DT - right distance", rightDistance);
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
-
-      SmartDashboard.putNumber("DT - x", navX.getDisplacementX());
-      SmartDashboard.putNumber("DT - y", navX.getDisplacementY());
-      SmartDashboard.putNumber("DT - z", navX.getDisplacementZ());
     }
   }
 
+  /** for ramsete controller */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(
+        getAverageSpeed(leftMotors), getAverageSpeed(rightMotors));
+  }
+
+  /** for ramsete controller */
+  public double getHeading() {
+    return navX.getYaw();
+  }
+
+  /** for ramsete controller */
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+
+  /** for ramsete controller */
+  public void driveVolts(double leftVolts, double rightVolts) {
+    for (WPI_TalonFX motor : leftMotors) motor.setVoltage(leftVolts);
+    for (WPI_TalonFX motor : rightMotors) motor.setVoltage(rightVolts);
+    drivetrain.feed();
+  }
+
+  /** for moving shots */
   public double getSpeed() {
     return getAverageSpeed(allMotors); // meters per second
   }
 
+  /** meters per second */
   private double getAverageSpeed(WPI_TalonFX[] motors) {
     double sum = 0.0;
     for (WPI_TalonFX motor : motors) {
@@ -117,6 +146,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     return sum / motors.length;
   }
 
+  /** meters */
   private double getAverageDistance(WPI_TalonFX[] motors) {
     double sum = 0.0;
     for (WPI_TalonFX motor : motors) {

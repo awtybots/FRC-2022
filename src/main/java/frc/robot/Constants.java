@@ -36,7 +36,7 @@ public final class Constants {
     public static final int kFlywheelMotorCanId = 10;
 
     public static final double kFlywheelRatio = 1.0;
-    public static final double kLaunchAngle = 20.0; // TODO verify - degrees
+    public static final double kLaunchAngle = 20.0; // TODO verify with video - degrees
     public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
   }
 
