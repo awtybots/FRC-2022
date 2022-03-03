@@ -29,9 +29,9 @@ public class ClimbSubsystem extends SubsystemBase {
   private final double kMaxAccel = Convert.inchesToMeters(15.0); // TODO
   private final double kMaxPercentOutput = 0.5;
 
-  private final double kClimbDistance = Convert.inchesToMeters(25.0); // TODO correct values
-  private final double kWinchDiameter = Convert.inchesToMeters(1.5); // TODO
-  private final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0; // TODO
+  private final double kClimbDistance = Convert.inchesToMeters(25.0);
+  private final double kWinchDiameter = Convert.inchesToMeters(1.0); // * verify
+  private final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0;
 
   private final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
 
@@ -58,7 +58,7 @@ public class ClimbSubsystem extends SubsystemBase {
       // moveClimb(
       //     Convert.inchesToMeters(
       //         SmartDashboard.getNumber(
-      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove
+      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove after tuning
 
       SmartDashboard.putBoolean("CL - at goal", isAtTarget());
       SmartDashboard.putNumber("CL - actual pos", Convert.metersToInches(actualPosition));
