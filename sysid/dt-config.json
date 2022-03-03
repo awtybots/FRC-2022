@@ -1,0 +1,42 @@
+{
+  "counts per rotation": 2048.0,
+  "encoder type": "Built-in",
+  "encoding": false,
+  "gearing denominator": 9.0,
+  "gearing numerator": 1.0,
+  "gyro": "NavX",
+  "gyro ctor": "SerialPort.kUSB",
+  "is drivetrain": true,
+  "motor controllers": [
+    "TalonFX",
+    "TalonFX"
+  ],
+  "number of samples per average": 8,
+  "primary encoder inverted": false,
+  "primary encoder ports": [
+    0,
+    1
+  ],
+  "primary motor ports": [
+    2,
+    3
+  ],
+  "primary motors inverted": [
+    false,
+    true
+  ],
+  "secondary encoder inverted": false,
+  "secondary encoder ports": [
+    2,
+    3
+  ],
+  "secondary motor ports": [
+    0,
+    1
+  ],
+  "secondary motors inverted": [
+    true,
+    false
+  ],
+  "velocity measurement period": 100
+}
