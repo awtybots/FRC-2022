@@ -8,5 +8,4 @@ public class ReverseTower extends StartEndCommand {
   public ReverseTower(TowerSubsystem towerSubsystem) {
     super(towerSubsystem::reverseBoth, towerSubsystem::stop, towerSubsystem);
   }
-  
 }

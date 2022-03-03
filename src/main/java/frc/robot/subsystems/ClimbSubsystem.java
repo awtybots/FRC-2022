@@ -58,7 +58,8 @@ public class ClimbSubsystem extends SubsystemBase {
       // moveClimb(
       //     Convert.inchesToMeters(
       //         SmartDashboard.getNumber(
-      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove after tuning
+      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove
+      // after tuning
 
       SmartDashboard.putBoolean("CL - at goal", isAtTarget());
       SmartDashboard.putNumber("CL - actual pos", Convert.metersToInches(actualPosition));

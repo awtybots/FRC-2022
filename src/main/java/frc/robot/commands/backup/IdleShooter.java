@@ -22,5 +22,4 @@ public class IdleShooter extends CommandBase {
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
   }
-  
 }

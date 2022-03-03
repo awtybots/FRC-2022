@@ -16,7 +16,13 @@ public class ShootRpmOrSpit extends CommandBase {
 
   private final double rpm;
 
-  public ShootRpmOrSpit(double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem, TurretSubsystem turretSubsystem, LimelightSubsystem limelightSubsystem, ColorSensorsSubsystem colorSensorsSubsystem) {
+  public ShootRpmOrSpit(
+      double rpm,
+      TowerSubsystem towerSubsystem,
+      ShooterSubsystem shooterSubsystem,
+      TurretSubsystem turretSubsystem,
+      LimelightSubsystem limelightSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;

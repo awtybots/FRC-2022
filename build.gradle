@@ -89,11 +89,11 @@ wpi.java.configureTestTasks(test)
 
 gradle.startParameter.excludedTaskNames << "verifyGoogleJavaFormat"
 task format(type: com.github.sherter.googlejavaformatgradleplugin.GoogleJavaFormat) {
-  source 'src/main'
+  source 'src'
   include '**/*.java'
 }
 task verifyFormat(type: com.github.sherter.googlejavaformatgradleplugin.VerifyGoogleJavaFormat) {
-  source 'src/main'
+  source 'src'
   include '**/*.java'
 }
 build.dependsOn "format"

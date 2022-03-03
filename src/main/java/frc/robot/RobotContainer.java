@@ -72,10 +72,38 @@ public class RobotContainer {
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem)); // TODO temp
 
-    operator.buttonA.whenHeld(new ShootRpmOrSpit(1000, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    operator.buttonB.whenHeld(new ShootRpmOrSpit(1500, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    operator.buttonX.whenHeld(new ShootRpmOrSpit(2300, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    operator.buttonY.whenHeld(new ShootRpmOrSpit(3000, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonA.whenHeld(
+        new ShootRpmOrSpit(
+            1000,
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
+    operator.buttonB.whenHeld(
+        new ShootRpmOrSpit(
+            1500,
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
+    operator.buttonX.whenHeld(
+        new ShootRpmOrSpit(
+            2300,
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
+    operator.buttonY.whenHeld(
+        new ShootRpmOrSpit(
+            3000,
+            towerSubsystem,
+            shooterSubsystem,
+            turretSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
 
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
   }
