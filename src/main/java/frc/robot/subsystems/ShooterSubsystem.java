@@ -19,13 +19,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX flywheel;
 
-  private final double kGearRatio = 1.0;
+  private static final double kGearRatio = 1.0;
+  public static final double kLaunchAngle = 20.0; // TODO verify with video - degrees
+  public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
 
-  private final double kMaxFlywheelRpm = 6400; // TODO find correct max flywheel rpm
+  private static final double kMaxFlywheelRpm = 6400; // TODO find correct max flywheel rpm
+  public static final double kMaxBallVelocity = flywheelRpmToBallVelocity(kMaxFlywheelRpm);
   private final double kMaxAcceptableRpmError = 50.0; // TODO we can still maybe do better
 
-  private final double kP_Flywheel = 0.0; // TODO add P term
-  private final double kF_Flywheel = calculateKF(2150, 0.40);
+  private static final double kP_Flywheel = 0.0; // TODO add P term
+  private static final double kF_Flywheel = calculateKF(2150, 0.40);
 
   private double targetRpm = 0.0;
   private double actualRpm = 0.0;
@@ -33,6 +36,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
     configMotors();
+  }
+
+  public static double ballVelocityToFlywheelRpm(double ballVelocity) {
+    return ballVelocity / (kFlywheelDiameter * Math.PI) * 60.0;
+  }
+
+  public static double flywheelRpmToBallVelocity(double flywheelRpm) {
+    return flywheelRpm / 60.0 * (kFlywheelDiameter * Math.PI);
   }
 
   private void configMotors() {
@@ -95,22 +106,16 @@ public class ShooterSubsystem extends SubsystemBase {
    *   <li>Pass those values into this function to calculate the feedforward gain.
    * </ol>
    */
-  private double calculateKF(double rpmAtPercentOut, double percentOut) {
+  private static double calculateKF(double rpmAtPercentOut, double percentOut) {
     // see the following link for an explanation of the math below
     // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
-    double sensorVelAtPercentOut =
-        Shooter.kFlywheelRatio
-            * Convert.rpmToEncoderVel(rpmAtPercentOut, kGearRatio, Encoder.TalonFXIntegrated);
+    double sensorVelAtPercentOut = Convert.rpmToEncoderVel(rpmAtPercentOut, kGearRatio, Encoder.TalonFXIntegrated);
     return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 
-  private final double clampToBounds(double rpm) {
-    if (rpm > 0 && rpm <= kMaxFlywheelRpm) return rpm;
-    else if ((rpm <= 1E-2 && rpm >= 1E-2) || rpm < 0) return 0;
+  private static double clampToBounds(double rpm) {
+    if (rpm > 0.0 && rpm <= kMaxFlywheelRpm) return rpm;
     else if (rpm > kMaxFlywheelRpm) return kMaxFlywheelRpm;
-    else {
-      System.err.println(String.format("ERROR Clamping Flywheel RPM of %s", rpm));
-      return 0;
-    }
+    else return 0.0;
   }
 }

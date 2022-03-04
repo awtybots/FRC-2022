@@ -34,10 +34,6 @@ public final class Constants {
 
   public static final class Shooter {
     public static final int kFlywheelMotorCanId = 10;
-
-    public static final double kFlywheelRatio = 1.0;
-    public static final double kLaunchAngle = 20.0; // TODO verify with video - degrees
-    public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
   }
 
   public static final class Intake {
@@ -56,7 +52,7 @@ public final class Constants {
     public static final double kVisionTargetHeight = 2.605; // meters from ground
     public static final double kGoalHeight = 2.630; // meters from ground
 
-    public static final double kBallRadius = 0.120; // meters
+    public static final double kBallRadius = Convert.inchesToMeters(9.5) / 2.0; // meters
     public static final double kBallMass = 0.270; // kg
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
@@ -69,7 +65,7 @@ public final class Constants {
   public static final class Limelight {
     public static final double kMountingAngle = 40.0; // degrees up from horizontal
     public static final double kMountingHeight = 0.991; // meters from ground
-    public static final Vector2 kShooterOffset = new Vector2(0.152, -0.152);
+    public static final Vector2 kShooterOffset = new Vector2(0.152, -0.152); // TODO fix
 
     public static final LimelightMountDirection kMountingDirection =
         LimelightMountDirection.kLandscape;

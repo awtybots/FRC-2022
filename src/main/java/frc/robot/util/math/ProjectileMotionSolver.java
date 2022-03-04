@@ -67,7 +67,7 @@ public class ProjectileMotionSolver {
 
   private Vector2 getDragForce(Vector2 velocity) {
     double v = velocity.getMagnitude();
-    double dragForceMagnitude = projectileDragFactor * v * v;
+    double dragForceMagnitude = projectileDragFactor * v;// * v;
     double dragForceAngle = velocity.getAngle() + 180.0;
     return Vector2.fromPolar(dragForceMagnitude, dragForceAngle);
   }
@@ -93,7 +93,7 @@ public class ProjectileMotionSolver {
     for (int i = 0; i < simulationIterations; i++) {
       Vector2 middleLaunchVelocity = minLaunchVelocity.plus(maxLaunchVelocity).scaled(0.5);
       double intersectY = runSingleSimulation(goalPosition.x, middleLaunchVelocity);
-      if (Double.isNaN(intersectY) || intersectY < goalPosition.y) {
+      if (intersectY < goalPosition.y) {
         minLaunchVelocity = middleLaunchVelocity;
       } else {
         maxLaunchVelocity = middleLaunchVelocity;
@@ -129,7 +129,7 @@ public class ProjectileMotionSolver {
     // System.out.println("p: " + position);
     // System.out.println("v: " + velocity);
 
-    while (position.x < goalX && velocity.x > 0 && time < 5.0) {
+    while (position.x < goalX && velocity.x > 0.001 && time < 5.0) {
       lastPosition = position.clone();
       position = position.plus(velocity.scaled(simulationStep));
 
@@ -147,7 +147,7 @@ public class ProjectileMotionSolver {
       // System.out.println("a: " + acceleration);
     }
 
-    double intersectY = Double.NaN;
+    double intersectY = Double.NEGATIVE_INFINITY;
     if (position.x >= goalX) {
       double alpha = (goalX - lastPosition.x) / (position.x - lastPosition.x);
       intersectY = (position.y - lastPosition.y) * alpha + lastPosition.y;

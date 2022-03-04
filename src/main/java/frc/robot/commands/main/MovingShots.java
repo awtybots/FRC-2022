@@ -2,7 +2,6 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Field;
-import frc.robot.Constants.Shooter;
 import frc.robot.commands.backup.IdleShooter;
 import frc.robot.commands.backup.Spit;
 import frc.robot.subsystems.ColorSensorsSubsystem;
@@ -56,7 +55,7 @@ public class MovingShots extends CommandBase {
             Field.kBallMass,
             Sphere.frontalArea(Field.kBallRadius),
             Sphere.dragCoefficient,
-            Shooter.kLaunchAngle);
+            ShooterSubsystem.kLaunchAngle);
   }
 
   @Override
@@ -95,7 +94,7 @@ public class MovingShots extends CommandBase {
     double launchVelocity = optimalLaunchVelocity.x; // meters per second
     double horizontalLaunchAngle = optimalLaunchVelocity.y; // degrees counterclockwise
 
-    double launchRpm = launchVelocity / (Shooter.kFlywheelDiameter * Math.PI) * 60.0;
+    double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelocity);
 
     turretSubsystem.turnBy(visionTargetXOffset - horizontalLaunchAngle);
     shooterSubsystem.shootRpm(launchRpm);

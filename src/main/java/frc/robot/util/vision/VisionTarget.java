@@ -19,7 +19,7 @@ public class VisionTarget {
   }
 
   /**
-   * Get the relative displacement vector from the camera to the goal. The x axis is horizontal
+   * Get the relative displacement vector from the mechanism to the goal. The x axis is horizontal
    * displacement and the y axis is vertical displacement. Values are in meters.
    *
    * @return The displacement vector, or null if no vision target is detected.

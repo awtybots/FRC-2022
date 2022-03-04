@@ -23,17 +23,17 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX[] motors;
 
-  private final double kP = 0.0;
-  private final double kD = 0.0;
-  private final double kMaxSpeed = Convert.inchesToMeters(15.0); // TODO tune
-  private final double kMaxAccel = Convert.inchesToMeters(15.0); // TODO
-  private final double kMaxPercentOutput = 0.5;
+  private static final double kClimbDistance = Convert.inchesToMeters(25.0);
+  private static final double kWinchDiameter = Convert.inchesToMeters(0.92); // TODO tune
+  private static final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0;
 
-  private final double kClimbDistance = Convert.inchesToMeters(25.0);
-  private final double kWinchDiameter = Convert.inchesToMeters(1.0); // * verify
-  private final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0;
+  private static final double kP = 0.0; // TODO tune
+  private static final double kF = calculateKF(Convert.inchesToMeters(5.0), 0.5); // TODO correct
+  private static final double kMaxSpeed = Convert.inchesToMeters(15.0);
+  private static final double kMaxAccel = Convert.inchesToMeters(15.0);
+  private static final double kMaxPercentOutput = 0.5;
 
-  private final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
+  private static final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
 
   private double targetPosition = 0.0;
   private double actualPosition = 0.0;
@@ -96,8 +96,13 @@ public class ClimbSubsystem extends SubsystemBase {
 
       motor.setNeutralMode(NeutralMode.Brake);
 
+      motor.configOpenloopRamp(1.0);
+      motor.configClosedloopRamp(1.0);
+      motor.configPeakOutputForward(kMaxPercentOutput);
+      motor.configPeakOutputReverse(-kMaxPercentOutput);
+
       motor.config_kP(0, kP);
-      motor.config_kD(0, kD);
+      motor.config_kF(0, kF);
       motor.configMotionCruiseVelocity(
           Convert.speedToEncoderVel(
               kMaxSpeed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated));
@@ -130,5 +135,11 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void stop() {
     for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  private static double calculateKF(double speed, double percentOut) {
+    // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
+    double sensorVelAtPercentOut = Convert.speedToEncoderVel(speed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated);
+    return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 }
