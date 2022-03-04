@@ -49,7 +49,7 @@ public final class Constants {
 
   public static final class Climber {
     public static final int kLeftMotorCanId = 11;
-    public static final int kRightMotorCanId = 12; // TODO
+    public static final int kRightMotorCanId = 12;
   }
 
   public static final class Field {

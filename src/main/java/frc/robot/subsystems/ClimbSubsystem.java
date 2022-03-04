@@ -23,15 +23,15 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private final WPI_TalonFX[] motors;
 
-  private final double kP = 0.0;
-  private final double kD = 0.0;
-  private final double kMaxSpeed = Convert.inchesToMeters(15.0); // TODO tune
-  private final double kMaxAccel = Convert.inchesToMeters(15.0); // TODO
+  private final double kP = 1.0;
+  private final double kD = 1.0;
+  private final double kMaxSpeed = Convert.inchesToMeters(30.0); // TODO tune
+  private final double kMaxAccel = Convert.inchesToMeters(30.0); // TODO
   private final double kMaxPercentOutput = 0.5;
 
-  private final double kClimbDistance = Convert.inchesToMeters(25.0);
-  private final double kWinchDiameter = Convert.inchesToMeters(1.0); // * verify
-  private final double kGearRatio = 1.0 / 10.0 / 10.0 * 34.0 / 44.0;
+  private final double kClimbDistance = Convert.inchesToMeters(23.0);
+  private final double kWinchDiameter = Convert.inchesToMeters(0.9);
+  private final double kGearRatio = 1.0 / 5.0 / 5.0 * 34.0 / 44.0;
 
   private final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
 
@@ -41,12 +41,14 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
     rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
-    motors = new WPI_TalonFX[] {leftMotor, rightMotor};
+    motors = new WPI_TalonFX[] {/**leftMotor, */ rightMotor}; // ! add back leftMotor
 
     configMotors();
 
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("CL - set target pos", actualPosition);
+      SmartDashboard.putNumber("CL - P", kP);
+      SmartDashboard.putNumber("CL - D", kP);
     }
   }
 
@@ -55,11 +57,19 @@ public class ClimbSubsystem extends SubsystemBase {
     actualPosition = getPosition();
 
     if (Constants.TUNING_MODE) {
-      // moveClimb(
-      //     Convert.inchesToMeters(
-      //         SmartDashboard.getNumber(
-      //             "CL - set target pos", Convert.metersToInches(targetPosition)))); // ! remove
-      // after tuning
+      for(WPI_TalonFX motor : motors) {
+        motor.config_kP(0, SmartDashboard.getNumber("CL - P", kP));
+        motor.config_kD(0, SmartDashboard.getNumber("CL - D", kD));
+      }
+
+      double goalPosition = Convert.inchesToMeters(
+              SmartDashboard.getNumber(
+                  "CL - set target pos", Convert.metersToInches(targetPosition)));
+      if(Math.abs(goalPosition - actualPosition) < kMaxAcceptablePositionError) {
+        stop();
+      } else {
+        moveClimb(goalPosition);
+      }
 
       SmartDashboard.putBoolean("CL - at goal", isAtTarget());
       SmartDashboard.putNumber("CL - actual pos", Convert.metersToInches(actualPosition));
@@ -88,7 +98,7 @@ public class ClimbSubsystem extends SubsystemBase {
     leftMotor.configFactoryDefault();
     rightMotor.configFactoryDefault();
 
-    rightMotor.setInverted(TalonFXInvertType.Clockwise);
+    leftMotor.setInverted(TalonFXInvertType.Clockwise);
 
     for (WPI_TalonFX motor : motors) {
       motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
