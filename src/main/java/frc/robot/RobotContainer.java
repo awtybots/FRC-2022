@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +20,9 @@ import frc.robot.util.Controller;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+  public static PowerDistribution pdp;
+
   private final Controller driver = new Controller(0);
   private final Controller operator = new Controller(1);
 
@@ -35,8 +39,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    initElectronics();
     addAutonomousChoices();
     configureButtonBindings();
+  }
+
+  private void initElectronics() {
+    pdp = new PowerDistribution();
   }
 
   private void addAutonomousChoices() {
