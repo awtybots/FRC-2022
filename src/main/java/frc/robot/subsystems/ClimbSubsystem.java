@@ -31,7 +31,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private static final double kF = calculateKF(Convert.inchesToMeters(5.0), 0.5); // TODO correct
   private static final double kMaxSpeed = Convert.inchesToMeters(15.0);
   private static final double kMaxAccel = Convert.inchesToMeters(15.0);
-  private static final double kMaxPercentOutput = 0.5;
+  private static final double kMaxPercentOutput = 0.75;
 
   private static final double kMaxAcceptablePositionError = Convert.inchesToMeters(0.5);
 
@@ -41,7 +41,7 @@ public class ClimbSubsystem extends SubsystemBase {
   public ClimbSubsystem() {
     leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
     rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
-    motors = new WPI_TalonFX[] {/**leftMotor, */ rightMotor}; // ! add back leftMotor
+    motors = new WPI_TalonFX[] {leftMotor, rightMotor}; // ! add back leftMotor
 
     configMotors();
 
