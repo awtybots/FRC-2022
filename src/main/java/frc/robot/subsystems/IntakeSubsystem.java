@@ -30,7 +30,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   private void configMotors() {
     motor.configFactoryDefault();
-    motor.setInverted(true);
   }
 
   public void start() {

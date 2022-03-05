@@ -21,7 +21,7 @@ import frc.robot.util.Controller;
  */
 public class RobotContainer {
 
-  public static PowerDistribution pdp;
+  public static PowerDistribution pdp = new PowerDistribution();
 
   private final Controller driver = new Controller(0);
   private final Controller operator = new Controller(1);
@@ -39,13 +39,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    initElectronics();
     addAutonomousChoices();
     configureButtonBindings();
-  }
-
-  private void initElectronics() {
-    pdp = new PowerDistribution();
   }
 
   private void addAutonomousChoices() {
