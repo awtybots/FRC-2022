@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.auton.sequences.FourBallAuton;
+import frc.robot.commands.auton.sequences.TwoBallAuton;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
@@ -44,10 +46,8 @@ public class RobotContainer {
   }
 
   private void addAutonomousChoices() {
-    // autonChooser.setDefaultOption("name", command);
-    // autonChooser.addOption("name", command);
-    // autonChooser.addOption("name", command);
-    // autonChooser.addOption("name", command);
+    autonChooser.setDefaultOption("Two Ball Auton", new TwoBallAuton(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem));
+    autonChooser.addOption("Four Ball Auton", new FourBallAuton(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem));
 
     SmartDashboard.putData(autonChooser);
   }
@@ -75,7 +75,7 @@ public class RobotContainer {
 
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
-    // climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
+    climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     operator.buttonStart.whenHeld(new ShootPercent(1.0, shooterSubsystem));
     operator.buttonA.whenHeld(new ShootRpm(1000, towerSubsystem, shooterSubsystem));
