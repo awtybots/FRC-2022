@@ -24,7 +24,7 @@ public class TurretSubsystem extends SubsystemBase {
   private final double kGearRatio = 1.0 / 10.8;
 
   private final double kP = 0.0;
-  private final double kD = 0.0;
+  private final double kF = 0.0;
   private final double kMaxDegPerSec = 10.0;
   private final double kMaxDegPerSecPerSec = 0.0;
 
@@ -43,6 +43,8 @@ public class TurretSubsystem extends SubsystemBase {
 
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("TU - set target angle", kAngleStart);
+      SmartDashboard.putNumber("TU - P", kP);
+      SmartDashboard.putNumber("TU - F", kF);
     }
   }
 
@@ -53,7 +55,7 @@ public class TurretSubsystem extends SubsystemBase {
     motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
 
     motor.config_kP(0, kP);
-    motor.config_kD(0, kD);
+    motor.config_kF(0, kF);
     motor.configMotionCruiseVelocity(
         Convert.angularVelToEncoderVel(
             kMaxDegPerSec, kGearRatio, Encoder.VersaPlanetaryIntegrated));
@@ -76,6 +78,9 @@ public class TurretSubsystem extends SubsystemBase {
 
     if (Constants.TUNING_MODE) {
       turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle)); // ! remove
+
+      motor.config_kP(0, SmartDashboard.getNumber("TU - P", kP));
+      motor.config_kF(0, SmartDashboard.getNumber("TU - F", kF));
 
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
       SmartDashboard.putNumber("TU - actual angle", actualAngle);
