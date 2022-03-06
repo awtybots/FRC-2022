@@ -2,21 +2,17 @@ package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TowerSubsystem;
 
 public class ShootPercent extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final double speed;
 
-  public ShootPercent(
-      double speed, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
-    this.towerSubsystem = towerSubsystem;
+  public ShootPercent(double speed, ShooterSubsystem shooterSubsystem) {
     this.shooterSubsystem = shooterSubsystem;
 
     this.speed = speed;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(shooterSubsystem);
   }
 
   @Override
@@ -30,6 +26,5 @@ public class ShootPercent extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
-    towerSubsystem.stop();
   }
 }

@@ -19,7 +19,7 @@ public class TowerSubsystem extends SubsystemBase {
   private static final double kShootingSpeedUpper =
       0.3; // * FIXME determine correct upper tower speed
 
-  public static final double kLowerCurrentLimit = 10.0 * kSpeedLower; // ! FIXME (amps)
+  public static final double kLowerCurrentLimit = 100.0 * kSpeedLower; // ! FIXME (amps)
 
   public TowerSubsystem() {
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);

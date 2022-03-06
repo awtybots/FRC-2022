@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,12 +36,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static final double kA = 0.0;
   public static final double kP = 0.0;
 
-  public static final DifferentialDriveKinematics kKinematics = new DifferentialDriveKinematics(kTrackWidth);
+  public static final DifferentialDriveKinematics kKinematics =
+      new DifferentialDriveKinematics(kTrackWidth);
   public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
   public static final double kTrajectoryMaxVelocity = 3.0; // m/s (TODO tune)
   public static final double kTrajectoryMaxAcceleration = 3.0; // m/s^2
   public static final double kMaxTrajectoryVoltage = 10.0;
-  private static final double kRamp = 0.25;//
+  private static final double kRamp = 0.25; //
 
   private final WPI_TalonFX leftFront, leftBack, rightFront, rightBack;
   private final WPI_TalonFX[] leftMotors, rightMotors;

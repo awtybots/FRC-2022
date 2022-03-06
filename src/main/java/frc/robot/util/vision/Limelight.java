@@ -2,6 +2,8 @@ package frc.robot.util.vision;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableType;
+import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
@@ -57,7 +59,12 @@ public class Limelight extends SubsystemBase {
   }
 
   private double getValue(TableEntry entry) {
-    return netTable.getEntry(entry.getter).getValue().getDouble();
+    NetworkTableValue v = netTable.getEntry(entry.getter).getValue();
+    if (v.getType() == NetworkTableType.kDouble) {
+      return v.getDouble();
+    } else {
+      return -1.0;
+    }
   }
 
   private boolean setValue(TableEntry entry, double value) {

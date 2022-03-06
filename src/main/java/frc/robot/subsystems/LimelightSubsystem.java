@@ -23,18 +23,19 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    Vector2 goalDisplacement = getGoalDisplacement();
-    double distance = -1.0;
+    // Vector2 goalDisplacement = getGoalDisplacement();
+    // double distance = -1.0;
 
-    if (goalDisplacement != null) {
-      distance = goalDisplacement.x;
-    }
+    // if (goalDisplacement != null) {
+    //   distance = goalDisplacement.x;
+    // }
 
-    SmartDashboard.putNumber("LL - distance", distance);
+    // SmartDashboard.putNumber("LL - distance", distance);
   }
 
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
+    SmartDashboard.putNumber("LL - distance", upperHub.getGoalDisplacement().x);
     return upperHub.getGoalDisplacement();
   }
 

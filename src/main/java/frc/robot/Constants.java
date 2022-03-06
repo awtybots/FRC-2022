@@ -39,8 +39,8 @@ public final class Constants {
   public static final class Intake {
     public static final int kMotorCanId = 8;
 
-    public static final int kSolenoidUp = 0;
-    public static final int kSolenoidDown = 15;
+    public static final int kSolenoidUp = 15;
+    public static final int kSolenoidDown = 0;
   }
 
   public static final class Climber {

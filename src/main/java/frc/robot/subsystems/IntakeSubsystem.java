@@ -37,6 +37,11 @@ public class IntakeSubsystem extends SubsystemBase {
     motor.set(ControlMode.PercentOutput, kMotorSpeed);
   }
 
+  public void startReversed() {
+    pistons.set(Value.kForward);
+    motor.set(ControlMode.PercentOutput, -kMotorSpeed);
+  }
+
   public void stop() {
     pistons.set(Value.kReverse);
     motor.set(ControlMode.PercentOutput, 0.0);

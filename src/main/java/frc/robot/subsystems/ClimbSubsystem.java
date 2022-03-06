@@ -147,9 +147,8 @@ public class ClimbSubsystem extends SubsystemBase {
     moveClimb(0.0);
   }
 
-  public void drive(double pctL, double pctR) {
-    leftMotor.set(ControlMode.PercentOutput, pctL * kMaxPercentOutput);
-    rightMotor.set(ControlMode.PercentOutput, pctR * kMaxPercentOutput);
+  public void drive(double pct) {
+    for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, pct * kMaxPercentOutput);
   }
 
   public void stop() {
