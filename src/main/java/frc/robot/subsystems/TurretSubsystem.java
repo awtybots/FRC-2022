@@ -17,9 +17,9 @@ import frc.robot.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private final double kAngleMin = -165.0;
-  private final double kAngleMax = 195.0;
-  private final double kAngleStart = 0.0; // TODO choose best start angle
+  private final double kAngleMin = -180.0;
+  private final double kAngleMax = 180.0;
+  private final double kAngleStart = 0.0;
 
   private final double kGearRatio = 1.0 / 10.8;
 
@@ -46,6 +46,13 @@ public class TurretSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("TU - P", kP);
       SmartDashboard.putNumber("TU - F", kF);
     }
+  }
+
+  public void initEncoder(double angle) {
+    motor.setSelectedSensorPosition(
+        Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    actualAngle = angle;
+    targetAngle = angle;
   }
 
   private void configMotors() {
