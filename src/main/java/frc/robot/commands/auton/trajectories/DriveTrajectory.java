@@ -2,8 +2,6 @@ package frc.robot.commands.auton.trajectories;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -18,9 +16,8 @@ public abstract class DriveTrajectory extends RamseteCommand {
         trajectory,
         drivetrainSubsystem::getPose,
         new RamseteController(),
-        new SimpleMotorFeedforward(
-            DrivetrainSubsystem.kS, DrivetrainSubsystem.kV, DrivetrainSubsystem.kA),
-        new DifferentialDriveKinematics(DrivetrainSubsystem.kTrackWidth),
+        DrivetrainSubsystem.kFeedforward,
+        DrivetrainSubsystem.kKinematics,
         drivetrainSubsystem::getWheelSpeeds,
         new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
         new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
