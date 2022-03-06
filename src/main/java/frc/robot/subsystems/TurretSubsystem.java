@@ -17,8 +17,8 @@ import frc.robot.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private final double kAngleMin = -180.0;
-  private final double kAngleMax = 180.0;
+  private final double kAngleMin = -135.0;
+  private final double kAngleMax = 225.0;
   private final double kAngleStart = 0.0;
 
   private final double kGearRatio = 1.0 / 10.8;
