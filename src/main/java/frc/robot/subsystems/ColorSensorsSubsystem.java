@@ -6,18 +6,16 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ColorSensors;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Tower;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
-
-  private final PowerDistribution pdp; // ? uses PDP current instead of color for lower ball
 
   private final ColorSensor lowerSensor;
   private final ColorSensor upperSensor;
@@ -26,8 +24,6 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   private Alliance upperBall = Alliance.Invalid;
 
   public ColorSensorsSubsystem() {
-    pdp = new PowerDistribution();
-
     lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, "lower");
     upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, "upper");
   }
@@ -53,7 +49,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     lowerBall = lowerSensor.getDetectedBall();
     upperBall = upperSensor.getDetectedBall();
 
-    double lowerTowerCurrent = pdp.getCurrent(Tower.kLowerMotorChannel);
+    double lowerTowerCurrent = RobotContainer.pdp.getCurrent(Tower.kLowerMotorChannel);
     if (lowerTowerCurrent < TowerSubsystem.kLowerCurrentLimit) {
       lowerBall = Alliance.Invalid;
     }
