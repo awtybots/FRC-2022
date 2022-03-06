@@ -17,27 +17,28 @@ public class ProjectileMotionSolver {
   private final double projectileMass;
   private final Vector2 projectileWeight;
   private final double projectileDragFactor;
-  private final double projectileTerminalVelocity;
 
   private double simulationStep = 0.01;
   private double simulationIterations = 10;
 
   private double launchAngle;
+  private double maxLaunchSpeed;
 
   public ProjectileMotionSolver(
-      double projectileMass, double projectileFrontalArea, double projectileDragCoefficient) {
+      double projectileMass, double projectileFrontalArea, double projectileDragCoefficient, double maxLaunchSpeed) {
     this.projectileMass = projectileMass;
     this.projectileWeight = new Vector2(0, projectileMass * -g);
     this.projectileDragFactor = 0.5 * rho * projectileDragCoefficient * projectileFrontalArea;
-    this.projectileTerminalVelocity = Math.sqrt(projectileMass * g / projectileDragFactor);
+    this.maxLaunchSpeed = maxLaunchSpeed;
   }
 
   public ProjectileMotionSolver(
       double projectileMass,
       double projectileFrontalArea,
       double projectileDragCoefficient,
+      double maxLaunchSpeed,
       double launchAngle) {
-    this(projectileFrontalArea, projectileMass, projectileDragCoefficient);
+    this(projectileMass, projectileFrontalArea, projectileDragCoefficient, maxLaunchSpeed);
     setLaunchAngle(launchAngle);
   }
 
@@ -67,7 +68,7 @@ public class ProjectileMotionSolver {
 
   private Vector2 getDragForce(Vector2 velocity) {
     double v = velocity.getMagnitude();
-    double dragForceMagnitude = projectileDragFactor * v;// * v;
+    double dragForceMagnitude = projectileDragFactor * v * v;
     double dragForceAngle = velocity.getAngle() + 180.0;
     return Vector2.fromPolar(dragForceMagnitude, dragForceAngle);
   }
@@ -83,7 +84,7 @@ public class ProjectileMotionSolver {
    */
   public double getOptimalLaunchVelocityStationary(Vector2 goalPosition) {
     Vector2 minLaunchVelocity = new Vector2();
-    Vector2 maxLaunchVelocity = Vector2.fromPolar(projectileTerminalVelocity, launchAngle);
+    Vector2 maxLaunchVelocity = Vector2.fromPolar(maxLaunchSpeed, launchAngle);
 
     double intersectYMax = runSingleSimulation(goalPosition.x, maxLaunchVelocity);
     if (intersectYMax < goalPosition.y) return Double.NaN;
@@ -105,9 +106,9 @@ public class ProjectileMotionSolver {
 
   /**
    * Get the optimal launch velocity and turret offset angle for a moving shot. All units are in
-   * meters.
+   * terms of meters, seconds, and degrees.
    *
-   * @param goalPosition A Vector2 representing the goal's relative position from the launching
+   * @param goalDisplacement A Vector2 representing the goal's relative position from the launching
    *     position of the projectile, where x is the horizontal distance of the goal and y is the
    *     height of the goal.
    * @param robotVelocity A Vector2 of the robot's velocity, where the x term is in units parallel
@@ -115,8 +116,70 @@ public class ProjectileMotionSolver {
    * @return A Vector2 where x is the launch velocity and y is the turret offset angle. NOTE: may be
    *     null
    */
-  public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalPosition, Vector2 robotVelocity) {
-    return null; // TODO solve launch velocities for nonstationary conditions
+  public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalDisplacement, Vector2 robotVelocity) {
+    if(robotVelocity.x == 0.0) robotVelocity.x = 0.0001; // cheese
+    if(robotVelocity.y == 0.0) robotVelocity.y = 0.0001;
+
+    double v_j = -robotVelocity.y;
+    double v_max = maxLaunchSpeed;
+    double cos_b = Math.cos(Math.toRadians(launchAngle));
+    double tan_b = Math.tan(Math.toRadians(launchAngle));
+    
+    double thetaMin = Math.toDegrees(v_j / v_max / cos_b);
+    double thetaMax = Math.toDegrees(Math.atan2(-v_j, robotVelocity.x));
+    
+    if(robotVelocity.y < 0.0) { // moving left
+      thetaMax += 180.0;
+    } else if(robotVelocity.y > 0.0) { // moving right
+      thetaMax -= 180.0;
+    }
+
+    double aMin = robotVelocity.x - robotVelocity.y / Math.tan(Math.toRadians(thetaMax));
+    double aMax = robotVelocity.x - robotVelocity.y / Math.tan(Math.toRadians(thetaMin));
+
+    // System.out.println("theta min: " + thetaMin);
+    // System.out.println("theta max: " + thetaMax);
+    // System.out.println("a min: " + aMin);
+    // System.out.println("a max: " + aMax);
+    // System.out.println();
+
+    for (int i = 0; i < simulationIterations; i++) {
+      double a = (aMin + aMax) / 2.0;
+      double v_i = a - robotVelocity.x;
+      double v_ij = Math.sqrt(v_i * v_i + v_j * v_j);
+      double v_k = v_ij * tan_b;
+      Vector2 launchVelocity = new Vector2(a, v_k);
+      double crossHeight = runSingleSimulation(goalDisplacement.x, launchVelocity);
+
+      // System.out.println("launch: " + launchVelocity.toString());
+      // System.out.println("theta: " + Math.toDegrees(Math.atan2(v_j, v_i));
+      // System.out.println("dy: " + (crossHeight - goalDisplacement.y));
+      // System.out.println();
+
+      if(crossHeight > goalDisplacement.y) { // too high, need less v_k
+        aMax = a;
+      } else { // too low, need more v_k
+        aMin = a;
+      }
+
+      if(i == simulationIterations - 1) {
+        System.out.println("a: " + a);
+
+        double dy = crossHeight - goalDisplacement.y;
+        if(Math.abs(dy) > 0.1) {
+          System.out.println(" ==== HIGH DY: " + dy);
+          return null;
+
+        } else {
+          double v = Math.sqrt(v_i * v_i + v_j * v_j) / cos_b;
+          double theta = Math.toDegrees(Math.atan2(v_j, v_i));
+      
+          return new Vector2(v, theta);
+        }
+
+      }
+    }
+    return null;
   }
 
   private double runSingleSimulation(double goalX, Vector2 launchVelocity) {
@@ -147,12 +210,16 @@ public class ProjectileMotionSolver {
       // System.out.println("a: " + acceleration);
     }
 
-    double intersectY = Double.NEGATIVE_INFINITY;
-    if (position.x >= goalX) {
+    if(velocity.y > 0.0) { // velocity must be negative for 2022 game
+      return Double.POSITIVE_INFINITY;
+      
+    } else if (position.x >= goalX) {
       double alpha = (goalX - lastPosition.x) / (position.x - lastPosition.x);
-      intersectY = (position.y - lastPosition.y) * alpha + lastPosition.y;
-    }
+      double intersectY = (position.y - lastPosition.y) * alpha + lastPosition.y;
+      return intersectY;
 
-    return intersectY;
+    } else {
+      return Double.NEGATIVE_INFINITY;
+    }
   }
 }

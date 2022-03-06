@@ -2,7 +2,6 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Field;
-import frc.robot.commands.backup.IdleShooter;
 import frc.robot.commands.backup.Spit;
 import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -64,8 +63,8 @@ public class MovingShots extends CommandBase {
   }
 
   private void idle() {
-    shooterSubsystem.shootRpm(IdleShooter.kIdleRpm);
-    // shooterSubsystem.stop();
+    // shooterSubsystem.shootRpm(IdleShooter.kIdleRpm);
+    shooterSubsystem.stop();
   }
 
   private void executeShoot(boolean idling) {
@@ -82,21 +81,22 @@ public class MovingShots extends CommandBase {
     double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
     double robotSpeed = drivetrainSubsystem.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getActualAngle();
-    Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, driveToGoalAngle);
+    Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
 
-    Vector2 optimalLaunchVelocity =
+    Vector2 launchVelocityData =
         projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
-    if (optimalLaunchVelocity == null) {
+
+    if (launchVelocityData == null) {
       idle();
       return;
     }
 
-    double launchVelocity = optimalLaunchVelocity.x; // meters per second
-    double horizontalLaunchAngle = optimalLaunchVelocity.y; // degrees counterclockwise
+    double launchVelocity = launchVelocityData.x; // meters per second
+    double horizontalLaunchAngle = launchVelocityData.y; // degrees clockwise
 
     double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelocity);
 
-    turretSubsystem.turnBy(visionTargetXOffset - horizontalLaunchAngle);
+    turretSubsystem.turnBy(visionTargetXOffset + horizontalLaunchAngle);
     shooterSubsystem.shootRpm(launchRpm);
 
     // if (idling) idle();

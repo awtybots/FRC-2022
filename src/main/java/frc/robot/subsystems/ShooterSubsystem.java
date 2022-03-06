@@ -20,7 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final WPI_TalonFX flywheel;
 
   private static final double kGearRatio = 1.0;
-  public static final double kLaunchAngle = 20.0; // TODO verify with video - degrees
+  public static final double kLaunchAngle = 70.0; // TODO verify with video - degrees
   public static final double kFlywheelDiameter = Convert.inchesToMeters(4.0);
 
   private static final double kMaxFlywheelRpm = 6400; // TODO find correct max flywheel rpm
