@@ -40,11 +40,13 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public boolean hasVisibleTarget() {
+    SmartDashboard.putBoolean("LL - target", limelight.hasVisibleTarget());
     return limelight.hasVisibleTarget();
   }
 
   /** degrees NOTE: check for target existing first */
   public double getTargetXOffset() {
+    SmartDashboard.putNumber("LL - x", limelight.targetXOffset());
     return limelight.targetXOffset();
   }
 

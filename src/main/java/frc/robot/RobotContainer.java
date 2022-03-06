@@ -62,8 +62,7 @@ public class RobotContainer {
     //         drivetrainSubsystem,
     //         colorSensorsSubsystem,
     //         limelightSubsystem));
-    // shooterSubsystem.setDefaultCommand(new IdleShooter(shooterSubsystem));
-    // turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
+    turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
 
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
@@ -71,7 +70,7 @@ public class RobotContainer {
     // colorSensorsSubsystem));
     driver.bumperRight.whenHeld(
         new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
-    driver.bumperLeft.whenHeld(new ReverseIntake(intakeSubsystem));
+    driver.bumperLeft.whenHeld(new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
 
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
@@ -114,8 +113,6 @@ public class RobotContainer {
     //         turretSubsystem,
     //         limelightSubsystem,
     //         colorSensorsSubsystem));
-
-    operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
   }
 
   public Command getAutonomousCommand() {
