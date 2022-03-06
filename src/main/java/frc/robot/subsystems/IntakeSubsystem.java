@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid pistons;
   private final WPI_TalonSRX motor;
 
-  private final double kMotorSpeed = 0.75; // FIXME determine appropriate intake motor speed
+  private final double kMotorSpeed = 1.0;
 
   public IntakeSubsystem() {
     pistons =
