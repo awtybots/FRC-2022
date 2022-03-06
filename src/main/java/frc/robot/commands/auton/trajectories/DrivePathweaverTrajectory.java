@@ -1,17 +1,23 @@
 package frc.robot.commands.auton.trajectories;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public abstract class DriveTrajectory extends RamseteCommand {
+public abstract class DrivePathweaverTrajectory extends RamseteCommand {
 
   private final Trajectory trajectory;
   private final DrivetrainSubsystem drivetrainSubsystem;
 
-  DriveTrajectory(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
+  DrivePathweaverTrajectory(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
     super(
         trajectory,
         drivetrainSubsystem::getPose,
@@ -28,6 +34,11 @@ public abstract class DriveTrajectory extends RamseteCommand {
     this.drivetrainSubsystem = drivetrainSubsystem;
   }
 
+  DrivePathweaverTrajectory(String fileName, DrivetrainSubsystem drivetrainSubsystem) {
+    this(loadTrajectoryFromFile(fileName), drivetrainSubsystem);
+  }
+
+
   @Override
   public void initialize() {
     drivetrainSubsystem.initOdometry(trajectory.getInitialPose());
@@ -37,6 +48,17 @@ public abstract class DriveTrajectory extends RamseteCommand {
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
-    drivetrainSubsystem.driveVolts(0.0, 0.0);
+    drivetrainSubsystem.stop();
+  }
+
+  private static Trajectory loadTrajectoryFromFile(String pathName) {
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
+      Trajectory t = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      return t;
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
+      return new Trajectory();
+    }
   }
 }

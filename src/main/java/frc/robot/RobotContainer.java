@@ -75,7 +75,7 @@ public class RobotContainer {
 
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
-    // climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem)); // TODO temp
+    // climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     operator.buttonStart.whenHeld(new ShootPercent(1.0, shooterSubsystem));
     operator.buttonA.whenHeld(new ShootRpm(1000, towerSubsystem, shooterSubsystem));

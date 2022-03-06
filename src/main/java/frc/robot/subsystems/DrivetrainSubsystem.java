@@ -186,4 +186,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
     // This behaviour can be enabled by uncommenting the line below.
     // drivetrain.arcadeDrive(forward, rotate, true);
   }
+
+  public void stop() {
+    drivetrain.tankDrive(0.0, 0.0);
+  }
 }

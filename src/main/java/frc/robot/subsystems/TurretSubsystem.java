@@ -48,7 +48,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
   }
 
-  public void initEncoder(double angle) {
+  public void initPosition(double angle) {
     motor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     actualAngle = angle;
