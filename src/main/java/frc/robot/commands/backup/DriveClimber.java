@@ -24,8 +24,9 @@ public class DriveClimber extends CommandBase {
 
   @Override
   public void execute() {
-    double rate = controller.getRightTrigger() - controller.getLeftTrigger();
-    climbSubsystem.drive(rate);
+    double rateL = controller.getLeftTrigger() * (controller.bumperLeft.get() ? -1.0 : 1.0);
+    double rateR = controller.getRightTrigger() * (controller.bumperRight.get() ? -1.0 : 1.0);
+    climbSubsystem.drive(rateL, rateR);
   }
 
   @Override
