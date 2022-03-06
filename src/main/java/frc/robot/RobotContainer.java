@@ -77,11 +77,10 @@ public class RobotContainer {
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
-    operator.buttonStart.whenHeld(new ShootPercent(1.0, shooterSubsystem));
     operator.buttonA.whenHeld(new ShootRpm(1000, towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(new ShootRpm(1500, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(new ShootRpm(2300, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(new ShootRpm(3000, towerSubsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(new ShootRpm(3000, towerSubsystem, shooterSubsystem));
+    operator.buttonY.whenHeld(new ShootRpm(4500, towerSubsystem, shooterSubsystem));
 
     // operator.buttonA.whenHeld(
     //     new ShootRpmOrSpit(
