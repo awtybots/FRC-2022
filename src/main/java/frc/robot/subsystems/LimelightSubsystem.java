@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
@@ -18,6 +19,18 @@ public class LimelightSubsystem extends SubsystemBase {
             limelight, Field.kVisionTargetHeight, Field.kGoalHeight, Limelight.kShooterOffset);
 
     drivingMode();
+  }
+
+  @Override
+  public void periodic() {
+    Vector2 goalDisplacement = getGoalDisplacement();
+    double distance = -1.0;
+
+    if (goalDisplacement != null) {
+      distance = goalDisplacement.x;
+    }
+
+    SmartDashboard.putNumber("LL - distance", distance);
   }
 
   /** NOTE: can be null */

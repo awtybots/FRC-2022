@@ -12,8 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Constants.Climber;
+import frc.robot.RobotContainer;
 import frc.robot.util.math.Convert;
 import frc.robot.util.math.Convert.Encoder;
 
@@ -62,15 +62,16 @@ public class ClimbSubsystem extends SubsystemBase {
     double currentRight = RobotContainer.pdp.getCurrent(Climber.kRightMotorChannel);
 
     if (Constants.TUNING_MODE) {
-      for(WPI_TalonFX motor : motors) {
+      for (WPI_TalonFX motor : motors) {
         motor.config_kP(0, SmartDashboard.getNumber("CL - P", kP));
         motor.config_kF(0, SmartDashboard.getNumber("CL - F", kF));
       }
 
-      double goalPosition = Convert.inchesToMeters(
+      double goalPosition =
+          Convert.inchesToMeters(
               SmartDashboard.getNumber(
                   "CL - set target pos", Convert.metersToInches(targetPosition)));
-      if(Math.abs(goalPosition - actualPosition) < kMaxAcceptablePositionError) {
+      if (Math.abs(goalPosition - actualPosition) < kMaxAcceptablePositionError) {
         // stop();
       } else {
         moveClimb(goalPosition);
@@ -157,7 +158,8 @@ public class ClimbSubsystem extends SubsystemBase {
 
   private static double calculateKF(double speed, double percentOut) {
     // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
-    double sensorVelAtPercentOut = Convert.speedToEncoderVel(speed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated);
+    double sensorVelAtPercentOut =
+        Convert.speedToEncoderVel(speed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated);
     return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 }

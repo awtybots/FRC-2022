@@ -4,8 +4,8 @@ import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.util.math.ProjectileMotionSolver;
-import frc.robot.util.math.Vector2;
 import frc.robot.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
+import frc.robot.util.math.Vector2;
 
 public class ProjectileMotionTest {
   public static void main(String[] args) {
@@ -28,10 +28,14 @@ public class ProjectileMotionTest {
             ShooterSubsystem.kLaunchAngle);
     projectileMotionSolver.setSimulationStep(0.01);
     projectileMotionSolver.setSimulationIterations(50);
-    
-    Vector2 goalDisplacement = new Vector2(1.0, Field.kVisionTargetHeight - (Limelight.kMountingHeight + Limelight.kShooterOffset.y));
 
-    // double launchVelStationary = projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
+    Vector2 goalDisplacement =
+        new Vector2(
+            1.0,
+            Field.kVisionTargetHeight - (Limelight.kMountingHeight + Limelight.kShooterOffset.y));
+
+    // double launchVelStationary =
+    // projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
     // System.out.println("disp: " + goalDisplacement.toString());
     // System.out.println("vel: " + launchVelStationary);
 
@@ -43,8 +47,9 @@ public class ProjectileMotionTest {
         System.out.println("rVel parallel: " + robotVelocity.x);
         System.out.println("rVel normal: " + robotVelocity.y);
 
-        Vector2 launchData = projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
-        if(launchData == null) {
+        Vector2 launchData =
+            projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
+        if (launchData == null) {
           System.out.println("no solution :(");
         } else {
           double launchVel = launchData.x;
@@ -55,6 +60,5 @@ public class ProjectileMotionTest {
         }
       }
     }
-
   }
 }

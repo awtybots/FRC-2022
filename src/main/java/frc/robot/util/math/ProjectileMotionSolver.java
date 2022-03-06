@@ -25,7 +25,10 @@ public class ProjectileMotionSolver {
   private double maxLaunchSpeed;
 
   public ProjectileMotionSolver(
-      double projectileMass, double projectileFrontalArea, double projectileDragCoefficient, double maxLaunchSpeed) {
+      double projectileMass,
+      double projectileFrontalArea,
+      double projectileDragCoefficient,
+      double maxLaunchSpeed) {
     this.projectileMass = projectileMass;
     this.projectileWeight = new Vector2(0, projectileMass * -g);
     this.projectileDragFactor = 0.5 * rho * projectileDragCoefficient * projectileFrontalArea;
@@ -117,20 +120,20 @@ public class ProjectileMotionSolver {
    *     null
    */
   public Vector2 getOptimalLaunchVelocityMoving(Vector2 goalDisplacement, Vector2 robotVelocity) {
-    if(robotVelocity.x == 0.0) robotVelocity.x = 0.0001; // cheese
-    if(robotVelocity.y == 0.0) robotVelocity.y = 0.0001;
+    if (robotVelocity.x == 0.0) robotVelocity.x = 0.0001; // cheese
+    if (robotVelocity.y == 0.0) robotVelocity.y = 0.0001;
 
     double v_j = -robotVelocity.y;
     double v_max = maxLaunchSpeed;
     double cos_b = Math.cos(Math.toRadians(launchAngle));
     double tan_b = Math.tan(Math.toRadians(launchAngle));
-    
+
     double thetaMin = Math.toDegrees(v_j / v_max / cos_b);
     double thetaMax = Math.toDegrees(Math.atan2(-v_j, robotVelocity.x));
-    
-    if(robotVelocity.y < 0.0) { // moving left
+
+    if (robotVelocity.y < 0.0) { // moving left
       thetaMax += 180.0;
-    } else if(robotVelocity.y > 0.0) { // moving right
+    } else if (robotVelocity.y > 0.0) { // moving right
       thetaMax -= 180.0;
     }
 
@@ -156,27 +159,26 @@ public class ProjectileMotionSolver {
       // System.out.println("dy: " + (crossHeight - goalDisplacement.y));
       // System.out.println();
 
-      if(crossHeight > goalDisplacement.y) { // too high, need less v_k
+      if (crossHeight > goalDisplacement.y) { // too high, need less v_k
         aMax = a;
       } else { // too low, need more v_k
         aMin = a;
       }
 
-      if(i == simulationIterations - 1) {
+      if (i == simulationIterations - 1) {
         System.out.println("a: " + a);
 
         double dy = crossHeight - goalDisplacement.y;
-        if(Math.abs(dy) > 0.1) {
+        if (Math.abs(dy) > 0.1) {
           System.out.println(" ==== HIGH DY: " + dy);
           return null;
 
         } else {
           double v = Math.sqrt(v_i * v_i + v_j * v_j) / cos_b;
           double theta = Math.toDegrees(Math.atan2(v_j, v_i));
-      
+
           return new Vector2(v, theta);
         }
-
       }
     }
     return null;
@@ -210,9 +212,9 @@ public class ProjectileMotionSolver {
       // System.out.println("a: " + acceleration);
     }
 
-    if(velocity.y > 0.0) { // velocity must be negative for 2022 game
+    if (velocity.y > 0.0) { // velocity must be negative for 2022 game
       return Double.POSITIVE_INFINITY;
-      
+
     } else if (position.x >= goalX) {
       double alpha = (goalX - lastPosition.x) / (position.x - lastPosition.x);
       double intersectY = (position.y - lastPosition.y) * alpha + lastPosition.y;

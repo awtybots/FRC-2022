@@ -109,7 +109,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private static double calculateKF(double rpmAtPercentOut, double percentOut) {
     // see the following link for an explanation of the math below
     // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
-    double sensorVelAtPercentOut = Convert.rpmToEncoderVel(rpmAtPercentOut, kGearRatio, Encoder.TalonFXIntegrated);
+    double sensorVelAtPercentOut =
+        Convert.rpmToEncoderVel(rpmAtPercentOut, kGearRatio, Encoder.TalonFXIntegrated);
     return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 
