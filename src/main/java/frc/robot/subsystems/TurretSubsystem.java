@@ -22,16 +22,16 @@ public class TurretSubsystem extends SubsystemBase {
   private final double kAngleMax = 225.0;
   private final double kAngleStart = 0.0;
 
-  private final double kGearRatio = 1.0 / 10.8;
+  private final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private final double kP = 0.0;
-  private final double kF = 0.0;
-  private final double kMaxDegPerSec = 10.0;
-  private final double kMaxDegPerSecPerSec = 0.0;
+  private final double kP = 0.4;
+  private final double kMaxDegPerSec = 90.0;
+  private final double kMaxDegPerSecPerSec = 90.0;
 
   private final double kMaxAcceptableAngleError = 1.0;
 
   private final double kMaxManualPercentOutput = 0.2;
+  private final double kPeakOutput = 0.3;
 
   private final WPI_TalonSRX motor;
 
@@ -42,11 +42,9 @@ public class TurretSubsystem extends SubsystemBase {
     motor = new WPI_TalonSRX(Turret.kMotorCanId);
     configMotors();
 
-    if (Constants.TUNING_MODE) {
-      SmartDashboard.putNumber("TU - set target angle", kAngleStart);
-      SmartDashboard.putNumber("TU - P", kP);
-      SmartDashboard.putNumber("TU - F", kF);
-    }
+    // if (Constants.TUNING_MODE) {
+    //   SmartDashboard.putNumber("TU - set target angle", kAngleStart);
+    // }
   }
 
   public void initPosition(double angle) {
@@ -62,15 +60,16 @@ public class TurretSubsystem extends SubsystemBase {
     motor.configVoltageCompSaturation(12.0);
     motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
     motor.setNeutralMode(NeutralMode.Brake);
+    motor.setSensorPhase(true);
 
     motor.config_kP(0, kP);
-    motor.config_kF(0, kF);
     motor.configMotionCruiseVelocity(
         Convert.angularVelToEncoderVel(
             kMaxDegPerSec, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     motor.configMotionAcceleration(
         Convert.angularAccelToEncoderAccel(
             kMaxDegPerSecPerSec, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    motor.configClosedLoopPeakOutput(0, kPeakOutput);
 
     motor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(kAngleStart, kGearRatio, Encoder.VersaPlanetaryIntegrated));
@@ -86,10 +85,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     if (Constants.TUNING_MODE) {
-      turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle)); // ! remove
-
-      motor.config_kP(0, SmartDashboard.getNumber("TU - P", kP));
-      motor.config_kF(0, SmartDashboard.getNumber("TU - F", kF));
+      // turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle));
 
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
       SmartDashboard.putNumber("TU - actual angle", actualAngle);

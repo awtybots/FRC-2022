@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -25,13 +27,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private static final double kMaxFlywheelRpm = 4500;
   public static final double kMaxBallVelocity = flywheelRpmToBallVelocity(kMaxFlywheelRpm);
-  private final double kMaxAcceptableRpmError = 50.0;
+  private static final double kMaxAcceptableRpmError = 50.0;
+  private static final int kOnTargetCounterSize = 30;
 
-  private static final double kP_Flywheel = 0.25;
-  private static final double kF_Flywheel = calculateKF(2050, 0.50);
+  private static final double kP_Flywheel = 0.7;
+  private static final double kF_Flywheel = calculateKF(2200, 0.50);
 
   private double targetRpm = 0.0;
   private double actualRpm = 0.0;
+
+  private ArrayList<Boolean> onTarget = new ArrayList<>(kOnTargetCounterSize);
 
   public ShooterSubsystem() {
     flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
@@ -62,6 +67,13 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     actualRpm = getRpm();
+    boolean onTargetRaw = Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
+    if(onTarget.size() > kOnTargetCounterSize) onTarget.remove(0);
+    if(targetRpm > 0) {
+      onTarget.add(onTargetRaw);
+    } else {
+      onTarget.add(false);
+    }
 
     if (Constants.TUNING_MODE) {
       SmartDashboard.putBoolean("SH - at goal", isAtTarget());
@@ -93,7 +105,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
+    for (Boolean b : onTarget) {
+      if(!b) return false;
+    }
+    return true;
   }
 
   /**

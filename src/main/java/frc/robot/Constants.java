@@ -72,7 +72,7 @@ public final class Constants {
         new Vector2(Convert.inchesToMeters(5.0), Convert.inchesToMeters(-5.5));
 
     public static final LimelightMountDirection kMountingDirection =
-        LimelightMountDirection.kLandscape;
+        LimelightMountDirection.kPortrait;
 
     public static final int kPipelineDriving = 0;
     public static final int kPipelineShooting = 1;

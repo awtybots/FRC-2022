@@ -11,6 +11,8 @@ public class AutoAim extends CommandBase {
   public AutoAim(TurretSubsystem turretSubsystem, LimelightSubsystem limelightSubsystem) {
     this.turretSubsystem = turretSubsystem;
     this.limelightSubsystem = limelightSubsystem;
+
+    addRequirements(turretSubsystem, limelightSubsystem);
   }
 
   @Override
@@ -22,13 +24,13 @@ public class AutoAim extends CommandBase {
   public void execute() {
     if (!limelightSubsystem.hasVisibleTarget()) {
       if (turretSubsystem.isAtTarget()) {
-        // turretSubsystem.turnBy(5.0); // !
+        turretSubsystem.turnBy(10.0);
       }
       return;
     }
 
     double deltaAngle = limelightSubsystem.getTargetXOffset();
-    // turretSubsystem.turnBy(deltaAngle); // !
+    turretSubsystem.turnBy(deltaAngle);
   }
 
   @Override

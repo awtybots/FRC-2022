@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
@@ -12,6 +14,9 @@ public class LimelightSubsystem extends SubsystemBase {
   private final frc.robot.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
+  private int xAccumulatorLength = 10;
+  private ArrayList<Double> xAccumulator = new ArrayList<>(xAccumulatorLength);
+
   public LimelightSubsystem() {
     limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
     upperHub =
@@ -23,31 +28,44 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // Vector2 goalDisplacement = getGoalDisplacement();
-    // double distance = -1.0;
-
-    // if (goalDisplacement != null) {
-    //   distance = goalDisplacement.x;
-    // }
-
-    // SmartDashboard.putNumber("LL - distance", distance);
+    if(xAccumulator.size() == xAccumulatorLength) {
+      xAccumulator.remove(0);
+    }
+    if(hasVisibleTarget()) {
+      xAccumulator.add(getTargetUnaveragedXOffset());
+    }
   }
 
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
-    SmartDashboard.putNumber("LL - distance", upperHub.getGoalDisplacement().x);
-    return upperHub.getGoalDisplacement();
+    Vector2 disp = upperHub.getGoalDisplacement();
+    SmartDashboard.putNumber("LL - distance", disp.x);
+    return disp;
   }
 
   public boolean hasVisibleTarget() {
-    SmartDashboard.putBoolean("LL - target", limelight.hasVisibleTarget());
-    return limelight.hasVisibleTarget();
+    boolean hasTarget = limelight.hasVisibleTarget();
+    SmartDashboard.putBoolean("LL - target", hasTarget);
+    return hasTarget;
+  }
+
+  /** degrees NOTE: check for target existing first */
+  private double getTargetUnaveragedXOffset() {
+    double x = limelight.targetXOffset();
+    return x;
   }
 
   /** degrees NOTE: check for target existing first */
   public double getTargetXOffset() {
-    SmartDashboard.putNumber("LL - x", limelight.targetXOffset());
-    return limelight.targetXOffset();
+    double x = 0.0;
+    if(xAccumulator.size() > 0) {
+      for (Double xi : xAccumulator) {
+        x += xi;
+      }
+      x /= xAccumulator.size();
+    }
+    SmartDashboard.putNumber("LL - x", x);
+    return x;
   }
 
   public void drivingMode() {
