@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorSensors;
 import frc.robot.Constants.Field;
-import frc.robot.Constants.Tower;
-import frc.robot.RobotContainer;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
@@ -46,17 +44,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    lowerBall = lowerSensor.getDetectedBall();
+    lowerBall = Alliance.Invalid; // * current detection not applicable
     upperBall = upperSensor.getDetectedBall();
-
-    double lowerTowerCurrent = RobotContainer.pdp.getCurrent(Tower.kLowerMotorChannel);
-    if (lowerTowerCurrent < TowerSubsystem.kLowerCurrentLimit) {
-      lowerBall = Alliance.Invalid;
-    }
-
-    if (Constants.TUNING_MODE) {
-      SmartDashboard.putNumber("TW - lower current", lowerTowerCurrent);
-    }
 
     SmartDashboard.putString("TW - lower ball", lowerBall.toString());
     SmartDashboard.putString("TW - upper ball", upperBall.toString());

@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private static final double kMaxFlywheelRpm = 4500;
   public static final double kMaxBallVelocity = flywheelRpmToBallVelocity(kMaxFlywheelRpm);
   private static final double kMaxAcceptableRpmError = 50.0;
-  private static final int kOnTargetCounterSize = 30;
+  private static final int kOnTargetCounterSize = 10;
 
   private static final double kP_Flywheel = 0.7;
   private static final double kF_Flywheel = calculateKF(2200, 0.50);

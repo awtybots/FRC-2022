@@ -18,8 +18,6 @@ public class TowerSubsystem extends SubsystemBase {
   private static final double kIntakingSpeedUpper = 0.3;
   private static final double kShootingSpeedUpper = 0.9;
 
-  public static final double kLowerCurrentLimit = 100.0 * kSpeedLower; // ! FIXME (amps)
-
   public TowerSubsystem() {
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonSRX(Tower.kLowerMotorCanId);

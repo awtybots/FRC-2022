@@ -70,7 +70,7 @@ public class MovingShots extends CommandBase {
   private void executeShoot(boolean idling) {
     if (!limelightSubsystem.hasVisibleTarget()) {
       if (turretSubsystem.isAtTarget()) {
-        turretSubsystem.turnBy(5.0); // seeking
+        turretSubsystem.turnBy(10.0); // TODO better seeking
       }
       idle();
       return;

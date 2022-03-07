@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.auton.trajectories.FourBall0;
 import frc.robot.commands.auton.trajectories.FourBall1;
 import frc.robot.commands.backup.AutoAim;
-import frc.robot.commands.backup.ShootRpm;
+import frc.robot.commands.backup.ShootRpmNoIntake;
 import frc.robot.subsystems.*;
 
 public class FourBallAuton extends SequentialCommandGroup {
@@ -20,11 +20,11 @@ public class FourBallAuton extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(intakeSubsystem::start, intakeSubsystem),
       new FourBall0(drivetrainSubsystem),
-      new ShootRpm(3000.0, towerSubsystem, shooterSubsystem)
+      new ShootRpmNoIntake(3000.0, towerSubsystem, shooterSubsystem)
         .alongWith(new AutoAim(turretSubsystem, limelightSubsystem))
         .withTimeout(3.0),
       new FourBall1(drivetrainSubsystem),
-      new ShootRpm(4000.0, towerSubsystem, shooterSubsystem)
+      new ShootRpmNoIntake(4000.0, towerSubsystem, shooterSubsystem)
         .alongWith(new AutoAim(turretSubsystem, limelightSubsystem))
         .withTimeout(3.0)
     );

@@ -14,7 +14,7 @@ public class LimelightSubsystem extends SubsystemBase {
   private final frc.robot.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
-  private int xAccumulatorLength = 10;
+  private int xAccumulatorLength = 5;
   private ArrayList<Double> xAccumulator = new ArrayList<>(xAccumulatorLength);
 
   public LimelightSubsystem() {
@@ -33,12 +33,13 @@ public class LimelightSubsystem extends SubsystemBase {
     }
     if(hasVisibleTarget()) {
       xAccumulator.add(getTargetUnaveragedXOffset());
+      getGoalDisplacement();
     }
   }
 
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
-    Vector2 disp = upperHub.getGoalDisplacement();
+    Vector2 disp = upperHub.getGoalDisplacement().plus(new Vector2(Field.kGoalRadius, 0.0));
     SmartDashboard.putNumber("LL - distance", disp.x);
     return disp;
   }

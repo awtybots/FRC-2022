@@ -3,7 +3,8 @@ package frc.robot.commands.auton.sequences;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.auton.trajectories.TwoBall0;
-import frc.robot.commands.backup.ShootRpm;
+import frc.robot.commands.backup.AutoAim;
+import frc.robot.commands.backup.ShootRpmNoIntake;
 import frc.robot.subsystems.*;
 
 public class TwoBallAuton extends SequentialCommandGroup {
@@ -18,8 +19,8 @@ public class TwoBallAuton extends SequentialCommandGroup {
     addCommands(
       new InstantCommand(intakeSubsystem::start, intakeSubsystem),
       new TwoBall0(drivetrainSubsystem),
-      new ShootRpm(3000.0, towerSubsystem, shooterSubsystem)
-      // .alongWith(new AutoAim(turretSubsystem, limelightSubsystem))
+      new ShootRpmNoIntake(3000.0, towerSubsystem, shooterSubsystem)
+      .alongWith(new AutoAim(turretSubsystem, limelightSubsystem))
     );
 
     // this.drivetrainSubsystem = drivetrainSubsystem;

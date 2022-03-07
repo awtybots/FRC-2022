@@ -54,6 +54,7 @@ public final class Constants {
   public static final class Field {
     public static final double kVisionTargetHeight = 2.605; // meters from ground
     public static final double kGoalHeight = 2.630; // meters from ground
+    public static final double kGoalRadius = 0.650; // meters
 
     public static final double kBallRadius = Convert.inchesToMeters(9.5) / 2.0; // meters
     public static final double kBallMass = 0.270; // kg
@@ -66,8 +67,8 @@ public final class Constants {
   }
 
   public static final class Limelight {
-    public static final double kMountingAngle = 40.0; // degrees up from horizontal
-    public static final double kMountingHeight = 0.991; // meters from ground
+    public static final double kMountingAngle = 39.0; // degrees up from horizontal
+    public static final double kMountingHeight = Convert.inchesToMeters(40.0); // meters from ground
     public static final Vector2 kShooterOffset =
         new Vector2(Convert.inchesToMeters(5.0), Convert.inchesToMeters(-5.5));
 
