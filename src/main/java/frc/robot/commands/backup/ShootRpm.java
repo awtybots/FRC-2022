@@ -18,7 +18,7 @@ public class ShootRpm extends CommandBase {
     this.shooterSubsystem = shooterSubsystem;
     this.rpm = rpm;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(intakeSubsystem, towerSubsystem, shooterSubsystem);
   }
 
   @Override

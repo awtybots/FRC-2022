@@ -23,9 +23,7 @@ public class AutoAim extends CommandBase {
   @Override
   public void execute() {
     if (!limelightSubsystem.hasVisibleTarget()) {
-      if (turretSubsystem.isAtTarget()) {
-        turretSubsystem.turnBy(10.0); // TODO better seeking
-      }
+      turretSubsystem.seek();
       return;
     }
 

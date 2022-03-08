@@ -2,7 +2,6 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Field;
-import frc.robot.commands.backup.Spit;
 import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -69,9 +68,7 @@ public class MovingShots extends CommandBase {
 
   private void executeShoot(boolean idling) {
     if (!limelightSubsystem.hasVisibleTarget()) {
-      if (turretSubsystem.isAtTarget()) {
-        turretSubsystem.turnBy(10.0); // TODO better seeking
-      }
+      turretSubsystem.seek();
       idle();
       return;
     }
@@ -97,15 +94,14 @@ public class MovingShots extends CommandBase {
     double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelocity);
 
     turretSubsystem.turnBy(visionTargetXOffset + horizontalLaunchAngle);
-    shooterSubsystem.shootRpm(launchRpm);
 
-    // if (idling) idle();
-    // else shooterSubsystem.shootRpm(launchRpm);
+    if (idling) idle(); // only run flywheel when needed
+    else shooterSubsystem.shootRpm(launchRpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.turnTo(180.0); // ? any better idea?
-    shooterSubsystem.shootRpm(Spit.kRpm);
+    turretSubsystem.spit();
+    shooterSubsystem.spit();
   }
 
   @Override

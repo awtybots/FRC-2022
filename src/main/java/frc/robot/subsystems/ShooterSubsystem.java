@@ -29,6 +29,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public static final double kMaxBallVelocity = flywheelRpmToBallVelocity(kMaxFlywheelRpm);
   private static final double kMaxAcceptableRpmError = 50.0;
   private static final int kOnTargetCounterSize = 10;
+  
+  public static final double kSpitRpm = 750.0;
 
   private static final double kP_Flywheel = 0.7;
   private static final double kF_Flywheel = calculateKF(2200, 0.50);
@@ -80,6 +82,10 @@ public class ShooterSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("SH - actual rpm", actualRpm);
       SmartDashboard.putNumber("SH - goal rpm", targetRpm);
     }
+  }
+
+  public void spit() {
+    shootRpm(kSpitRpm);
   }
 
   public void shootRpm(double rpm) {

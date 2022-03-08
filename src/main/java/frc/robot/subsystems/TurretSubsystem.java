@@ -18,25 +18,30 @@ import frc.robot.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private final double kAngleMin = -135.0;
-  private final double kAngleMax = 225.0;
-  private final double kAngleStart = 0.0;
+  private static final double kAngleMin = -135.0;
+  private static final double kAngleMax = 225.0;
+  private static final double kAngleStart = 0.0;
 
-  private final double kGearRatio = -1.0 / 4.0 / 10.8;
+  public static final double kSpitAngle = -90.0;
 
-  private final double kP = 0.4;
-  private final double kMaxDegPerSec = 90.0;
-  private final double kMaxDegPerSecPerSec = 90.0;
+  private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private final double kMaxAcceptableAngleError = 1.0;
+  private static final double kP = 0.4;
+  private static final double kMaxDegPerSec = 90.0;
+  private static final double kMaxDegPerSecPerSec = 90.0;
 
-  private final double kMaxManualPercentOutput = 0.2;
-  private final double kPeakOutput = 0.3;
+  private static final double kMaxAcceptableAngleError = 1.0;
+
+  private static final double kMaxManualPercentOutput = 0.2;
+  private static final double kPeakOutput = 0.3;
 
   private final WPI_TalonSRX motor;
 
   private double actualAngle = kAngleStart;
   private double targetAngle = actualAngle;
+
+  private boolean seeking = false;
+  private boolean seekingRight = true;
 
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotorCanId);
@@ -79,8 +84,8 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     actualAngle = getAngle();
 
-    if (actualAngle < kAngleMin - kMaxAcceptableAngleError
-        || actualAngle > kAngleMax + kMaxAcceptableAngleError) {
+    if (actualAngle < kAngleMin - kMaxAcceptableAngleError * 3.0
+        || actualAngle > kAngleMax + kMaxAcceptableAngleError * 3.0) {
       stop(); // ? maybe remove for competition
     }
 
@@ -91,6 +96,23 @@ public class TurretSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("TU - actual angle", actualAngle);
       SmartDashboard.putNumber("TU - target angle", targetAngle);
     }
+  }
+
+  public void seek() {
+    if(seeking) {
+      if(isAtTarget()) {
+        seekingRight = !seekingRight;
+        turnTo(seekingRight ? kAngleMax : kAngleMin);
+      }
+    } else {
+      seeking = true;
+      seekingRight = (kAngleMax - actualAngle) < 180.0;
+      turnTo(seekingRight ? kAngleMax : kAngleMin);
+    }
+  }
+
+  public void spit() {
+    turnTo(kSpitAngle);
   }
 
   public void turnBy(double deltaAngle) {
@@ -108,6 +130,7 @@ public class TurretSubsystem extends SubsystemBase {
     motor.set(
         ControlMode.Position,
         Convert.angleToEncoderPos(targetAngle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    seeking = false;
   }
 
   public boolean isAtTarget() {

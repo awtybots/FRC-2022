@@ -15,6 +15,7 @@ import frc.robot.Constants.Field;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
+  @SuppressWarnings("unused") // lower sensor not working :(
   private final ColorSensor lowerSensor;
   private final ColorSensor upperSensor;
 
@@ -44,7 +45,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    lowerBall = Alliance.Invalid; // * current detection not applicable
+    lowerBall = Alliance.Invalid; // * override color sensor :(
     upperBall = upperSensor.getDetectedBall();
 
     SmartDashboard.putString("TW - lower ball", lowerBall.toString());

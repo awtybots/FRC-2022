@@ -25,11 +25,10 @@ public class ClimbSubsystem extends SubsystemBase {
   private final WPI_TalonFX[] motors;
 
   private static final double kClimbDistance = Convert.inchesToMeters(23.0);
-  private static final double kWinchDiameter = Convert.inchesToMeters(1.0); // TODO tune
+  private static final double kWinchDiameter = Convert.inchesToMeters(1.0);
   private static final double kGearRatio = 1.0 / 5.0 / 5.0 * 34.0 / 44.0;
 
-  private static final double kP = 0.0; // TODO tune
-  private static final double kF = calculateKF(Convert.inchesToMeters(5.0), 0.5); // TODO correct
+  private static final double kP = 0.0;
   private static final double kMaxSpeed = Convert.inchesToMeters(15.0);
   private static final double kMaxAccel = Convert.inchesToMeters(15.0);
   private static final double kMaxPercentOutput = 1.0;
@@ -47,11 +46,10 @@ public class ClimbSubsystem extends SubsystemBase {
 
     configMotors();
 
-    if (Constants.TUNING_MODE) {
-      SmartDashboard.putNumber("CL - set target pos", actualPosition);
-      SmartDashboard.putNumber("CL - P", kP);
-      SmartDashboard.putNumber("CL - F", kF);
-    }
+    // if (Constants.TUNING_MODE) {
+    //   SmartDashboard.putNumber("CL - set target pos", actualPosition);
+    //   SmartDashboard.putNumber("CL - P", kP);
+    // }
   }
 
   @Override
@@ -62,20 +60,18 @@ public class ClimbSubsystem extends SubsystemBase {
     double currentRight = RobotContainer.pdp.getCurrent(Climber.kRightMotorChannel);
 
     if (Constants.TUNING_MODE) {
-      for (WPI_TalonFX motor : motors) {
-        motor.config_kP(0, SmartDashboard.getNumber("CL - P", kP));
-        motor.config_kF(0, SmartDashboard.getNumber("CL - F", kF));
-      }
+      // for (WPI_TalonFX motor : motors)
+      //   motor.config_kP(0, SmartDashboard.getNumber("CL - P", kP));
 
-      double goalPosition =
-          Convert.inchesToMeters(
-              SmartDashboard.getNumber(
-                  "CL - set target pos", Convert.metersToInches(targetPosition)));
-      if (Math.abs(goalPosition - actualPosition) < kMaxAcceptablePositionError) {
-        // stop();
-      } else {
-        moveClimb(goalPosition);
-      }
+      // double goalPosition =
+      //     Convert.inchesToMeters(
+      //         SmartDashboard.getNumber(
+      //             "CL - set target pos", Convert.metersToInches(targetPosition)));
+      // if (Math.abs(goalPosition - actualPosition) < kMaxAcceptablePositionError) {
+      //   stop();
+      // } else {
+      //   moveClimb(goalPosition);
+      // }
 
       SmartDashboard.putBoolean("CL - at goal", isAtTarget());
       SmartDashboard.putNumber("CL - actual pos", Convert.metersToInches(actualPosition));
@@ -118,9 +114,9 @@ public class ClimbSubsystem extends SubsystemBase {
       motor.configClosedloopRamp(kRamp);
       motor.configPeakOutputForward(kMaxPercentOutput);
       motor.configPeakOutputReverse(-kMaxPercentOutput);
+      motor.configClosedLoopPeakOutput(0, kMaxPercentOutput);
 
       motor.config_kP(0, kP);
-      motor.config_kF(0, kF);
       motor.configMotionCruiseVelocity(
           Convert.speedToEncoderVel(
               kMaxSpeed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated));
@@ -155,10 +151,4 @@ public class ClimbSubsystem extends SubsystemBase {
     for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
   }
 
-  private static double calculateKF(double speed, double percentOut) {
-    // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
-    double sensorVelAtPercentOut =
-        Convert.speedToEncoderVel(speed, kGearRatio, kWinchDiameter, Encoder.TalonFXIntegrated);
-    return (percentOut * 1023) / sensorVelAtPercentOut;
-  }
 }

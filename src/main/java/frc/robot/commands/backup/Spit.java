@@ -1,7 +1,6 @@
 package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.auton.TurnTurretTo;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
@@ -14,7 +13,6 @@ import frc.robot.subsystems.TurretSubsystem;
  */
 public class Spit extends SequentialCommandGroup {
 
-  public static final double kRpm = 500.0;
   public static final double kDuration = 3.0;
 
   public Spit(
@@ -23,8 +21,8 @@ public class Spit extends SequentialCommandGroup {
       IntakeSubsystem intakeSubsystem,
       TurretSubsystem turretSubsystem) {
     addCommands(
-        new TurnTurretTo(180.0, turretSubsystem),
-        new ShootRpm(kRpm, intakeSubsystem, towerSubsystem, shooterSubsystem).withTimeout(kDuration),
-        new TurnTurretTo(0.0, turretSubsystem));
+        new TurnTurretTo(TurretSubsystem.kSpitAngle, turretSubsystem).withTimeout(5.0),
+        new ShootRpm(ShooterSubsystem.kSpitRpm, intakeSubsystem, towerSubsystem, shooterSubsystem).withTimeout(kDuration),
+        new TurnTurretTo(0.0, turretSubsystem).withTimeout(5.0));
   }
 }
