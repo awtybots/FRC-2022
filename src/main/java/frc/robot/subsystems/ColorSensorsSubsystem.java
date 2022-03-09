@@ -15,7 +15,6 @@ import frc.robot.Constants.Field;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
-  @SuppressWarnings("unused") // lower sensor not working :(
   private final ColorSensor lowerSensor;
   private final ColorSensor upperSensor;
 
@@ -45,7 +44,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    lowerBall = Alliance.Invalid; // * override color sensor :(
+    lowerBall = lowerSensor.getDetectedBall();
     upperBall = upperSensor.getDetectedBall();
 
     SmartDashboard.putString("TW - lower ball", lowerBall.toString());
@@ -78,12 +77,12 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
       // ? use proximity value from sensor for better detection accuracy
-      double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
+      // double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
 
       if (Constants.TUNING_MODE) {
         SmartDashboard.putString("TW - " + id + " color", colorToString(detectedColor));
         SmartDashboard.putNumber("TW - " + id + " confidence", match.confidence);
-        SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
+        // SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
       }
 
       if (match.confidence > minimumConfidence) {
