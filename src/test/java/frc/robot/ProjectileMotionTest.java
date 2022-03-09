@@ -35,7 +35,7 @@ public class ProjectileMotionTest {
             Field.kVisionTargetHeight - (Limelight.kMountingHeight + Limelight.kShooterOffset.y));
 
     double launchVelStationary =
-    projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
+        projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
     double launchRpmStationary = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelStationary);
 
     System.out.println();

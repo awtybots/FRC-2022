@@ -47,15 +47,32 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonChooser.setDefaultOption("Do Nothiing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
-    autonChooser.addOption("Two Ball Auton", new TwoBallAuton(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem));
-    autonChooser.addOption("Four Ball Auton", new FourBallAuton(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem));
+    autonChooser.addOption(
+        "Two Ball Auton",
+        new TwoBallAuton(
+            drivetrainSubsystem,
+            intakeSubsystem,
+            towerSubsystem,
+            turretSubsystem,
+            shooterSubsystem,
+            limelightSubsystem));
+    autonChooser.addOption(
+        "Four Ball Auton",
+        new FourBallAuton(
+            drivetrainSubsystem,
+            intakeSubsystem,
+            towerSubsystem,
+            turretSubsystem,
+            shooterSubsystem,
+            limelightSubsystem));
 
     SmartDashboard.putData(autonChooser);
   }
 
   private void configureButtonBindings() {
     // === AUTO ===
-    shooterSubsystem.setDefaultCommand(
+    // shooterSubsystem.setDefaultCommand(
+    operator.buttonY.whenHeld(
         new MovingShots(
             towerSubsystem,
             shooterSubsystem,
@@ -67,24 +84,34 @@ public class RobotContainer {
 
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
-    driver.bumperRight.whenHeld(new Intake(intakeSubsystem));
-    // driver.bumperRight.whenHeld(
-    //     new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
-    driver.bumperLeft.whenHeld(new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
+    // driver.bumperRight.whenHeld(new Intake(intakeSubsystem));
+    driver.bumperRight.whenHeld(
+        new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
+    driver.bumperLeft.whenHeld(
+        new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
 
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
-    operator.buttonA.whenHeld(new ShootRpm(1000, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(new ShootRpm(2300, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(new ShootRpm(3000, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(new ShootRpm(4500, intakeSubsystem, towerSubsystem, shooterSubsystem));
-    
-    // operator.buttonA.whenHeld(new ShootRpmOrSpit(1000, intakeSubsystem, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    // operator.buttonB.whenHeld(new ShootRpmOrSpit(2300, intakeSubsystem, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    // operator.buttonX.whenHeld(new ShootRpmOrSpit(3000, intakeSubsystem, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    // operator.buttonY.whenHeld(new ShootRpmOrSpit(4500, intakeSubsystem, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonA.whenHeld(
+        new ShootRpm(1000, towerSubsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(
+        new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(
+        new ShootRpm(3000, towerSubsystem, shooterSubsystem));
+    // operator.buttonY.whenHeld(
+    //     new ShootRpm(4500, towerSubsystem, shooterSubsystem));
+    operator.buttonStart.whenHeld(new ShootPercent(1.0, shooterSubsystem));
+
+    // operator.buttonA.whenHeld(new ShootRpmOrSpit(1000, intakeSubsystem, towerSubsystem,
+    // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    // operator.buttonB.whenHeld(new ShootRpmOrSpit(2300, intakeSubsystem, towerSubsystem,
+    // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    // operator.buttonX.whenHeld(new ShootRpmOrSpit(3000, intakeSubsystem, towerSubsystem,
+    // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    // operator.buttonY.whenHeld(new ShootRpmOrSpit(4500, intakeSubsystem, towerSubsystem,
+    // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));

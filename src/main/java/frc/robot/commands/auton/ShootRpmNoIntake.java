@@ -10,7 +10,8 @@ public class ShootRpmNoIntake extends CommandBase {
   private final ShooterSubsystem shooterSubsystem;
   private final double rpm;
 
-  public ShootRpmNoIntake(double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
+  public ShootRpmNoIntake(
+      double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.rpm = rpm;

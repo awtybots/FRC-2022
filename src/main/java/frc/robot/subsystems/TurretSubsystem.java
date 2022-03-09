@@ -99,8 +99,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void seek() {
-    if(seeking) {
-      if(isAtTarget()) {
+    if (seeking) {
+      if (isAtTarget()) {
         seekingRight = !seekingRight;
         turnTo(seekingRight ? kAngleMax : kAngleMin);
       }

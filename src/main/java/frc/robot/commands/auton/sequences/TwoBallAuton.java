@@ -17,12 +17,18 @@ public class TwoBallAuton extends SequentialCommandGroup {
 
   private final AutoAim autoAimCommand;
 
-  public TwoBallAuton(DrivetrainSubsystem drivetrainSubsystem, IntakeSubsystem intakeSubsystem, TowerSubsystem towerSubsystem, TurretSubsystem turretSubsystem, ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem) {
+  public TwoBallAuton(
+      DrivetrainSubsystem drivetrainSubsystem,
+      IntakeSubsystem intakeSubsystem,
+      TowerSubsystem towerSubsystem,
+      TurretSubsystem turretSubsystem,
+      ShooterSubsystem shooterSubsystem,
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
-      new InstantCommand(intakeSubsystem::start, intakeSubsystem),
-      new TwoBall0(drivetrainSubsystem),
-      new ShootRpmNoIntake(3000.0, towerSubsystem, shooterSubsystem) // TODO tune
-    );
+        new InstantCommand(intakeSubsystem::start, intakeSubsystem),
+        new TwoBall0(drivetrainSubsystem),
+        new ShootRpmNoIntake(3000.0, towerSubsystem, shooterSubsystem) // TODO tune
+        );
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
 

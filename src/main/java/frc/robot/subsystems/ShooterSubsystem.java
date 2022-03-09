@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -16,6 +14,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Shooter;
 import frc.robot.util.math.Convert;
 import frc.robot.util.math.Convert.Encoder;
+import java.util.ArrayList;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -29,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public static final double kMaxBallVelocity = flywheelRpmToBallVelocity(kMaxFlywheelRpm);
   private static final double kMaxAcceptableRpmError = 50.0;
   private static final int kOnTargetCounterSize = 10;
-  
+
   public static final double kSpitRpm = 750.0;
 
   private static final double kP_Flywheel = 0.7;
@@ -70,8 +69,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     actualRpm = getRpm();
     boolean onTargetRaw = Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
-    if(onTarget.size() > kOnTargetCounterSize) onTarget.remove(0);
-    if(targetRpm > 0) {
+    if (onTarget.size() > kOnTargetCounterSize) onTarget.remove(0);
+    if (targetRpm > 0) {
       onTarget.add(onTargetRaw);
     } else {
       onTarget.add(false);
@@ -112,7 +111,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean isAtTarget() {
     for (Boolean b : onTarget) {
-      if(!b) return false;
+      if (!b) return false;
     }
     return true;
   }

@@ -1,8 +1,5 @@
 package frc.robot.commands.auton.trajectories;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -11,6 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public abstract class DrivePathweaverTrajectory extends RamseteCommand {
 
@@ -38,7 +37,6 @@ public abstract class DrivePathweaverTrajectory extends RamseteCommand {
     this(loadTrajectoryFromFile(fileName), drivetrainSubsystem);
   }
 
-
   @Override
   public void initialize() {
     drivetrainSubsystem.initOdometry(trajectory.getInitialPose());
@@ -53,7 +51,8 @@ public abstract class DrivePathweaverTrajectory extends RamseteCommand {
 
   private static Trajectory loadTrajectoryFromFile(String pathName) {
     try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
+      Path trajectoryPath =
+          Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
       Trajectory t = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       return t;
     } catch (IOException ex) {
