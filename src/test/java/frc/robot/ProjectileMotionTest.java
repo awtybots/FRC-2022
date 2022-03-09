@@ -27,25 +27,28 @@ public class ProjectileMotionTest {
             ShooterSubsystem.kMaxBallVelocity,
             ShooterSubsystem.kLaunchAngle);
     projectileMotionSolver.setSimulationStep(0.01);
-    projectileMotionSolver.setSimulationIterations(50);
+    projectileMotionSolver.setSimulationIterations(10);
 
     Vector2 goalDisplacement =
         new Vector2(
-            1.0,
+            3.0,
             Field.kVisionTargetHeight - (Limelight.kMountingHeight + Limelight.kShooterOffset.y));
 
-    // double launchVelStationary =
-    // projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
-    // System.out.println("disp: " + goalDisplacement.toString());
-    // System.out.println("vel: " + launchVelStationary);
+    double launchVelStationary =
+    projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);
+    double launchRpmStationary = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelStationary);
+
+    System.out.println();
+    System.out.println("disp: " + goalDisplacement.toString());
+    System.out.println("vel: " + launchVelStationary);
+    System.out.println("rpm: " + launchRpmStationary);
 
     for (double j = -5.0; j <= 5.0; j += 1.0) {
       for (double i = -5.0; i <= 5.0; i += 1.0) {
         Vector2 robotVelocity = new Vector2(i, j);
 
         System.out.println();
-        System.out.println("rVel parallel: " + robotVelocity.x);
-        System.out.println("rVel normal: " + robotVelocity.y);
+        System.out.println("rVel " + robotVelocity.toString());
 
         Vector2 launchData =
             projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
@@ -53,9 +56,11 @@ public class ProjectileMotionTest {
           System.out.println("no solution :(");
         } else {
           double launchVel = launchData.x;
+          double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVel);
           double turretAngle = launchData.y;
 
           System.out.println("vel: " + launchVel);
+          System.out.println("rpm: " + launchRpm);
           System.out.println("theta: " + turretAngle);
         }
       }

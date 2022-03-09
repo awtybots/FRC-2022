@@ -166,11 +166,11 @@ public class ProjectileMotionSolver {
       }
 
       if (i == simulationIterations - 1) {
-        System.out.println("a: " + a);
+        // System.out.println("a: " + a);
 
         double dy = crossHeight - goalDisplacement.y;
         if (Math.abs(dy) > 0.1) {
-          System.out.println(" ==== HIGH DY: " + dy);
+          // System.out.println(" ==== HIGH DY: " + dy);
           return null;
 
         } else {
