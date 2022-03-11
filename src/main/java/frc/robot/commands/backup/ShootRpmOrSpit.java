@@ -15,6 +15,7 @@ public class ShootRpmOrSpit extends CommandBase {
   private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   private final double rpm;
+  private boolean alreadySet = false;
 
   public ShootRpmOrSpit(
       double rpm,
@@ -41,6 +42,8 @@ public class ShootRpmOrSpit extends CommandBase {
   }
 
   private void executeShoot(boolean idling) {
+    alreadySet = false;
+
     if (!limelightSubsystem.hasVisibleTarget()) {
       turretSubsystem.seek();
       return;
@@ -55,8 +58,15 @@ public class ShootRpmOrSpit extends CommandBase {
   }
 
   private void executeSpit() {
+    if (!alreadySet) {
+      alreadySet = true;
+      if (limelightSubsystem.hasVisibleTarget()) {
+        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+      } else {
+        turretSubsystem.spit();
+      }
+    }
     shooterSubsystem.spit();
-    turretSubsystem.spit();
   }
 
   @Override

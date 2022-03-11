@@ -39,7 +39,7 @@ public class LimelightSubsystem extends SubsystemBase {
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
     Vector2 disp = upperHub.getGoalDisplacement();
-    if(disp == null) {
+    if (disp == null) {
       SmartDashboard.putNumber("LL - distance", -1.0);
       return null;
     }

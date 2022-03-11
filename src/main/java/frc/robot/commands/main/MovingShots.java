@@ -1,5 +1,6 @@
 package frc.robot.commands.main;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Field;
 import frc.robot.subsystems.ColorSensorsSubsystem;
@@ -27,6 +28,8 @@ public class MovingShots extends CommandBase {
   private final DrivetrainSubsystem drivetrainSubsystem;
 
   private final ProjectileMotionSolver projectileMotionSolver;
+
+  private boolean alreadySet = false;
 
   public MovingShots(
       TowerSubsystem towerSubsystem,
@@ -61,19 +64,23 @@ public class MovingShots extends CommandBase {
     limelightSubsystem.shootingMode();
   }
 
-  private void idle() {
-    // shooterSubsystem.shootRpm(IdleShooter.kIdleRpm);
-    shooterSubsystem.stop();
-  }
-
   private void executeShoot(boolean idling) {
+    alreadySet = false;
+
     if (!limelightSubsystem.hasVisibleTarget()) {
       turretSubsystem.seek();
-      idle();
+      shooterSubsystem.stop();
       return;
     }
 
     Vector2 goalDisplacement = limelightSubsystem.getGoalDisplacement();
+    if (goalDisplacement == null) {
+      turretSubsystem.seek();
+      shooterSubsystem.stop();
+      return;
+    }
+
+    System.out.println(goalDisplacement.toString());
 
     double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
     double robotSpeed = drivetrainSubsystem.getSpeed();
@@ -84,7 +91,7 @@ public class MovingShots extends CommandBase {
         projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
 
     if (launchVelocityData == null) {
-      idle();
+      shooterSubsystem.stop();
       return;
     }
 
@@ -95,12 +102,23 @@ public class MovingShots extends CommandBase {
 
     turretSubsystem.turnBy(visionTargetXOffset + horizontalLaunchAngle);
 
-    if (idling) idle(); // only run flywheel when needed
-    else shooterSubsystem.shootRpm(launchRpm);
+    if (idling) {
+      shooterSubsystem.stop();
+    } else {
+      // shooterSubsystem.shootRpm(launchRpm);
+      SmartDashboard.putNumber("moving shots rpm", launchRpm);
+    }
   }
 
   private void executeSpit() {
-    turretSubsystem.spit();
+    if (!alreadySet) {
+      alreadySet = true;
+      if (limelightSubsystem.hasVisibleTarget()) {
+        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+      } else {
+        turretSubsystem.spit();
+      }
+    }
     shooterSubsystem.spit();
   }
 
@@ -114,9 +132,9 @@ public class MovingShots extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        towerSubsystem.feedShooter();
+        // towerSubsystem.feedShooter(); // !
       } else {
-        towerSubsystem.stopUpper();
+        // towerSubsystem.stopUpper(); // !
 
         if (colorSensorsSubsystem.isLowerBallPresent()) {
           towerSubsystem.stop();
@@ -124,7 +142,7 @@ public class MovingShots extends CommandBase {
       }
     } else {
       executeShoot(true);
-      towerSubsystem.intake();
+      // towerSubsystem.intake(); // !
     }
   }
 

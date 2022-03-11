@@ -9,12 +9,6 @@ import frc.robot.util.math.Vector2;
 
 public class ProjectileMotionTest {
   public static void main(String[] args) {
-    // for (double j = -1.0; j <= 1.0; j += 2.0) {
-    //     for (double i = -1.0; i <= 1.0; i += 1.0) {
-    //     Vector2 robotVelocity = new Vector2(i, j); // moving x m/s right
-    //     test(robotVelocity);
-    //   }
-    // }
     test();
   }
 
