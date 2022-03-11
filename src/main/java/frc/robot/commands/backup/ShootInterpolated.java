@@ -1,57 +1,48 @@
-package frc.robot.commands.main;
+package frc.robot.commands.backup;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Field;
 import frc.robot.subsystems.*;
-import frc.robot.util.math.ProjectileMotionSolver;
-import frc.robot.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
+import frc.robot.util.math.Convert;
+import frc.robot.util.math.Interpolatable;
+import frc.robot.util.math.InterpolationMap;
 import frc.robot.util.math.Vector2;
 
-/**
- * The goal is that this command runs the entire time. It constantly aims the turret according to
- * the projectile motion solver, and it shoots or spits balls automatically. It also handles the
- * tower logic, so if this is the command of choice, the intake command should not deal with the
- * tower.
- */
-public class MovingShots extends CommandBase {
+public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-  private final DrivetrainSubsystem drivetrainSubsystem;
-
-  private final ProjectileMotionSolver projectileMotionSolver;
 
   private boolean alreadySet = false;
+  
+  private final InterpolationMap<Double> iMap = new InterpolationMap<>();
 
-  public MovingShots(
+  public ShootInterpolated(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
-      DrivetrainSubsystem drivetrainSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
-    this.drivetrainSubsystem = drivetrainSubsystem;
     this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
 
+    initIMap();
+    
     addRequirements(
         towerSubsystem,
         shooterSubsystem,
         turretSubsystem,
         limelightSubsystem); // drive and color sensor subsystems not requirements
+  }
 
-    projectileMotionSolver =
-        new ProjectileMotionSolver(
-            Field.kBallMass,
-            Sphere.frontalArea(Field.kBallRadius),
-            Sphere.dragCoefficient,
-            ShooterSubsystem.kLaunchAngle);
+  private void initIMap() {
+    iMap.addKeyframe(Convert.feetToMeters(5.0, 6.0), Interpolatable.interpolatableDouble(2000));
+    iMap.addKeyframe(Convert.feetToMeters(6.0, 6.0), Interpolatable.interpolatableDouble(2500));
+    iMap.addKeyframe(Convert.feetToMeters(7.0, 6.0), Interpolatable.interpolatableDouble(3000));
   }
 
   @Override
@@ -75,34 +66,15 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    System.out.println(goalDisplacement.toString()); // TODO remove
-
-    double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
-    double robotSpeed = drivetrainSubsystem.getSpeed();
-    double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getActualAngle();
-    Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
-
-    Vector2 launchVelocityData =
-        projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
-
-    if (launchVelocityData == null) {
-      shooterSubsystem.stop();
-      return;
-    }
-
-    double launchVelocity = launchVelocityData.x; // meters per second
-    double horizontalLaunchAngle = launchVelocityData.y; // degrees clockwise
-
-    double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelocity);
-
-    turretSubsystem.turnBy(visionTargetXOffset + horizontalLaunchAngle);
-
+    double launchRpm = iMap.get(goalDisplacement.x);
     if (idling) {
       shooterSubsystem.stop();
     } else {
-      // shooterSubsystem.shootRpm(launchRpm);
-      SmartDashboard.putNumber("moving shots rpm", launchRpm);
+      shooterSubsystem.shootRpm(launchRpm);
     }
+
+    double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
+    turretSubsystem.turnBy(visionTargetXOffset);
   }
 
   private void executeSpit() {
@@ -148,4 +120,5 @@ public class MovingShots extends CommandBase {
     turretSubsystem.stop();
     limelightSubsystem.drivingMode();
   }
+  
 }

@@ -98,6 +98,10 @@ public final class Convert {
   public static final double inchesToMeters(double inches) {
     return inches * 0.0254;
   }
+  
+  public static final double feetToMeters(double feet, double inches) {
+    return inchesToMeters((feet * 12) + inches);
+  }
 
   public static final double metersToInches(double meters) {
     return meters / 0.0254;

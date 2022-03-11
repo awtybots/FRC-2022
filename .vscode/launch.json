@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch IMapTest",
+      "request": "launch",
+      "mainClass": "frc.robot.IMapTest",
+      "projectName": "FRC-2022"
+    },
+    {
+      "type": "java",
       "name": "Launch ProjectileMotionTest",
       "request": "launch",
       "mainClass": "frc.robot.ProjectileMotionTest",
