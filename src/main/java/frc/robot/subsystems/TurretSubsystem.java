@@ -28,10 +28,9 @@ public class TurretSubsystem extends SubsystemBase {
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
   private static final double kP = 0.5;
-  private static final double kMaxDegPerSec = 180.0;
-  private static final double kMaxDegPerSecPerSec = 180.0;
+  private static final double kI = 0.005; // (TODO check) docs say go to 1/100 of kP
 
-  private static final double kMaxAcceptableAngleError = 2.0;
+  private static final double kMaxAcceptableAngleError = 3.0;
 
   private static final double kMaxManualPercentOutput = 0.2;
   private static final double kPeakOutput = 0.5;
@@ -69,12 +68,7 @@ public class TurretSubsystem extends SubsystemBase {
     motor.setSensorPhase(true);
 
     motor.config_kP(0, kP);
-    motor.configMotionCruiseVelocity(
-        Convert.angularVelToEncoderVel(
-            kMaxDegPerSec, kGearRatio, Encoder.VersaPlanetaryIntegrated));
-    motor.configMotionAcceleration(
-        Convert.angularAccelToEncoderAccel(
-            kMaxDegPerSecPerSec, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    motor.config_kI(0, kI);
     motor.configClosedLoopPeakOutput(0, kPeakOutput);
 
     motor.setSelectedSensorPosition(
