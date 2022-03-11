@@ -9,7 +9,7 @@ public class ZeroBallAuton extends SequentialCommandGroup {
     addCommands(
         new StartEndCommand(
                 () -> {
-                  drivetrainSubsystem.drive(0.5, 0.0);
+                  drivetrainSubsystem.driveVolts(6.0, 6.0);
                 },
                 drivetrainSubsystem::stop,
                 drivetrainSubsystem)
