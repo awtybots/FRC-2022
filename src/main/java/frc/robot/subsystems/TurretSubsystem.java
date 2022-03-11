@@ -27,14 +27,14 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private static final double kP = 0.4;
+  private static final double kP = 0.5;
   private static final double kMaxDegPerSec = 180.0;
   private static final double kMaxDegPerSecPerSec = 180.0;
 
   private static final double kMaxAcceptableAngleError = 2.0;
 
   private static final double kMaxManualPercentOutput = 0.2;
-  private static final double kPeakOutput = 0.3;
+  private static final double kPeakOutput = 0.5;
 
   private final WPI_TalonSRX motor;
 

@@ -45,8 +45,10 @@ public class RobotContainer {
   }
 
   private void addAutonomousChoices() {
-    autonChooser.setDefaultOption("Do Nothiing", new DoNothingAuton());
+    autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
+    autonChooser.addOption(
+        "One Ball Auton", new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem));
     autonChooser.addOption(
         "Two Ball Auton",
         new TwoBallAuton(
@@ -128,7 +130,7 @@ public class RobotContainer {
             colorSensorsSubsystem));
     // operator.buttonY.whenHeld(new ShootRpmOrSpit(4500, towerSubsystem,
     // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    operator.buttonY.whenHeld(
+    operator.buttonY.whenHeld( // ! temp
         new MovingShots(
             towerSubsystem,
             shooterSubsystem,

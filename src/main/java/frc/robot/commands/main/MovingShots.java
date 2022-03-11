@@ -132,9 +132,9 @@ public class MovingShots extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        // towerSubsystem.feedShooter(); // !
+        towerSubsystem.feedShooter();
       } else {
-        // towerSubsystem.stopUpper(); // !
+        towerSubsystem.stopUpper();
 
         if (colorSensorsSubsystem.isLowerBallPresent()) {
           towerSubsystem.stop();
@@ -142,7 +142,7 @@ public class MovingShots extends CommandBase {
       }
     } else {
       executeShoot(true);
-      // towerSubsystem.intake(); // !
+      towerSubsystem.intake();
     }
   }
 

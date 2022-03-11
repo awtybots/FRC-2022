@@ -25,10 +25,10 @@ public class TwoBallAuton extends SequentialCommandGroup {
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {
     addCommands(
-      new InstantCommand(intakeSubsystem::start, intakeSubsystem),
-      new TwoBall0(drivetrainSubsystem),
-      new ShootRpm(3000.0, towerSubsystem, shooterSubsystem) // TODO tune
-    );
+        new InstantCommand(intakeSubsystem::start, intakeSubsystem),
+        new TwoBall0(drivetrainSubsystem),
+        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem) // TODO tune
+        );
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
 

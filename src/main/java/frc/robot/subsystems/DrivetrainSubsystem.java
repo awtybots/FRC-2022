@@ -112,6 +112,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("DT - left distance", leftDistance);
       SmartDashboard.putNumber("DT - right distance", rightDistance);
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
+
+      SmartDashboard.putNumber("DT - left vel", getAverageSpeed(leftMotors));
+      SmartDashboard.putNumber("DT - right vel", getAverageSpeed(rightMotors));
     }
   }
 
