@@ -80,7 +80,7 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    System.out.println(goalDisplacement.toString());
+    System.out.println(goalDisplacement.toString()); // TODO remove
 
     double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
     double robotSpeed = drivetrainSubsystem.getSpeed();
