@@ -2,14 +2,12 @@ package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ColorSensorsSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class ShootRpmOrSpit extends CommandBase {
-  private final IntakeSubsystem intakeSubsystem;
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
@@ -17,17 +15,16 @@ public class ShootRpmOrSpit extends CommandBase {
   private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   private final double rpm;
+  private boolean alreadySet = false;
 
   public ShootRpmOrSpit(
       double rpm,
-      IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       LimelightSubsystem limelightSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
-    
-    this.intakeSubsystem = intakeSubsystem;
+
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
@@ -36,16 +33,17 @@ public class ShootRpmOrSpit extends CommandBase {
 
     this.rpm = rpm;
 
-    addRequirements(intakeSubsystem, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem);
+    addRequirements(towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem);
   }
 
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
-    intakeSubsystem.start();
   }
 
   private void executeShoot(boolean idling) {
+    alreadySet = false;
+
     if (!limelightSubsystem.hasVisibleTarget()) {
       turretSubsystem.seek();
       return;
@@ -55,15 +53,20 @@ public class ShootRpmOrSpit extends CommandBase {
 
     turretSubsystem.turnBy(deltaAngle);
 
-    if(idling)
-      shooterSubsystem.stop();
-    else
-      shooterSubsystem.shootRpm(this.rpm);
+    if (idling) shooterSubsystem.stop();
+    else shooterSubsystem.shootRpm(this.rpm);
   }
 
   private void executeSpit() {
+    if (!alreadySet) {
+      alreadySet = true;
+      if (limelightSubsystem.hasVisibleTarget()) {
+        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+      } else {
+        turretSubsystem.spit();
+      }
+    }
     shooterSubsystem.spit();
-    turretSubsystem.spit();
   }
 
   @Override
@@ -92,7 +95,6 @@ public class ShootRpmOrSpit extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stop();
     shooterSubsystem.stop();
     towerSubsystem.stop();
     turretSubsystem.stop();

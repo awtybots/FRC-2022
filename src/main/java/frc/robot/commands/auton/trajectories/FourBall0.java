@@ -7,5 +7,4 @@ public class FourBall0 extends DrivePathweaverTrajectory {
   public FourBall0(DrivetrainSubsystem drivetrainSubsystem) {
     super("FourBall0", drivetrainSubsystem);
   }
-  
 }

@@ -22,15 +22,16 @@ public class TurretSubsystem extends SubsystemBase {
   private static final double kAngleMax = 225.0;
   private static final double kAngleStart = 0.0;
 
-  public static final double kSpitAngle = -90.0;
+  public static final double kSpitAngle = 90.0;
+  public static final double kSpitRelativeAngle = 40.0;
 
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
   private static final double kP = 0.4;
-  private static final double kMaxDegPerSec = 90.0;
-  private static final double kMaxDegPerSecPerSec = 90.0;
+  private static final double kMaxDegPerSec = 180.0;
+  private static final double kMaxDegPerSecPerSec = 180.0;
 
-  private static final double kMaxAcceptableAngleError = 1.0;
+  private static final double kMaxAcceptableAngleError = 2.0;
 
   private static final double kMaxManualPercentOutput = 0.2;
   private static final double kPeakOutput = 0.3;
@@ -99,20 +100,25 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void seek() {
-    if(seeking) {
-      if(isAtTarget()) {
+    if (seeking) {
+      if (isAtTarget()) {
         seekingRight = !seekingRight;
         turnTo(seekingRight ? kAngleMax : kAngleMin);
+        seeking = true;
       }
     } else {
-      seeking = true;
       seekingRight = (kAngleMax - actualAngle) < 180.0;
       turnTo(seekingRight ? kAngleMax : kAngleMin);
+      seeking = true;
     }
   }
 
   public void spit() {
     turnTo(kSpitAngle);
+  }
+
+  public void spitRelative(double original) {
+    turnBy(original + kSpitRelativeAngle);
   }
 
   public void turnBy(double deltaAngle) {

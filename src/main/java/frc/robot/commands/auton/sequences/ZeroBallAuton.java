@@ -7,11 +7,13 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class ZeroBallAuton extends SequentialCommandGroup {
   public ZeroBallAuton(DrivetrainSubsystem drivetrainSubsystem) {
     addCommands(
-      new StartEndCommand(() -> {
-        drivetrainSubsystem.drive(0.5, 0.0);
-      },
-      drivetrainSubsystem::stop, drivetrainSubsystem)
-        .withTimeout(0.5) // TODO tune this auton first
-    );
+        new StartEndCommand(
+                () -> {
+                  drivetrainSubsystem.drive(0.5, 0.0);
+                },
+                drivetrainSubsystem::stop,
+                drivetrainSubsystem)
+            .withTimeout(0.5) // TODO tune this auton first
+        );
   }
 }

@@ -150,5 +150,4 @@ public class ClimbSubsystem extends SubsystemBase {
   public void stop() {
     for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
   }
-
 }

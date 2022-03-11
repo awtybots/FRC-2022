@@ -1,13 +1,12 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
 import frc.robot.util.math.Vector2;
 import frc.robot.util.vision.VisionTarget;
+import java.util.ArrayList;
 
 public class LimelightSubsystem extends SubsystemBase {
 
@@ -28,10 +27,10 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(xAccumulator.size() == xAccumulatorLength) {
+    if (xAccumulator.size() == xAccumulatorLength) {
       xAccumulator.remove(0);
     }
-    if(hasVisibleTarget()) {
+    if (hasVisibleTarget()) {
       xAccumulator.add(getTargetUnaveragedXOffset());
       getGoalDisplacement();
     }
@@ -39,9 +38,14 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** NOTE: can be null */
   public Vector2 getGoalDisplacement() {
-    Vector2 disp = upperHub.getGoalDisplacement().plus(new Vector2(Field.kGoalRadius, 0.0));
-    SmartDashboard.putNumber("LL - distance", disp.x);
-    return disp;
+    Vector2 disp = upperHub.getGoalDisplacement();
+    if (disp == null) {
+      SmartDashboard.putNumber("LL - distance", -1.0);
+      return null;
+    }
+    Vector2 dispAdjusted = disp.plus(new Vector2(Field.kGoalRadius, 0.0));
+    SmartDashboard.putNumber("LL - distance", dispAdjusted.x);
+    return dispAdjusted;
   }
 
   public boolean hasVisibleTarget() {
@@ -59,7 +63,7 @@ public class LimelightSubsystem extends SubsystemBase {
   /** degrees NOTE: check for target existing first */
   public double getTargetXOffset() {
     double x = 0.0;
-    if(xAccumulator.size() > 0) {
+    if (xAccumulator.size() > 0) {
       for (Double xi : xAccumulator) {
         x += xi;
       }
