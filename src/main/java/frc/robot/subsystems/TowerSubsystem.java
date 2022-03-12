@@ -14,11 +14,11 @@ public class TowerSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
-  private static final double kIntakingSpeedLower = 0.4;
+  private static final double kIntakingSpeedLower = 0.5;
   private static final double kIntakingSpeedUpper = 0.3;
 
-  private static final double kReversingSpeedLower = 0.7;
-  private static final double kReversingSpeedUpper = 0.7;
+  private static final double kReversingSpeedLower = 0.3;
+  private static final double kReversingSpeedUpper = 0.3;
 
   private static final double kShootingSpeedLower = 0.3;
   private static final double kShootingSpeedUpper = 0.75;
@@ -50,7 +50,7 @@ public class TowerSubsystem extends SubsystemBase {
 
   public void reverseBoth() {
     lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
-    lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
+    upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
   }
 
   public void feedShooter() {

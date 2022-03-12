@@ -99,22 +99,25 @@ public class RobotContainer {
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
-    operator.bumperLeft.whenHeld(
-        new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
-
-
-    operator.buttonA.whenHeld(
-        new ShootRpm(SmartDashboard.getNumber("SH - set rpm", 0.0), towerSubsystem, shooterSubsystem));
+    operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
 
     // operator.buttonA.whenHeld(
-    //     new ShootRpm(750, towerSubsystem, shooterSubsystem)
-    //     .alongWith(new TurnTurretTo(180.0, turretSubsystem)));
-    // operator.buttonB.whenHeld(
-    //     new ShootRpm(2300, towerSubsystem, shooterSubsystem));
-    // operator.buttonX.whenHeld(
-    //     new ShootRpm(3000, towerSubsystem, shooterSubsystem));
-    // operator.buttonY.whenHeld(
-    //     new ShootRpm(4500, towerSubsystem, shooterSubsystem));
+    //     new ShootRpmSD(towerSubsystem, shooterSubsystem));
+
+    operator.buttonA.whenHeld(
+        new ShootRpm(750, towerSubsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(
+        new ShootRpm(1500, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(
+        new ShootRpm(1700, towerSubsystem, shooterSubsystem));
+    operator.buttonY.whenHeld(
+        new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+
+    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
+    operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
+    operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
+    operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     // operator.buttonA.whenHeld(
     //     new ShootRpmOrSpit(
@@ -156,11 +159,6 @@ public class RobotContainer {
     //         drivetrainSubsystem,
     //         colorSensorsSubsystem,
     //         limelightSubsystem));
-
-    operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
-    operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
-    operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
-    operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
   }
 
   public Command getAutonomousCommand() {

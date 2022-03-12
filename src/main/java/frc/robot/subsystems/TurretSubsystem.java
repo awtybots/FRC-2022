@@ -20,7 +20,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kAngleMin = -135.0;
   private static final double kAngleMax = 225.0;
-  private static final double kAngleStart = 0.0;
+  private static final double kAngleStart = 180.0;
 
   public static final double kSpitAngle = 90.0;
   public static final double kSpitRelativeAngle = 40.0;

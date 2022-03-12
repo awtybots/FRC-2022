@@ -42,8 +42,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
     configMotors();
-    
-    SmartDashboard.putNumber("SH - set rpm", 0.0); // TODO remove
   }
 
   public static double ballVelocityToFlywheelRpm(double ballVelocity) {

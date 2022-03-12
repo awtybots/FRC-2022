@@ -40,9 +40,9 @@ public class ShootInterpolated extends CommandBase {
   }
 
   private void initIMap() {
-    iMap.addKeyframe(Convert.feetToMeters(5.0, 6.0), Interpolatable.interpolatableDouble(2000));
-    iMap.addKeyframe(Convert.feetToMeters(6.0, 6.0), Interpolatable.interpolatableDouble(2500));
-    iMap.addKeyframe(Convert.feetToMeters(7.0, 6.0), Interpolatable.interpolatableDouble(3000));
+    iMap.addKeyframe(Convert.feetToMeters(9, 0), Interpolatable.interpolatableDouble(1500));
+    iMap.addKeyframe(Convert.feetToMeters(12, 0), Interpolatable.interpolatableDouble(1700));
+    iMap.addKeyframe(Convert.feetToMeters(16, 0), Interpolatable.interpolatableDouble(2300));
   }
 
   @Override
