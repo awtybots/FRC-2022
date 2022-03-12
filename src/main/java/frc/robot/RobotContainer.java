@@ -134,16 +134,22 @@ public class RobotContainer {
             turretSubsystem,
             limelightSubsystem,
             colorSensorsSubsystem));
-    // operator.buttonY.whenHeld(new ShootRpmOrSpit(4500, towerSubsystem,
-    // shooterSubsystem, turretSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    operator.buttonY.whenHeld( // ! TODO temp
-        new MovingShots(
+    operator.buttonY.whenHeld(
+        new ShootRpmOrSpit(
+            4500,
             towerSubsystem,
             shooterSubsystem,
             turretSubsystem,
-            drivetrainSubsystem,
-            colorSensorsSubsystem,
-            limelightSubsystem));
+            limelightSubsystem,
+            colorSensorsSubsystem));
+    // operator.buttonY.whenHeld(
+    //     new MovingShots(
+    //         towerSubsystem,
+    //         shooterSubsystem,
+    //         turretSubsystem,
+    //         drivetrainSubsystem,
+    //         colorSensorsSubsystem,
+    //         limelightSubsystem));
 
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
