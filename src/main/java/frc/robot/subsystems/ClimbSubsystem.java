@@ -58,7 +58,7 @@ public class ClimbSubsystem extends SubsystemBase {
     leftMotor.configFactoryDefault();
     rightMotor.configFactoryDefault();
 
-    rightMotor.setInverted(TalonFXInvertType.Clockwise);
+    leftMotor.setInverted(TalonFXInvertType.Clockwise);
 
     for (WPI_TalonFX motor : motors) {
       motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
