@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -111,6 +112,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
 
+      if(DriverStation.isAutonomous()) {
+        System.out.println("drive speed: " + getAverageSpeed(allMotors) + " m/s"); // TODO for first auton only
+      }
       SmartDashboard.putNumber("DT - left vel", getAverageSpeed(leftMotors));
       SmartDashboard.putNumber("DT - right vel", getAverageSpeed(rightMotors));
     }
