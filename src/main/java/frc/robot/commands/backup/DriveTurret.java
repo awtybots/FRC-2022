@@ -24,7 +24,7 @@ public class DriveTurret extends CommandBase {
 
   @Override
   public void execute() {
-    double rate = controller.getRightTrigger() - controller.getLeftTrigger();
+    double rate = controller.getLeftX();
     turretSubsystem.drive(rate);
   }
 

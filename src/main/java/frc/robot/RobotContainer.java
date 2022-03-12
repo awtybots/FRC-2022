@@ -122,6 +122,8 @@ public class RobotContainer {
     operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
+    operator.joystickClickLeft.whenHeld(new DriveTurret(operator, turretSubsystem));
+
     // operator.buttonA.whenHeld(
     //     new ShootRpmOrSpit(
     //         1500,
