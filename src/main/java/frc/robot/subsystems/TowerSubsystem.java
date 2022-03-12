@@ -14,7 +14,7 @@ public class TowerSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
-  private static final double kIntakingSpeedLower = 0.3;
+  private static final double kIntakingSpeedLower = 0.5;
   private static final double kIntakingSpeedUpper = 0.3;
 
   private static final double kReversingSpeedLower = 0.3;

@@ -72,7 +72,7 @@ public class TurretSubsystem extends SubsystemBase {
     motor.config_IntegralZone(0, 1000);
     motor.configClosedLoopPeakOutput(0, kPeakOutput);
     motor.configMotionCruiseVelocity(Convert.angularVelToEncoderVel(180.0, kGearRatio, Encoder.VersaPlanetaryIntegrated));
-    motor.configMotionAcceleration(Convert.angularAccelToEncoderAccel(180.0, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    motor.configMotionAcceleration(Convert.angularAccelToEncoderAccel(90.0, kGearRatio, Encoder.VersaPlanetaryIntegrated));
 
     motor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(kAngleStart, kGearRatio, Encoder.VersaPlanetaryIntegrated));
@@ -82,10 +82,10 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     actualAngle = getAngle();
 
-    if (actualAngle < kAngleMin - kMaxAcceptableAngleError * 3.0
-        || actualAngle > kAngleMax + kMaxAcceptableAngleError * 3.0) {
-      stop(); // ? maybe remove for competition
-    }
+    // if (actualAngle < kAngleMin - kMaxAcceptableAngleError * 3.0
+    //     || actualAngle > kAngleMax + kMaxAcceptableAngleError * 3.0) {
+    //   stop();
+    // }
 
     if (Constants.TUNING_MODE) {
       // turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle));

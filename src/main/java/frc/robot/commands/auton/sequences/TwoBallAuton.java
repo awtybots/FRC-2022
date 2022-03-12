@@ -1,9 +1,9 @@
 package frc.robot.commands.auton.sequences;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.auton.trajectories.TwoBall0;
 import frc.robot.commands.backup.AutoAim;
+import frc.robot.commands.backup.IntakeAndIngest;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.subsystems.*;
 
@@ -23,11 +23,11 @@ public class TwoBallAuton extends SequentialCommandGroup {
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      LimelightSubsystem limelightSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
-        new InstantCommand(intakeSubsystem::start, intakeSubsystem),
-        new TwoBall0(drivetrainSubsystem),
-        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem) // TODO tune
+        new TwoBall0(drivetrainSubsystem).alongWith(new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem).withTimeout(5.0)),
+        new ShootRpm(1750.0, towerSubsystem, shooterSubsystem).withTimeout(5.0) // TODO tune
         );
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
@@ -43,7 +43,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
   @Override
   public void initialize() {
     turretSubsystem.initPosition(180.0);
-    autoAimCommand.schedule();
+    // autoAimCommand.schedule();
 
     super.initialize();
   }
@@ -52,7 +52,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
   public void cancel() {
     super.cancel();
 
-    autoAimCommand.cancel();
+    // autoAimCommand.cancel();
     intakeSubsystem.stop();
   }
 }

@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,8 +21,6 @@ import frc.robot.util.Controller;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
-  public static PowerDistribution pdp = new PowerDistribution();
 
   private final Controller driver = new Controller(0);
   private final Controller operator = new Controller(1);
@@ -67,7 +64,8 @@ public class RobotContainer {
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem));
+            limelightSubsystem,
+            colorSensorsSubsystem));
     autonChooser.addOption(
         "Four Ball Auton",
         new FourBallAuton(
@@ -167,7 +165,16 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
+    // return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
+    // return new TwoBallAuton(
+    //   drivetrainSubsystem,
+    //   intakeSubsystem,
+    //   towerSubsystem,
+    //   turretSubsystem,
+    //   shooterSubsystem,
+    //   limelightSubsystem,
+    //   colorSensorsSubsystem);
+    return new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem);
     //autonChooser.getSelected();
     // TODO figure out why auton chooser doesn't work
   }

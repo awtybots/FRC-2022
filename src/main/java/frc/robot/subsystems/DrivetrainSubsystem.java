@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -33,7 +32,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private static final double kTrackWidth = Convert.inchesToMeters(22.5);
   public static final double kS = 0.0;
-  public static final double kV = 0.0; // ! TODO sysId - calculateKF(velAtPercentOut, 0.5)
+  public static final double kV = calculateKF(2.53, 0.5);
   public static final double kA = 0.0;
   public static final double kP = 0.0;
 
@@ -53,9 +52,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final DifferentialDrive drivetrain;
 
   private final DifferentialDriveOdometry odometry;
-
-  // TODO temp
-  private double maxSpeed = 0.0;
 
   private final AHRS navX = new AHRS(Port.kMXP);
 
@@ -114,14 +110,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
-
-      if(DriverStation.isAutonomous()) {
-        double speed = getAverageSpeed(allMotors);
-        if(speed > maxSpeed) {
-          maxSpeed = speed;
-          System.out.println("drive speed: " + maxSpeed + " m/s"); // TODO for first auton only
-        }
-      }
       SmartDashboard.putNumber("DT - left vel", getAverageSpeed(leftMotors));
       SmartDashboard.putNumber("DT - right vel", getAverageSpeed(rightMotors));
     }

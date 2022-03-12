@@ -11,18 +11,18 @@ public class OneBallAuton extends SequentialCommandGroup {
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem) {
     addCommands(
-        new ShootRpm(1450, towerSubsystem, shooterSubsystem).withTimeout(5.0),
-        new FunctionalCommand(
-                () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(6.0, 6.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
-                () -> false,
-                drivetrainSubsystem)
-            .withTimeout(1.5)
-        );
+      new FunctionalCommand(
+              () -> {},
+              () -> {
+                drivetrainSubsystem.driveVolts(6.0, 6.0);
+              },
+              interrupted -> {
+                drivetrainSubsystem.stop();
+              },
+              () -> false,
+              drivetrainSubsystem)
+          .withTimeout(1.0),
+        new ShootRpm(1750, towerSubsystem, shooterSubsystem).withTimeout(5.0)
+    );
   }
 }
