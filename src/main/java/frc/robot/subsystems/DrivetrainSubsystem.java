@@ -109,8 +109,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     odometry.update(new Rotation2d(Math.toRadians(gyroAngle)), leftDistance, rightDistance);
 
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putNumber("DT - left distance", leftDistance);
-      SmartDashboard.putNumber("DT - right distance", rightDistance);
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
 
       SmartDashboard.putNumber("DT - left vel", getAverageSpeed(leftMotors));

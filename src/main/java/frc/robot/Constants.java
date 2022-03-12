@@ -61,8 +61,8 @@ public final class Constants {
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
     static {
-      kBallColors.put(Alliance.Blue, new Color(0.15, 0.41, 0.44));
-      kBallColors.put(Alliance.Red, new Color(0.47, 0.37, 0.15));
+      kBallColors.put(Alliance.Blue, new Color(0.28, 0.48, 0.24));
+      kBallColors.put(Alliance.Red, new Color(0.52, 0.34, 0.13));
     }
   }
 

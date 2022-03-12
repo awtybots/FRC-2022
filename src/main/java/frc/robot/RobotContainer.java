@@ -87,7 +87,6 @@ public class RobotContainer {
     //     drivetrainSubsystem,
     //     colorSensorsSubsystem,
     //     limelightSubsystem));
-    // turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
 
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
@@ -101,14 +100,19 @@ public class RobotContainer {
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
+
     operator.buttonA.whenHeld(
-        new ShootRpm(750, towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(
-        new ShootRpm(3000, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(
-        new ShootRpm(4500, towerSubsystem, shooterSubsystem));
+        new ShootRpm(SmartDashboard.getNumber("SH - set rpm", 0.0), towerSubsystem, shooterSubsystem));
+
+    // operator.buttonA.whenHeld(
+    //     new ShootRpm(750, towerSubsystem, shooterSubsystem)
+    //     .alongWith(new TurnTurretTo(180.0, turretSubsystem)));
+    // operator.buttonB.whenHeld(
+    //     new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    // operator.buttonX.whenHeld(
+    //     new ShootRpm(3000, towerSubsystem, shooterSubsystem));
+    // operator.buttonY.whenHeld(
+    //     new ShootRpm(4500, towerSubsystem, shooterSubsystem));
 
     // operator.buttonA.whenHeld(
     //     new ShootRpmOrSpit(
@@ -142,7 +146,7 @@ public class RobotContainer {
     //         turretSubsystem,
     //         limelightSubsystem,
     //         colorSensorsSubsystem));
-    // operator.buttonY.whenHeld(
+    // operator.buttonStart.whenHeld(
     //     new MovingShots(
     //         towerSubsystem,
     //         shooterSubsystem,
