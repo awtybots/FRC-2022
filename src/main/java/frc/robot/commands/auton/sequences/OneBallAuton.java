@@ -11,13 +11,14 @@ public class OneBallAuton extends SequentialCommandGroup {
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem) {
     addCommands(
+        new ShootRpm(1900, towerSubsystem, shooterSubsystem).withTimeout(5.0),
         new StartEndCommand(
                 () -> {
                   drivetrainSubsystem.driveVolts(6.0, 6.0);
                 },
                 drivetrainSubsystem::stop,
                 drivetrainSubsystem)
-            .withTimeout(0.5), // TODO tune
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+            .withTimeout(0.5) // TODO tune
+        );
   }
 }
