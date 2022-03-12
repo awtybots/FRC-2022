@@ -40,7 +40,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public static final DifferentialDriveKinematics kKinematics =
       new DifferentialDriveKinematics(kTrackWidth);
   public static final SimpleMotorFeedforward kFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
-  public static final double kTrajectoryMaxVelocity = 6.0; // m/s TODO tune
+  public static final double kTrajectoryMaxVelocity = 6.0; // m/s
   public static final double kTrajectoryMaxAcceleration = 10.0; // m/s^2
   public static final double kMaxTrajectoryVoltage = 10.0;
   private static final double kRamp = 0.25; //
