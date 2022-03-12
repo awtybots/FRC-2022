@@ -54,6 +54,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private final DifferentialDriveOdometry odometry;
 
+  // TODO temp
+  private double maxSpeed = 0.0;
+
   private final AHRS navX = new AHRS(Port.kMXP);
 
   public DrivetrainSubsystem() {
@@ -113,7 +116,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("DT - gyro", gyroAngle);
 
       if(DriverStation.isAutonomous()) {
-        System.out.println("drive speed: " + getAverageSpeed(allMotors) + " m/s"); // TODO for first auton only
+        double speed = getAverageSpeed(allMotors);
+        if(speed > maxSpeed) {
+          maxSpeed = speed;
+          System.out.println("drive speed: " + maxSpeed + " m/s"); // TODO for first auton only
+        }
       }
       SmartDashboard.putNumber("DT - left vel", getAverageSpeed(leftMotors));
       SmartDashboard.putNumber("DT - right vel", getAverageSpeed(rightMotors));

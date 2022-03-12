@@ -2,7 +2,6 @@ package frc.robot.commands.auton.sequences;
 
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.subsystems.*;
 
@@ -12,7 +11,7 @@ public class OneBallAuton extends SequentialCommandGroup {
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem) {
     addCommands(
-        new ShootRpm(1300, towerSubsystem, shooterSubsystem).withTimeout(5.0),
+        new ShootRpm(1450, towerSubsystem, shooterSubsystem).withTimeout(5.0),
         new FunctionalCommand(
                 () -> {},
                 () -> {
@@ -23,7 +22,7 @@ public class OneBallAuton extends SequentialCommandGroup {
                 },
                 () -> false,
                 drivetrainSubsystem)
-            .withTimeout(1.0) // TODO tune
+            .withTimeout(1.5)
         );
   }
 }

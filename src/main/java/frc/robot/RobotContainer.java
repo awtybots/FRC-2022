@@ -50,6 +50,10 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture();
   }
 
+  public void putAutonChooser() {
+    SmartDashboard.putData(autonChooser);
+  }
+
   private void addAutonomousChoices() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
@@ -73,8 +77,6 @@ public class RobotContainer {
             turretSubsystem,
             shooterSubsystem,
             limelightSubsystem));
-
-    SmartDashboard.putData(autonChooser);
   }
 
   private void configureButtonBindings() {
@@ -107,11 +109,14 @@ public class RobotContainer {
     operator.buttonA.whenHeld(
         new ShootRpm(750, towerSubsystem, shooterSubsystem));
     operator.buttonB.whenHeld(
-        new ShootRpm(1500, towerSubsystem, shooterSubsystem));
+        new ShootRpm(1600, towerSubsystem, shooterSubsystem));
     operator.buttonX.whenHeld(
-        new ShootRpm(1700, towerSubsystem, shooterSubsystem));
+        new ShootRpm(1800, towerSubsystem, shooterSubsystem));
     operator.buttonY.whenHeld(
         new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    // operator.buttonY.whenHeld(
+    //     new ShootRpmOrSpit(2300, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem,
+    //         colorSensorsSubsystem));
 
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
@@ -162,6 +167,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getSelected();
+    return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
+    //autonChooser.getSelected();
+    // TODO figure out why auton chooser doesn't work
   }
 }
