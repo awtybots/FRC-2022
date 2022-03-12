@@ -32,8 +32,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static final double kWheelDiameter = Convert.inchesToMeters(6.0);
 
   private static final double kTrackWidth = Convert.inchesToMeters(22.5);
-  public static final double kS = 0.0; // ! TODO sysId
-  public static final double kV = 0.0;
+  public static final double kS = 0.0;
+  public static final double kV = 0.0; // ! TODO sysId - calculateKF(velAtPercentOut, 0.5)
   public static final double kA = 0.0;
   public static final double kP = 0.0;
 
@@ -194,5 +194,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void stop() {
     drivetrain.tankDrive(0.0, 0.0);
+  }
+
+  private static double calculateKF(double velAtPercentOut, double percentOut) {
+    // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
+    double sensorVelAtPercentOut =
+        Convert.speedToEncoderVel(velAtPercentOut, kGearRatio, kWheelDiameter, Encoder.TalonFXIntegrated);
+    return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 }
