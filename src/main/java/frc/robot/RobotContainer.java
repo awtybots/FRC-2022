@@ -99,6 +99,8 @@ public class RobotContainer {
     // === OPERATOR ===
     // turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
+    operator.bumperLeft.whenHeld(
+        new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
 
 
     operator.buttonA.whenHeld(
