@@ -32,6 +32,7 @@ public class LimelightSubsystem extends SubsystemBase {
     }
     if (hasVisibleTarget()) {
       xAccumulator.add(getTargetUnaveragedXOffset());
+      getTargetXOffset();
       getGoalDisplacement();
     }
   }

@@ -93,9 +93,10 @@ public class TurretSubsystem extends SubsystemBase {
       // turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle));
 
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
-      SmartDashboard.putNumber("TU - actual angle", actualAngle);
       SmartDashboard.putNumber("TU - target angle", targetAngle);
     }
+    
+    SmartDashboard.putNumber("TU - actual angle", actualAngle);
   }
 
   public void seek() {

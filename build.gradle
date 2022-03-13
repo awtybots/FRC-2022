@@ -97,4 +97,3 @@ task verifyFormat(type: com.github.sherter.googlejavaformatgradleplugin.VerifyGo
   include '**/*.java'
 }
 build.dependsOn "format"
-deploy.dependsOn "format"

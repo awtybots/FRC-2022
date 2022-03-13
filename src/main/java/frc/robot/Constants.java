@@ -12,7 +12,7 @@ import frc.robot.util.math.Vector2;
 import java.util.HashMap;
 
 public final class Constants {
-  public static final boolean TUNING_MODE = true; // * TODO disable debug mode for competition
+  public static final boolean TUNING_MODE = false;
 
   public static final class Drivetrain {
     public static final int kRightFrontCanId = 0;
