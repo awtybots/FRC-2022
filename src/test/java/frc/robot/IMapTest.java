@@ -6,7 +6,7 @@ import frc.robot.util.math.InterpolationMap;
 
 public class IMapTest {
   private static final InterpolationMap<Double> iMap = new InterpolationMap<>();
-  
+
   private static void initIMap() {
     iMap.addKeyframe(Convert.feetToMeters(5.0, 6.0), Interpolatable.interpolatableDouble(2000));
     iMap.addKeyframe(Convert.feetToMeters(6.0, 6.0), Interpolatable.interpolatableDouble(2500));

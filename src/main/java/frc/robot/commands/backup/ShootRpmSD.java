@@ -15,7 +15,7 @@ public class ShootRpmSD extends CommandBase {
     this.shooterSubsystem = shooterSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
-    
+
     SmartDashboard.putNumber("SH - set rpm", 0.0);
   }
 

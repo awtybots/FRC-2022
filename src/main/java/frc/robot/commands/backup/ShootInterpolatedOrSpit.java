@@ -24,7 +24,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
     this.turretSubsystem = turretSubsystem;
     this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-    
+
     addRequirements(
         towerSubsystem,
         shooterSubsystem,
@@ -103,5 +103,4 @@ public class ShootInterpolatedOrSpit extends CommandBase {
     turretSubsystem.stop();
     limelightSubsystem.drivingMode();
   }
-  
 }

@@ -2,7 +2,6 @@ package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
-import frc.robot.util.math.Convert;
 import frc.robot.util.math.Interpolatable;
 import frc.robot.util.math.InterpolationMap;
 import frc.robot.util.math.Vector2;
@@ -11,7 +10,7 @@ public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-  
+
   public static final InterpolationMap<Double> iMap = new InterpolationMap<>();
 
   static {
@@ -29,10 +28,8 @@ public class ShootInterpolated extends CommandBase {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-    
-    addRequirements(
-        towerSubsystem,
-        shooterSubsystem);
+
+    addRequirements(towerSubsystem, shooterSubsystem);
   }
 
   @Override
@@ -69,5 +66,4 @@ public class ShootInterpolated extends CommandBase {
     shooterSubsystem.stop();
     limelightSubsystem.drivingMode();
   }
-  
 }

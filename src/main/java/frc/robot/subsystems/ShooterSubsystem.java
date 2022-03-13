@@ -38,6 +38,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private double actualRpm = 0.0;
 
   private ArrayList<Boolean> onTarget = new ArrayList<>(kOnTargetCounterSize);
+  // private Debouncer onTargetBool = new Debouncer(0.02*10,DebounceType.kBoth);
+  // private boolean onTarget = false;
 
   public ShooterSubsystem() {
     flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
@@ -69,6 +71,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     actualRpm = getRpm();
     boolean onTargetRaw = Math.abs(actualRpm - targetRpm) < kMaxAcceptableRpmError;
+    // onTarget = onTargetBool.calculate(onTargetRaw);
     if (onTarget.size() > kOnTargetCounterSize) onTarget.remove(0);
     if (targetRpm > 0) {
       onTarget.add(onTargetRaw);
@@ -110,6 +113,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
+    // return onTarget;
     for (Boolean b : onTarget) {
       if (!b) return false;
     }

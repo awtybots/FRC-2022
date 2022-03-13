@@ -194,7 +194,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static double calculateKF(double velAtPercentOut, double percentOut) {
     // https://docs.ctre-phoenix.com/en/stable/ch16_ClosedLoop.html#how-to-calculate-kf
     double sensorVelAtPercentOut =
-        Convert.speedToEncoderVel(velAtPercentOut, kGearRatio, kWheelDiameter, Encoder.TalonFXIntegrated);
+        Convert.speedToEncoderVel(
+            velAtPercentOut, kGearRatio, kWheelDiameter, Encoder.TalonFXIntegrated);
     return (percentOut * 1023) / sensorVelAtPercentOut;
   }
 }

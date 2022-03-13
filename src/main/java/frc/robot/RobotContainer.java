@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auton.sequences.*;
-import frc.robot.commands.auton.trajectories.TwoBall0;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
@@ -105,20 +104,18 @@ public class RobotContainer {
     // operator.buttonA.whenHeld(
     //     new ShootRpmSD(towerSubsystem, shooterSubsystem));
 
-    operator.buttonA.whenHeld(
-        new ShootRpm(750, towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(
-        new ShootRpm(1600, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(
-        new ShootRpm(1800, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    operator.buttonA.whenHeld(new ShootRpm(750, towerSubsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(new ShootRpm(1600, towerSubsystem, shooterSubsystem));
+    operator.buttonX.whenHeld(new ShootRpm(1800, towerSubsystem, shooterSubsystem));
+    operator.buttonY.whenHeld(new ShootRpm(2300, towerSubsystem, shooterSubsystem));
     // operator.buttonY.whenHeld(
-    //     new ShootRpmOrSpit(2300, towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem,
+    //     new ShootRpmOrSpit(2300, towerSubsystem, shooterSubsystem, turretSubsystem,
+    // limelightSubsystem,
     //         colorSensorsSubsystem));
 
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    operator.buttonStart.whenHeld(new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
+    operator.buttonStart.whenHeld(
+        new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
     operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
@@ -170,23 +167,28 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
-    return new TwoBallAuton(
-      drivetrainSubsystem,
-      intakeSubsystem,
-      towerSubsystem,
-      turretSubsystem,
-      shooterSubsystem,
-      limelightSubsystem,
-      colorSensorsSubsystem);
-    // return new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem);
-    //autonChooser.getSelected();
+    // return new TwoBallAuton(
+    //   drivetrainSubsystem,
+    //   intakeSubsystem,
+    //   towerSubsystem,
+    //   turretSubsystem,
+    //   shooterSubsystem,
+    //   limelightSubsystem,
+    //   colorSensorsSubsystem);
+    return new TwoBallAutonStupid(
+        drivetrainSubsystem,
+        intakeSubsystem,
+        towerSubsystem,
+        turretSubsystem,
+        shooterSubsystem,
+        limelightSubsystem,
+        colorSensorsSubsystem);
+    // autonChooser.getSelected();
     // TODO figure out why auton chooser doesn't work
   }
 
   public void toggleLimelight(boolean on) {
-    if(on)
-      limelightSubsystem.shootingMode();
-    else
-      limelightSubsystem.drivingMode();
+    if (on) limelightSubsystem.shootingMode();
+    else limelightSubsystem.drivingMode();
   }
 }
