@@ -27,7 +27,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
         new TwoBall0(drivetrainSubsystem).alongWith(new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem).withTimeout(5.0)),
-        new ShootRpm(1750.0, towerSubsystem, shooterSubsystem).withTimeout(5.0) // TODO tune
+        new ShootRpm(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0)
         );
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
@@ -43,7 +43,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
   @Override
   public void initialize() {
     turretSubsystem.initPosition(180.0);
-    // autoAimCommand.schedule();
+    autoAimCommand.schedule();
 
     super.initialize();
   }
@@ -52,7 +52,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
   public void cancel() {
     super.cancel();
 
-    // autoAimCommand.cancel();
+    autoAimCommand.cancel();
     intakeSubsystem.stop();
   }
 }

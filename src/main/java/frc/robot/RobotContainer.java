@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.auton.sequences.*;
+import frc.robot.commands.auton.trajectories.TwoBall0;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
@@ -169,15 +170,15 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
-    // return new TwoBallAuton(
-    //   drivetrainSubsystem,
-    //   intakeSubsystem,
-    //   towerSubsystem,
-    //   turretSubsystem,
-    //   shooterSubsystem,
-    //   limelightSubsystem,
-    //   colorSensorsSubsystem);
-    return new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem);
+    return new TwoBallAuton(
+      drivetrainSubsystem,
+      intakeSubsystem,
+      towerSubsystem,
+      turretSubsystem,
+      shooterSubsystem,
+      limelightSubsystem,
+      colorSensorsSubsystem);
+    // return new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem);
     //autonChooser.getSelected();
     // TODO figure out why auton chooser doesn't work
   }

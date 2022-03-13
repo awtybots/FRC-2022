@@ -31,10 +31,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private static final double kWheelDiameter = Convert.inchesToMeters(6.0);
 
   private static final double kTrackWidth = Convert.inchesToMeters(22.5);
-  public static final double kS = 0.0;
+  public static final double kS = 1.0;
   public static final double kV = calculateKF(2.53, 0.5);
   public static final double kA = 0.0;
-  public static final double kP = 0.0;
+  public static final double kP = 0.1;
 
   public static final DifferentialDriveKinematics kKinematics =
       new DifferentialDriveKinematics(kTrackWidth);
