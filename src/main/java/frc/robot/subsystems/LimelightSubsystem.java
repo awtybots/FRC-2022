@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
@@ -16,6 +18,9 @@ public class LimelightSubsystem extends SubsystemBase {
   private int xAccumulatorLength = 10;
   private ArrayList<Double> xAccumulator = new ArrayList<>(xAccumulatorLength);
 
+  private boolean hasTargetDebounced = false;
+  private Debouncer debouncer = new Debouncer(0.5, DebounceType.kFalling);
+
   public LimelightSubsystem() {
     limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
     upperHub =
@@ -30,10 +35,12 @@ public class LimelightSubsystem extends SubsystemBase {
     if (xAccumulator.size() == xAccumulatorLength) {
       xAccumulator.remove(0);
     }
-    if (hasVisibleTarget()) {
+    if (hasVisibleTargetRaw()) {
       xAccumulator.add(getTargetUnaveragedXOffset());
       getTargetXOffset();
       getGoalDisplacement();
+    } else if (xAccumulator.size() > 0) {
+      xAccumulator.remove(0);
     }
   }
 
@@ -50,8 +57,14 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public boolean hasVisibleTarget() {
+    // boolean hasTarget = xAccumulator.size() > 0;
+    return hasTargetDebounced;
+  }
+  
+  public boolean hasVisibleTargetRaw() {
     boolean hasTarget = limelight.hasVisibleTarget();
-    SmartDashboard.putBoolean("LL - target", hasTarget);
+    hasTargetDebounced = debouncer.calculate(hasTarget);
+    SmartDashboard.putBoolean("LL - target", hasTargetDebounced);
     return hasTarget;
   }
 
