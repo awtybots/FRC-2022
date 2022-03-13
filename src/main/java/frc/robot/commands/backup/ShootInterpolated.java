@@ -10,39 +10,29 @@ import frc.robot.util.math.Vector2;
 public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
-  private final TurretSubsystem turretSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-
-  private boolean alreadySet = false;
   
-  private final InterpolationMap<Double> iMap = new InterpolationMap<>();
+  public static final InterpolationMap<Double> iMap = new InterpolationMap<>();
+
+  static {
+    iMap.addKeyframe(3.0, Interpolatable.interpolatableDouble(1600));
+    iMap.addKeyframe(3.5, Interpolatable.interpolatableDouble(1600));
+    iMap.addKeyframe(4.0, Interpolatable.interpolatableDouble(1700));
+    iMap.addKeyframe(4.5, Interpolatable.interpolatableDouble(1800));
+    iMap.addKeyframe(6.0, Interpolatable.interpolatableDouble(2000));
+  }
 
   public ShootInterpolated(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
-      TurretSubsystem turretSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-
-    initIMap();
     
     addRequirements(
         towerSubsystem,
-        shooterSubsystem,
-        turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
-  }
-
-  private void initIMap() {
-    iMap.addKeyframe(Convert.feetToMeters(9, 0), Interpolatable.interpolatableDouble(1500));
-    iMap.addKeyframe(Convert.feetToMeters(12, 0), Interpolatable.interpolatableDouble(1700));
-    iMap.addKeyframe(Convert.feetToMeters(16, 0), Interpolatable.interpolatableDouble(2300));
+        shooterSubsystem);
   }
 
   @Override
@@ -50,66 +40,26 @@ public class ShootInterpolated extends CommandBase {
     limelightSubsystem.shootingMode();
   }
 
-  private void executeShoot(boolean idling) {
-    alreadySet = false;
-
+  @Override
+  public void execute() {
     if (!limelightSubsystem.hasVisibleTarget()) {
-      turretSubsystem.seek();
       shooterSubsystem.stop();
       return;
     }
 
     Vector2 goalDisplacement = limelightSubsystem.getGoalDisplacement();
     if (goalDisplacement == null) {
-      turretSubsystem.seek();
       shooterSubsystem.stop();
       return;
     }
 
     double launchRpm = iMap.get(goalDisplacement.x);
-    if (idling) {
-      shooterSubsystem.stop();
+    shooterSubsystem.shootRpm(launchRpm);
+
+    if (shooterSubsystem.isAtTarget()) {
+      towerSubsystem.feedShooter();
     } else {
-      shooterSubsystem.shootRpm(launchRpm);
-    }
-
-    double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
-    turretSubsystem.turnBy(visionTargetXOffset);
-  }
-
-  private void executeSpit() {
-    if (!alreadySet) {
-      alreadySet = true;
-      if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
-      } else {
-        turretSubsystem.spit();
-      }
-    }
-    shooterSubsystem.spit();
-  }
-
-  @Override
-  public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot(false);
-      } else {
-        executeSpit();
-      }
-
-      if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        towerSubsystem.feedShooter();
-      } else {
-        towerSubsystem.stopUpper();
-
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
-          towerSubsystem.stop();
-        }
-      }
-    } else {
-      executeShoot(true);
-      towerSubsystem.intake();
+      towerSubsystem.stopUpper();
     }
   }
 
@@ -117,7 +67,6 @@ public class ShootInterpolated extends CommandBase {
   public void end(boolean interrupted) {
     towerSubsystem.stop();
     shooterSubsystem.stop();
-    turretSubsystem.stop();
     limelightSubsystem.drivingMode();
   }
   

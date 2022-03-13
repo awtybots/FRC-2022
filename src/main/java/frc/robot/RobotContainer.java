@@ -117,6 +117,7 @@ public class RobotContainer {
     //         colorSensorsSubsystem));
 
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    operator.buttonStart.whenHeld(new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
     operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
@@ -179,5 +180,12 @@ public class RobotContainer {
     return new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem);
     //autonChooser.getSelected();
     // TODO figure out why auton chooser doesn't work
+  }
+
+  public void toggleLimelight(boolean on) {
+    if(on)
+      limelightSubsystem.shootingMode();
+    else
+      limelightSubsystem.drivingMode();
   }
 }

@@ -13,7 +13,7 @@ public class LimelightSubsystem extends SubsystemBase {
   private final frc.robot.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
-  private int xAccumulatorLength = 5;
+  private int xAccumulatorLength = 10;
   private ArrayList<Double> xAccumulator = new ArrayList<>(xAccumulatorLength);
 
   public LimelightSubsystem() {
