@@ -79,9 +79,9 @@ public class ShooterSubsystem extends SubsystemBase {
       onTarget.add(false);
     }
 
+    SmartDashboard.putNumber("SH - actual rpm", actualRpm);
+    SmartDashboard.putBoolean("SH - at goal", isAtTarget());
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putBoolean("SH - at goal", isAtTarget());
-      SmartDashboard.putNumber("SH - actual rpm", actualRpm);
       SmartDashboard.putNumber("SH - goal rpm", targetRpm);
     }
   }

@@ -60,7 +60,7 @@ public class LimelightSubsystem extends SubsystemBase {
     // boolean hasTarget = xAccumulator.size() > 0;
     return hasTargetDebounced;
   }
-  
+
   public boolean hasVisibleTargetRaw() {
     boolean hasTarget = limelight.hasVisibleTarget();
     hasTargetDebounced = debouncer.calculate(hasTarget);
