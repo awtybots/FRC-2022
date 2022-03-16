@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 import frc.robot.util.math.Interpolatable;
 import frc.robot.util.math.InterpolationMap;
-import frc.robot.util.math.Vector2;
 
 public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
@@ -44,13 +43,13 @@ public class ShootInterpolated extends CommandBase {
       return;
     }
 
-    Vector2 goalDisplacement = limelightSubsystem.getGoalDisplacement();
-    if (goalDisplacement == null) {
+    double goalDistance = limelightSubsystem.distToTarget();
+    if (goalDistance == -1) {
       shooterSubsystem.stop();
       return;
     }
 
-    double launchRpm = iMap.get(goalDisplacement.x);
+    double launchRpm = iMap.get(goalDistance);
     shooterSubsystem.shootRpm(launchRpm);
 
     if (shooterSubsystem.isAtTarget()) {

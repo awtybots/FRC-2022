@@ -2,7 +2,6 @@ package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
-import frc.robot.util.math.Vector2;
 
 public class ShootInterpolatedOrSpit extends CommandBase {
   private final TowerSubsystem towerSubsystem;
@@ -46,17 +45,17 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       return;
     }
 
-    Vector2 goalDisplacement = limelightSubsystem.getGoalDisplacement();
-    if (goalDisplacement == null) {
+    double goalDisplacement = limelightSubsystem.distToTarget();
+    if (goalDisplacement == -1) {
       turretSubsystem.seek();
       shooterSubsystem.stop();
       return;
     }
 
-    double launchRpm = ShootInterpolated.iMap.get(goalDisplacement.x);
+    double launchRpm = ShootInterpolated.iMap.get(goalDisplacement);
     shooterSubsystem.shootRpm(launchRpm);
 
-    double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
+    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
     turretSubsystem.turnBy(visionTargetXOffset);
   }
 
@@ -64,7 +63,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
     if (!alreadySet) {
       alreadySet = true;
       if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+        turretSubsystem.spitRelative(limelightSubsystem.cameraTargetAngleDelta());
       } else {
         turretSubsystem.spit();
       }

@@ -32,8 +32,8 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kMaxAcceptableAngleError = 3.0;
 
-  private static final double kMaxManualPercentOutput = 0.4;
   private static final double kPeakOutput = 0.4;
+  private static final double kMaxDrivePercentOutput = kPeakOutput;
 
   private final WPI_TalonSRX motor;
 
@@ -46,10 +46,6 @@ public class TurretSubsystem extends SubsystemBase {
   public TurretSubsystem() {
     motor = new WPI_TalonSRX(Turret.kMotorCanId);
     configMotors();
-
-    // if (Constants.TUNING_MODE) {
-    //   SmartDashboard.putNumber("TU - set target angle", kAngleStart);
-    // }
   }
 
   public void initPosition(double angle) {
@@ -83,22 +79,16 @@ public class TurretSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     actualAngle = getAngle();
-
-    // if (actualAngle < kAngleMin - kMaxAcceptableAngleError * 3.0
-    //     || actualAngle > kAngleMax + kMaxAcceptableAngleError * 3.0) {
-    //   stop();
-    // }
+    SmartDashboard.putNumber("TU - actual angle", actualAngle);
 
     if (Constants.TUNING_MODE) {
       // turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle));
-
       SmartDashboard.putBoolean("TU - at goal", isAtTarget());
       SmartDashboard.putNumber("TU - target angle", targetAngle);
     }
-
-    SmartDashboard.putNumber("TU - actual angle", actualAngle);
   }
 
+  /** spins through full range of motion continuously unless turnTo or turnBy is called */
   public void seek() {
     if (seeking) {
       if (isAtTarget()) {
@@ -114,7 +104,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void spit() {
-    turnTo(kSpitAngle);
+    spitRelative(actualAngle);
+    // turnTo(kSpitAngle);
   }
 
   public void spitRelative(double original) {
@@ -156,7 +147,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   /** positive is clockwise (-1 to 1) */
   public void drive(double rate) {
-    motor.set(ControlMode.PercentOutput, rate * kMaxManualPercentOutput);
+    motor.set(ControlMode.PercentOutput, rate * kMaxDrivePercentOutput);
   }
 
   public void stop() {

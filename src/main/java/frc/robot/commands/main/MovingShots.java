@@ -68,22 +68,23 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    Vector2 goalDisplacement = limelightSubsystem.getGoalDisplacement();
-    if (goalDisplacement == null) {
+    double goalDisplacement = limelightSubsystem.distToTarget();
+    if (goalDisplacement == -1) {
       turretSubsystem.seek();
       shooterSubsystem.stop();
       return;
     }
 
-    System.out.println(goalDisplacement.toString()); // TODO remove
+    System.out.println(goalDisplacement); // TODO remove
 
-    double visionTargetXOffset = limelightSubsystem.getTargetXOffset();
+    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
     double robotSpeed = drivetrainSubsystem.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getActualAngle();
     Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
 
     Vector2 launchVelocityData =
-        projectileMotionSolver.getOptimalLaunchVelocityMoving(goalDisplacement, robotVelocity);
+        projectileMotionSolver.getOptimalLaunchVelocityMoving(
+            new Vector2(goalDisplacement, Field.kGoalHeight), robotVelocity);
 
     if (launchVelocityData == null) {
       shooterSubsystem.stop();
@@ -109,7 +110,7 @@ public class MovingShots extends CommandBase {
     if (!alreadySet) {
       alreadySet = true;
       if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+        turretSubsystem.spitRelative(limelightSubsystem.cameraTargetAngleDelta());
       } else {
         turretSubsystem.spit();
       }

@@ -49,7 +49,7 @@ public class ShootRpmOrSpit extends CommandBase {
       return;
     }
 
-    double deltaAngle = limelightSubsystem.getTargetXOffset();
+    double deltaAngle = limelightSubsystem.cameraTargetAngleDelta();
 
     turretSubsystem.turnBy(deltaAngle);
 
@@ -61,7 +61,7 @@ public class ShootRpmOrSpit extends CommandBase {
     if (!alreadySet) {
       alreadySet = true;
       if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.getTargetXOffset());
+        turretSubsystem.spitRelative(limelightSubsystem.cameraTargetAngleDelta());
       } else {
         turretSubsystem.spit();
       }

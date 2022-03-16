@@ -22,13 +22,14 @@ public class AutoAim extends CommandBase {
 
   @Override
   public void execute() {
-    if (!limelightSubsystem.hasVisibleTarget()) {
+    if (limelightSubsystem.hasVisibleTarget()) {
+      // simple P controller to track the goal, may want a PI controller, need to test
+      double deltaAngle = limelightSubsystem.cameraTargetAngleDelta();
+      turretSubsystem.drive(deltaAngle * 0.2); // TODO tune turret P value
+    } else {
       turretSubsystem.seek();
       return;
     }
-
-    double deltaAngle = limelightSubsystem.getTargetXOffset();
-    turretSubsystem.turnBy(deltaAngle * 0.3);
   }
 
   @Override

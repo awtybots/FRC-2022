@@ -2,21 +2,21 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
-import frc.robot.util.math.Vector2;
 import frc.robot.util.vision.VisionTarget;
-import java.util.ArrayList;
 
 public class LimelightSubsystem extends SubsystemBase {
 
   private final frc.robot.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
-  private int xAccumulatorLength = 10;
-  private ArrayList<Double> xAccumulator = new ArrayList<>(xAccumulatorLength);
+  private MedianFilter distFilter = new MedianFilter(5);
+  private double distToTarget = 0;
+  private MedianFilter xFilter = new MedianFilter(5);
+  private double cameraAngleDelta = 0;
 
   private boolean hasTargetDebounced = false;
   private Debouncer debouncer = new Debouncer(0.5, DebounceType.kFalling);
@@ -32,59 +32,27 @@ public class LimelightSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (xAccumulator.size() == xAccumulatorLength) {
-      xAccumulator.remove(0);
+    if (hasVisibleTarget()) {
+      cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
+      distToTarget = distFilter.calculate(upperHub.getGoalDisplacement().x + Field.kGoalRadius);
+    } else {
+      cameraAngleDelta = 0;
+      distToTarget = -1;
     }
-    if (hasVisibleTargetRaw()) {
-      xAccumulator.add(getTargetUnaveragedXOffset());
-      getTargetXOffset();
-      getGoalDisplacement();
-    } else if (xAccumulator.size() > 0) {
-      xAccumulator.remove(0);
-    }
-  }
-
-  /** NOTE: can be null */
-  public Vector2 getGoalDisplacement() {
-    Vector2 disp = upperHub.getGoalDisplacement();
-    if (disp == null) {
-      SmartDashboard.putNumber("LL - distance", -1.0);
-      return null;
-    }
-    Vector2 dispAdjusted = disp.plus(new Vector2(Field.kGoalRadius, 0.0));
-    SmartDashboard.putNumber("LL - distance", dispAdjusted.x);
-    return dispAdjusted;
   }
 
   public boolean hasVisibleTarget() {
-    // boolean hasTarget = xAccumulator.size() > 0;
+    boolean hasTarget = limelight.hasVisibleTarget();
+    hasTargetDebounced = debouncer.calculate(hasTarget);
     return hasTargetDebounced;
   }
 
-  public boolean hasVisibleTargetRaw() {
-    boolean hasTarget = limelight.hasVisibleTarget();
-    hasTargetDebounced = debouncer.calculate(hasTarget);
-    SmartDashboard.putBoolean("LL - target", hasTargetDebounced);
-    return hasTarget;
+  public double distToTarget() {
+    return distToTarget;
   }
 
-  /** degrees NOTE: check for target existing first */
-  private double getTargetUnaveragedXOffset() {
-    double x = limelight.targetXOffset();
-    return x;
-  }
-
-  /** degrees NOTE: check for target existing first */
-  public double getTargetXOffset() {
-    double x = 0.0;
-    if (xAccumulator.size() > 0) {
-      for (Double xi : xAccumulator) {
-        x += xi;
-      }
-      x /= xAccumulator.size();
-    }
-    SmartDashboard.putNumber("LL - x", x);
-    return x;
+  public double cameraTargetAngleDelta() {
+    return cameraAngleDelta;
   }
 
   public void drivingMode() {
