@@ -28,7 +28,7 @@ public class AutoAim extends CommandBase {
     }
 
     double deltaAngle = limelightSubsystem.getTargetXOffset();
-    turretSubsystem.turnBy(deltaAngle);
+    turretSubsystem.turnBy(deltaAngle* 0.3);
   }
 
   @Override
