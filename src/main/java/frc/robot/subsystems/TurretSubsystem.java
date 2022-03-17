@@ -32,7 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kMaxAcceptableAngleError = 3.0;
 
-  private static final double kPeakOutput = 0.4;
+  private static final double kPeakOutput = 0.5;
   private static final double kMaxDrivePercentOutput = kPeakOutput;
 
   private final WPI_TalonSRX motor;

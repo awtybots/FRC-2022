@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
@@ -20,6 +21,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   private boolean hasTargetDebounced = false;
   private Debouncer debouncer = new Debouncer(0.5, DebounceType.kFalling);
+  private boolean inTargetingMode = false;
 
   public LimelightSubsystem() {
     limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
@@ -28,20 +30,28 @@ public class LimelightSubsystem extends SubsystemBase {
             limelight, Field.kVisionTargetHeight, Field.kGoalHeight, Limelight.kShooterOffset);
 
     drivingMode();
+    SmartDashboard.putNumber("AutoAim Turret Output", 0);
   }
 
   @Override
   public void periodic() {
-    if (hasVisibleTarget()) {
+    boolean hasTarget = hasVisibleTarget();
+    if (hasTarget) {
+      // System.out.println(limelight.targetXOffset());
       cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
-      distToTarget = distFilter.calculate(upperHub.getGoalDisplacement().x + Field.kGoalRadius);
+      // cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
+      // distToTarget = distFilter.calculate(targetVector.x + Field.kGoalRadius);
     } else {
       cameraAngleDelta = 0;
       distToTarget = -1;
     }
+    SmartDashboard.putBoolean("Target Visible", hasTarget);
+    SmartDashboard.putNumber("Camera Angle Delta", cameraAngleDelta);
+    SmartDashboard.putNumber("Distance to Target", distToTarget);
   }
 
   public boolean hasVisibleTarget() {
+    // if (!inTargetingMode) return false;
     boolean hasTarget = limelight.hasVisibleTarget();
     hasTargetDebounced = debouncer.calculate(hasTarget);
     return hasTargetDebounced;
