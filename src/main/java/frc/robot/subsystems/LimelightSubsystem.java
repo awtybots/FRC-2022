@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
+import frc.robot.util.math.Vector2;
 import frc.robot.util.vision.VisionTarget;
 
 public class LimelightSubsystem extends SubsystemBase {
@@ -36,11 +37,10 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     boolean hasTarget = hasVisibleTarget();
-    if (hasTarget) {
-      // System.out.println(limelight.targetXOffset());
+    Vector2 targetVector = upperHub.getGoalDisplacement();
+    if (hasTarget && targetVector != null) {
       cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
-      // cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
-      // distToTarget = distFilter.calculate(targetVector.x + Field.kGoalRadius);
+      distToTarget = distFilter.calculate(targetVector.x + Field.kGoalRadius);
     } else {
       cameraAngleDelta = 0;
       distToTarget = -1;
@@ -51,7 +51,6 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public boolean hasVisibleTarget() {
-    // if (!inTargetingMode) return false;
     boolean hasTarget = limelight.hasVisibleTarget();
     hasTargetDebounced = debouncer.calculate(hasTarget);
     return hasTargetDebounced;

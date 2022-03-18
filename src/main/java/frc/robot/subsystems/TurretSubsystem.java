@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,6 +19,8 @@ import frc.robot.util.math.Convert;
 import frc.robot.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
+
+  private Mode tMode = Mode.Idle;
 
   private static final double kAngleMin = -135.0;
   private static final double kAngleMax = 225.0;
@@ -49,8 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void initPosition(double angle) {
-    motor.setSelectedSensorPosition(
-        Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    motor.setSelectedSensorPosition(Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     actualAngle = angle;
     targetAngle = angle;
   }
@@ -80,6 +83,7 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     actualAngle = getAngle();
     SmartDashboard.putNumber("TU - actual angle", actualAngle);
+    SmartDashboard.putData("Turret", this);
 
     if (Constants.TUNING_MODE) {
       // turnTo(SmartDashboard.getNumber("TU - set target angle", targetAngle));
@@ -88,8 +92,12 @@ public class TurretSubsystem extends SubsystemBase {
     }
   }
 
-  /** spins through full range of motion continuously unless turnTo or turnBy is called */
+  /**
+   * spins through full range of motion continuously unless turnTo or turnBy is
+   * called
+   */
   public void seek() {
+    tMode = Mode.Targeting;
     if (seeking) {
       if (isAtTarget()) {
         seekingRight = !seekingRight;
@@ -117,6 +125,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void turnTo(double absoluteAngle) {
+    tMode = Mode.ManualAngle;
     while (absoluteAngle < kAngleMin) {
       absoluteAngle += 360.0;
     }
@@ -124,8 +133,7 @@ public class TurretSubsystem extends SubsystemBase {
       absoluteAngle -= 360.0;
     }
     targetAngle = MathUtil.clamp(absoluteAngle, kAngleMin, kAngleMax);
-    motor.set(
-        ControlMode.Position,
+    motor.set(ControlMode.Position,
         Convert.angleToEncoderPos(targetAngle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     seeking = false;
   }
@@ -134,10 +142,12 @@ public class TurretSubsystem extends SubsystemBase {
     return Math.abs(actualAngle - targetAngle) < kMaxAcceptableAngleError;
   }
 
-  /** this is only for use in the subsystem once per frame to prevent CAN overloading */
+  /**
+   * this is only for use in the subsystem once per frame to prevent CAN
+   * overloading
+   */
   private double getAngle() {
-    return Convert.encoderPosToAngle(
-        motor.getSelectedSensorPosition(), kGearRatio, Encoder.VersaPlanetaryIntegrated);
+    return Convert.encoderPosToAngle(motor.getSelectedSensorPosition(), kGearRatio, Encoder.VersaPlanetaryIntegrated);
   }
 
   /** public accessor method */
@@ -147,10 +157,27 @@ public class TurretSubsystem extends SubsystemBase {
 
   /** positive is clockwise (-1 to 1) */
   public void drive(double rate) {
-    motor.set(ControlMode.PercentOutput, rate * kMaxDrivePercentOutput);
+    if (tMode == Mode.Recovering && !isAtTarget()) {
+      turnTo(0);
+    } else if (getAngle() - 5 < kAngleMin || getAngle() + 5 > kAngleMax) {
+      turnTo(0);
+      tMode = Mode.Recovering;
+    } else {
+      tMode = Mode.Idle;
+      motor.set(ControlMode.PercentOutput, rate * kMaxDrivePercentOutput);
+    }
   }
 
   public void stop() {
     motor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public enum Mode {
+    Targeting, ManualAngle, Idle, Recovering;
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    builder.addStringProperty("Mode", () -> {return tMode.toString();}, (String a) -> {});
   }
 }

@@ -10,7 +10,7 @@ public class AutoAim extends CommandBase {
   private final TurretSubsystem turretSubsystem;
   private final LimelightSubsystem limelightSubsystem;
   // TODO tune turret P value
-  private final double kP = 0.06; // units: percent output per degree offset
+  private final double kP = 0.03; // units: percent output per degree offset
 
   public AutoAim(TurretSubsystem turretSubsystem, LimelightSubsystem limelightSubsystem) {
     this.turretSubsystem = turretSubsystem;
@@ -27,7 +27,7 @@ public class AutoAim extends CommandBase {
   @Override
   public void execute() {
     if (limelightSubsystem.hasVisibleTarget()) {
-      // simple P controller to track the goal, may want a PI controller, need to test
+      // simple P controller to track the goal
       double deltaAngle = limelightSubsystem.cameraTargetAngleDelta();
       double motorOutput = -deltaAngle * kP;
       turretSubsystem.drive(motorOutput);
