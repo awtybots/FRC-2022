@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -53,7 +52,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void initPosition(double angle) {
-    motor.setSelectedSensorPosition(Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+    motor.setSelectedSensorPosition(
+        Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     actualAngle = angle;
     targetAngle = angle;
   }
@@ -92,10 +92,7 @@ public class TurretSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * spins through full range of motion continuously unless turnTo or turnBy is
-   * called
-   */
+  /** spins through full range of motion continuously unless turnTo or turnBy is called */
   public void seek() {
     tMode = Mode.Targeting;
     if (seeking) {
@@ -133,7 +130,8 @@ public class TurretSubsystem extends SubsystemBase {
       absoluteAngle -= 360.0;
     }
     targetAngle = MathUtil.clamp(absoluteAngle, kAngleMin, kAngleMax);
-    motor.set(ControlMode.Position,
+    motor.set(
+        ControlMode.Position,
         Convert.angleToEncoderPos(targetAngle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     seeking = false;
   }
@@ -142,12 +140,10 @@ public class TurretSubsystem extends SubsystemBase {
     return Math.abs(actualAngle - targetAngle) < kMaxAcceptableAngleError;
   }
 
-  /**
-   * this is only for use in the subsystem once per frame to prevent CAN
-   * overloading
-   */
+  /** this is only for use in the subsystem once per frame to prevent CAN overloading */
   private double getAngle() {
-    return Convert.encoderPosToAngle(motor.getSelectedSensorPosition(), kGearRatio, Encoder.VersaPlanetaryIntegrated);
+    return Convert.encoderPosToAngle(
+        motor.getSelectedSensorPosition(), kGearRatio, Encoder.VersaPlanetaryIntegrated);
   }
 
   /** public accessor method */
@@ -173,11 +169,19 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public enum Mode {
-    Targeting, ManualAngle, Idle, Recovering;
+    Targeting,
+    ManualAngle,
+    Idle,
+    Recovering;
   }
 
   @Override
   public void initSendable(SendableBuilder builder) {
-    builder.addStringProperty("Mode", () -> {return tMode.toString();}, (String a) -> {});
+    builder.addStringProperty(
+        "Mode",
+        () -> {
+          return tMode.toString();
+        },
+        (String a) -> {});
   }
 }
