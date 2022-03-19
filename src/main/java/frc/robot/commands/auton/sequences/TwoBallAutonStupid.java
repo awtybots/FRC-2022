@@ -6,6 +6,7 @@ import frc.robot.commands.backup.IntakeAndIngest;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.subsystems.*;
 
+//this is good and cool and tested :) 6pt gaurunteed
 public class TwoBallAutonStupid extends SequentialCommandGroup {
 
   public TwoBallAutonStupid(
@@ -17,20 +18,22 @@ public class TwoBallAutonStupid extends SequentialCommandGroup {
       LimelightSubsystem limelightSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
+        new ShootRpm(950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
                 () -> {
-                  drivetrainSubsystem.driveVolts(6.0, 6.0);
+                  System.out.println("2ball starting");
+                  drivetrainSubsystem.driveVolts(3.0, 3.0);
                 },
                 interrupted -> {
                   drivetrainSubsystem.stop();
                 },
                 () -> false,
                 drivetrainSubsystem)
-            .withTimeout(1.0)
+            .withTimeout(2.0)
             .alongWith(
                 new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
-                    .withTimeout(5.0)),
+                    .withTimeout(3.0)),
         new ShootRpm(1950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
             .withTimeout(5.0));
   }
