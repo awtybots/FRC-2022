@@ -46,4 +46,22 @@ public class IntakeSubsystem extends SubsystemBase {
     pistons.set(Value.kReverse);
     motor.set(ControlMode.PercentOutput, 0.0);
   }
+
+  // == Seperated motor and piston controls == //
+
+  public void runMotor() {
+    motor.set(ControlMode.PercentOutput, kMotorSpeed);
+  }
+
+  public void stopMotor() {
+    motor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void lower() {
+    pistons.set(Value.kForward);
+  }
+
+  public void raise() {
+    pistons.set(Value.kReverse);
+  }
 }

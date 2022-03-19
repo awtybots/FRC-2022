@@ -28,7 +28,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
-    robotContainer.putAutonChooser();
   }
 
   /**
@@ -50,14 +49,14 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    robotContainer.toggleLimelight(false);
-    if (autonomousCommand != null) autonomousCommand.cancel();
+    robotContainer.turnOffLimelightLEDs();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
+    }
   }
 
   @Override
-  public void disabledPeriodic() {
-    robotContainer.putAutonChooser();
-  }
+  public void disabledPeriodic() {}
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -76,10 +75,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // Prevents autonomous from continuing into teleop
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }

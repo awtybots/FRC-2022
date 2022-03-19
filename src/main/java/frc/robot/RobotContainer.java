@@ -39,17 +39,9 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     addAutonomousChoices();
-    putAutonChooser();
-    configureButtonBindings();
-    initCamera();
-  }
-
-  private void initCamera() {
-    CameraServer.startAutomaticCapture();
-  }
-
-  public void putAutonChooser() {
     SmartDashboard.putData(autonChooser);
+    CameraServer.startAutomaticCapture();
+    configureButtonBindings();
   }
 
   private void addAutonomousChoices() {
@@ -121,9 +113,9 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    operator.buttonStart.whenHeld(
-        new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
+    // operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    // operator.buttonStart.whenHeld(
+    //     new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
 
     /// === MANUAL ===
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
@@ -140,25 +132,21 @@ public class RobotContainer {
         new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
 
     /// === TURRET ===
+    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
     operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
-    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // if (Constants.TUNING_MODE) {
-    //   operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
-    // }
+    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
   }
 
   public Command getAutonomousCommand() {
-    // TODO figure out why auton chooser doesn't work
     return autonChooser.getSelected();
   }
 
-  public void toggleLimelight(boolean on) {
-    if (on) limelightSubsystem.shootingMode();
-    else limelightSubsystem.drivingMode();
+  public void turnOffLimelightLEDs() {
+    limelightSubsystem.drivingMode();
   }
 }
