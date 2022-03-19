@@ -9,7 +9,8 @@ public class OneBallAuton extends SequentialCommandGroup {
   public OneBallAuton(
       DrivetrainSubsystem drivetrainSubsystem,
       TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem) {
+      ShooterSubsystem shooterSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
         new FunctionalCommand(
                 () -> {},
@@ -22,6 +23,7 @@ public class OneBallAuton extends SequentialCommandGroup {
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(1.0),
-        new ShootRpm(1750, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+        new ShootRpm(1750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
+            .withTimeout(5.0));
   }
 }

@@ -56,7 +56,9 @@ public class RobotContainer {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
     autonChooser.addOption(
-        "One Ball Auton", new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem));
+        "One Ball Auton",
+        new OneBallAuton(
+            drivetrainSubsystem, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     autonChooser.addOption(
         "Two Ball Auton",
         new TwoBallAuton(
@@ -75,7 +77,8 @@ public class RobotContainer {
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem));
+            limelightSubsystem,
+            colorSensorsSubsystem));
   }
 
   private void configureButtonBindings() {
@@ -97,10 +100,14 @@ public class RobotContainer {
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    operator.buttonA.whenHeld(new ShootRpm(750, towerSubsystem, shooterSubsystem));
-    operator.buttonB.whenHeld(new ShootRpm(1600, towerSubsystem, shooterSubsystem));
-    operator.buttonX.whenHeld(new ShootRpm(1800, towerSubsystem, shooterSubsystem));
-    operator.buttonY.whenHeld(new ShootRpm(2300, towerSubsystem, shooterSubsystem));
+    operator.buttonA.whenHeld(
+        new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    operator.buttonB.whenHeld(
+        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    operator.buttonX.whenHeld(
+        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    operator.buttonY.whenHeld(
+        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
 
     /// === TURRET ===
     operator.dpadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
@@ -110,9 +117,9 @@ public class RobotContainer {
     operator.joystickClickLeft.whenHeld(new DriveTurret(operator, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    if (Constants.TUNING_MODE) {
-      operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
-    }
+    // if (Constants.TUNING_MODE) {
+    //   operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
+    // }
   }
 
   public Command getAutonomousCommand() {

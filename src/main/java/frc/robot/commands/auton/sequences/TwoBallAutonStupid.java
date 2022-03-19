@@ -31,6 +31,7 @@ public class TwoBallAutonStupid extends SequentialCommandGroup {
             .alongWith(
                 new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
                     .withTimeout(5.0)),
-        new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+        new ShootRpm(1950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
+            .withTimeout(5.0));
   }
 }
