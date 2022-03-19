@@ -52,7 +52,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   }
 
   private class ColorSensor {
-    private final double minimumConfidence = 0.87;
+    private final double minimumConfidence = 0.90;
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch;

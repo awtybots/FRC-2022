@@ -17,7 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private final DoubleSolenoid pistons;
   private final WPI_TalonSRX motor;
 
-  private final double kMotorSpeed = 0.5;
+  private final double kMotorSpeed = 0.75;
 
   public IntakeSubsystem() {
     pistons =

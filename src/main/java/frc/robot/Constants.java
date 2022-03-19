@@ -12,7 +12,7 @@ import frc.robot.util.math.Vector2;
 import java.util.HashMap;
 
 public final class Constants {
-  public static final boolean TUNING_MODE = false;
+  public static final boolean TUNING_MODE = true;
 
   public static final class Drivetrain {
     public static final int kRightFrontCanId = 0;
@@ -61,8 +61,8 @@ public final class Constants {
     public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
 
     static {
-      kBallColors.put(Alliance.Blue, new Color(0.17, 0.41, 0.42));
-      kBallColors.put(Alliance.Red, new Color(0.52, 0.34, 0.13));
+      kBallColors.put(Alliance.Blue, new Color(0.18, 0.41, 0.43));
+      kBallColors.put(Alliance.Red, new Color(0.45, 0.39, 0.16));
     }
   }
 
