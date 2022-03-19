@@ -69,7 +69,7 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public void shootingMode() {
-    limelight.setPipeline(Limelight.kPipelineShooting);
+    limelight.setPipeline(Limelight.kPipelineDriving); // TODO switch back
   }
 
   private class RotatableLimelight extends frc.robot.util.vision.Limelight {
