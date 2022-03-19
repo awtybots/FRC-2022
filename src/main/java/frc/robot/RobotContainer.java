@@ -53,32 +53,44 @@ public class RobotContainer {
   }
 
   private void addAutonomousChoices() {
-    autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+    autonChooser.addOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
-    autonChooser.addOption(
-        "One Ball Auton",
-        new OneBallAuton(
-            drivetrainSubsystem, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
-    autonChooser.addOption(
-        "Two Ball Auton",
-        new TwoBallAuton(
-            drivetrainSubsystem,
-            intakeSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
-    autonChooser.addOption(
-        "Four Ball Auton",
-        new FourBallAuton(
-            drivetrainSubsystem,
-            intakeSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
+    autonChooser.addOption("1 Low Goal 1 High Goal", new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    autonChooser.setDefaultOption("2 Ball High Goal", new TwoBallAutonStupidHighGoal(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    // autonChooser.addOption(
+    //     "One Ball Auton",
+    //     new OneBallAuton(
+    //         drivetrainSubsystem, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    // autonChooser.addOption(
+    //     "2 Ball Stupid",
+    //     new TwoBallAutonStupid(
+    //         drivetrainSubsystem,
+    //         intakeSubsystem,
+    //         towerSubsystem,
+    //         turretSubsystem,
+    //         shooterSubsystem,
+    //         limelightSubsystem,
+    //         colorSensorsSubsystem));
+    // autonChooser.addOption(
+    //     "Two Ball Auton",
+    //     new TwoBallAuton(
+    //         drivetrainSubsystem,
+    //         intakeSubsystem,
+    //         towerSubsystem,
+    //         turretSubsystem,
+    //         shooterSubsystem,
+    //         limelightSubsystem,
+    //         colorSensorsSubsystem));
+    // autonChooser.addOption(
+    //     "Four Ball Auton",
+    //     new FourBallAuton(
+    //         drivetrainSubsystem,
+    //         intakeSubsystem,
+    //         towerSubsystem,
+    //         turretSubsystem,
+    //         shooterSubsystem,
+    //         limelightSubsystem,
+    //         colorSensorsSubsystem));
   }
 
   private void configureButtonBindings() {
