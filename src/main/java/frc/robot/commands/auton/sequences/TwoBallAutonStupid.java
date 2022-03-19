@@ -6,7 +6,7 @@ import frc.robot.commands.backup.IntakeAndIngest;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.subsystems.*;
 
-//this is good and cool and tested :) 6pt gaurunteed
+// this is good and cool and tested :) 6pt gaurunteed
 public class TwoBallAutonStupid extends SequentialCommandGroup {
 
   public TwoBallAutonStupid(

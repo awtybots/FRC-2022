@@ -55,8 +55,26 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonChooser.addOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
-    autonChooser.addOption("1 Low Goal 1 High Goal", new TwoBallAutonStupid(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
-    autonChooser.setDefaultOption("2 Ball High Goal", new TwoBallAutonStupidHighGoal(drivetrainSubsystem, intakeSubsystem, towerSubsystem, turretSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
+    autonChooser.addOption(
+        "1 Low Goal 1 High Goal",
+        new TwoBallAutonStupid(
+            drivetrainSubsystem,
+            intakeSubsystem,
+            towerSubsystem,
+            turretSubsystem,
+            shooterSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
+    autonChooser.setDefaultOption(
+        "2 Ball High Goal",
+        new TwoBallAutonStupidHighGoal(
+            drivetrainSubsystem,
+            intakeSubsystem,
+            towerSubsystem,
+            turretSubsystem,
+            shooterSubsystem,
+            limelightSubsystem,
+            colorSensorsSubsystem));
     // autonChooser.addOption(
     //     "One Ball Auton",
     //     new OneBallAuton(
@@ -126,7 +144,7 @@ public class RobotContainer {
     operator.dpadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
     operator.dpadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
-    operator.joystickClickLeft.whenHeld(new DriveTurret(operator, turretSubsystem));
+    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
     // if (Constants.TUNING_MODE) {
@@ -135,25 +153,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // return new OneBallAuton(drivetrainSubsystem, towerSubsystem, shooterSubsystem);
-    // return new TwoBallAuton(
-    //   drivetrainSubsystem,
-    //   intakeSubsystem,
-    //   towerSubsystem,
-    //   turretSubsystem,
-    //   shooterSubsystem,
-    //   limelightSubsystem,
-    //   colorSensorsSubsystem);
-    return new TwoBallAutonStupid(
-        drivetrainSubsystem,
-        intakeSubsystem,
-        towerSubsystem,
-        turretSubsystem,
-        shooterSubsystem,
-        limelightSubsystem,
-        colorSensorsSubsystem);
-    // autonChooser.getSelected();
     // TODO figure out why auton chooser doesn't work
+    return autonChooser.getSelected();
   }
 
   public void toggleLimelight(boolean on) {

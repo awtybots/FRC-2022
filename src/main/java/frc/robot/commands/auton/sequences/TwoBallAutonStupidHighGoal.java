@@ -6,7 +6,7 @@ import frc.robot.commands.backup.IntakeAndIngest;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.subsystems.*;
 
-//this is good
+// this is good
 public class TwoBallAutonStupidHighGoal extends SequentialCommandGroup {
 
   public TwoBallAutonStupidHighGoal(
@@ -18,7 +18,8 @@ public class TwoBallAutonStupidHighGoal extends SequentialCommandGroup {
       LimelightSubsystem limelightSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
-        // new ShootRpm(950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
+        // new ShootRpm(950, towerSubsystem, shooterSubsystem,
+        // colorSensorsSubsystem).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
                 () -> {

@@ -50,8 +50,8 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    robotContainer.toggleLimelight(false);
     if (autonomousCommand != null) autonomousCommand.cancel();
-    robotContainer.toggleLimelight(false); // TODO remove
   }
 
   @Override
@@ -87,9 +87,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    robotContainer.toggleLimelight(true); // TODO neater way
-  }
+  public void teleopPeriodic() {}
 
   @Override
   public void testInit() {
