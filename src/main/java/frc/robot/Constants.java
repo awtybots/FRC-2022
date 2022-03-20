@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.util.math.Convert;
+import frc.util.math.ShotMap;
 import frc.util.math.Vector2;
 import java.util.HashMap;
 
@@ -34,6 +35,15 @@ public final class Constants {
 
   public static final class Shooter {
     public static final int kFlywheelMotorCanId = 10;
+    public static final ShotMap shotMap = new ShotMap();
+
+    static { // distance (meters), RPM
+      shotMap.addShot(3.0, 1600);
+      shotMap.addShot(3.5, 1600);
+      shotMap.addShot(4.0, 1700);
+      shotMap.addShot(4.5, 1800);
+      shotMap.addShot(6.0, 2000);
+    }
   }
 
   public static final class Intake {

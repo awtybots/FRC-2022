@@ -2,31 +2,24 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
-import frc.util.math.Interpolatable;
-import frc.util.math.InterpolationMap;
+import frc.util.math.ShotMap;
 
 public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
 
-  public static final InterpolationMap<Double> iMap = new InterpolationMap<>();
-
-  static {
-    iMap.addKeyframe(3.0, Interpolatable.interpolatableDouble(1600));
-    iMap.addKeyframe(3.5, Interpolatable.interpolatableDouble(1600));
-    iMap.addKeyframe(4.0, Interpolatable.interpolatableDouble(1700));
-    iMap.addKeyframe(4.5, Interpolatable.interpolatableDouble(1800));
-    iMap.addKeyframe(6.0, Interpolatable.interpolatableDouble(2000));
-  }
+  private final ShotMap iMap;
 
   public ShootInterpolated(
+      ShotMap sMap,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
+    this.iMap = sMap;
 
     addRequirements(towerSubsystem, shooterSubsystem);
   }
@@ -49,7 +42,7 @@ public class ShootInterpolated extends CommandBase {
       return;
     }
 
-    double launchRpm = iMap.get(goalDistance);
+    double launchRpm = iMap.calculateShot(goalDistance);
     shooterSubsystem.shootRpm(launchRpm);
 
     if (shooterSubsystem.isAtTarget()) {

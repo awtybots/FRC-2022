@@ -2,8 +2,11 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
+import frc.util.math.ShotMap;
 
 public class ShootInterpolatedOrSpit extends CommandBase {
+
+  private final ShotMap iMap;
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
@@ -13,11 +16,14 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   private boolean alreadySet = false;
 
   public ShootInterpolatedOrSpit(
+      ShotMap sMap,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
+
+    this.iMap = sMap;
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
@@ -52,7 +58,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       return;
     }
 
-    double launchRpm = ShootInterpolated.iMap.get(goalDisplacement);
+    double launchRpm = iMap.calculateShot(goalDisplacement);
     shooterSubsystem.shootRpm(launchRpm);
 
     double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
