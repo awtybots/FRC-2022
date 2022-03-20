@@ -10,9 +10,7 @@ public class ShootRpmNoTower extends StartEndCommand {
         () -> {
           shooterSubsystem.shootRpm(rpm);
         },
-        () -> {
-          shooterSubsystem.stop();
-        },
+        shooterSubsystem::stop,
         shooterSubsystem);
   }
 }

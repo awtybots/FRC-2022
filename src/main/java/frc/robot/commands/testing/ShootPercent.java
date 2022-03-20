@@ -1,30 +1,16 @@
 package frc.robot.commands.testing;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShootPercent extends CommandBase {
-  private final ShooterSubsystem shooterSubsystem;
-  private final double speed;
+public class ShootPercent extends StartEndCommand {
 
-  public ShootPercent(double speed, ShooterSubsystem shooterSubsystem) {
-    this.shooterSubsystem = shooterSubsystem;
-
-    this.speed = speed;
-
-    addRequirements(shooterSubsystem);
-  }
-
-  @Override
-  public void initialize() {
-    shooterSubsystem.shootPercent(speed);
-  }
-
-  @Override
-  public void execute() {}
-
-  @Override
-  public void end(boolean interrupted) {
-    shooterSubsystem.stop();
+  public ShootPercent(double percent, ShooterSubsystem shooterSubsystem) {
+    super(
+        () -> {
+          shooterSubsystem.shootPercent(percent);
+        },
+        shooterSubsystem::stop,
+        shooterSubsystem);
   }
 }
