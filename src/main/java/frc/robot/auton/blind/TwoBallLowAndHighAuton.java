@@ -7,9 +7,9 @@ import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
 
 // this is good and cool and tested :) 6pt gaurunteed
-public class TwoBallAutonStupid extends SequentialCommandGroup {
+public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
 
-  public TwoBallAutonStupid(
+  public TwoBallLowAndHighAuton(
       DrivetrainSubsystem drivetrainSubsystem,
       IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
@@ -19,7 +19,7 @@ public class TwoBallAutonStupid extends SequentialCommandGroup {
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
         new ShootRpm(950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
-        new FunctionalCommand(
+        new FunctionalCommand( // TODO replace with StartEndCommand
                 () -> {},
                 () -> {
                   System.out.println("2ball starting");

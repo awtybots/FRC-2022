@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class ZeroBallAuton extends SequentialCommandGroup {
-  public ZeroBallAuton(DrivetrainSubsystem drivetrainSubsystem) {
+public class TaxiOffTarmacAuton extends SequentialCommandGroup {
+  public TaxiOffTarmacAuton(DrivetrainSubsystem drivetrainSubsystem) {
     addCommands(
-        new StartEndCommand(
+        new StartEndCommand( // TODO less violent
                 () -> {
                   drivetrainSubsystem.driveVolts(6.0, 6.0);
                 },

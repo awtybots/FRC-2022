@@ -8,6 +8,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
@@ -45,11 +46,11 @@ public class RobotContainer {
   }
 
   private void addAutonomousChoices() {
-    autonChooser.addOption("Do Nothing", new DoNothingAuton());
-    autonChooser.addOption("Zero Ball Auton", new ZeroBallAuton(drivetrainSubsystem));
+    autonChooser.addOption("Do Nothing", new InstantCommand());
+    autonChooser.addOption("Zero Ball Auton", new TaxiOffTarmacAuton(drivetrainSubsystem));
     autonChooser.addOption(
         "1 Low Goal 1 High Goal",
-        new TwoBallAutonStupid(
+        new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
             intakeSubsystem,
             towerSubsystem,
@@ -59,7 +60,7 @@ public class RobotContainer {
             colorSensorsSubsystem));
     autonChooser.setDefaultOption(
         "2 Ball High Goal",
-        new TwoBallAutonStupidHighGoal(
+        new TwoBallHighGoalAuton(
             drivetrainSubsystem,
             intakeSubsystem,
             towerSubsystem,
