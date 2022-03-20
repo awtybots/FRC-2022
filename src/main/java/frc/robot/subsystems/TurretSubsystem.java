@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -123,13 +122,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   public void turnTo(double absoluteAngle) {
     tMode = Mode.ManualAngle;
-    while (absoluteAngle < kAngleMin) {
-      absoluteAngle += 360.0;
-    }
-    while (absoluteAngle > kAngleMax) {
-      absoluteAngle -= 360.0;
-    }
-    targetAngle = MathUtil.clamp(absoluteAngle, kAngleMin, kAngleMax);
+    absoluteAngle %= 360;
+    if (absoluteAngle < kAngleMin) absoluteAngle += 360;
+    if (absoluteAngle > kAngleMax) absoluteAngle -= 360;
+
     motor.set(
         ControlMode.Position,
         Convert.angleToEncoderPos(targetAngle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
