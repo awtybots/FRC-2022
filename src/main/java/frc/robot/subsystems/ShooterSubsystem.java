@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Shooter;
-import frc.robot.util.math.Convert;
-import frc.robot.util.math.Convert.Encoder;
+import frc.util.math.Convert;
+import frc.util.math.Convert.Encoder;
 import java.util.ArrayList;
 
 public class ShooterSubsystem extends SubsystemBase {

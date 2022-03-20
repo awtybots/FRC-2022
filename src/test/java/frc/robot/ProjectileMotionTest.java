@@ -3,9 +3,9 @@ package frc.robot;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.util.math.ProjectileMotionSolver;
-import frc.robot.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
-import frc.robot.util.math.Vector2;
+import frc.util.math.ProjectileMotionSolver;
+import frc.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
+import frc.util.math.Vector2;
 
 public class ProjectileMotionTest {
   public static void main(String[] args) {

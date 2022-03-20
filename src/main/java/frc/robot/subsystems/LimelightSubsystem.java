@@ -7,12 +7,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Field;
 import frc.robot.Constants.Limelight;
-import frc.robot.util.math.Vector2;
-import frc.robot.util.vision.VisionTarget;
+import frc.util.math.Vector2;
+import frc.util.vision.VisionTarget;
 
 public class LimelightSubsystem extends SubsystemBase {
 
-  private final frc.robot.util.vision.Limelight limelight;
+  private final frc.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
   private MedianFilter distFilter = new MedianFilter(5);
@@ -72,7 +72,7 @@ public class LimelightSubsystem extends SubsystemBase {
     limelight.setPipeline(Limelight.kPipelineDriving); // TODO switch back
   }
 
-  private class RotatableLimelight extends frc.robot.util.vision.Limelight {
+  private class RotatableLimelight extends frc.util.vision.Limelight {
 
     public RotatableLimelight(double mountingHeight, double mountingAngle) {
       super(mountingHeight, mountingAngle);

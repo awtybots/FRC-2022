@@ -1,8 +1,8 @@
 package frc.robot;
 
-import frc.robot.util.math.Convert;
-import frc.robot.util.math.Interpolatable;
-import frc.robot.util.math.InterpolationMap;
+import frc.util.math.Convert;
+import frc.util.math.Interpolatable;
+import frc.util.math.InterpolationMap;
 
 public class IMapTest {
   private static final InterpolationMap<Double> iMap = new InterpolationMap<>();

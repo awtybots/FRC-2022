@@ -12,8 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climber;
-import frc.robot.util.math.Convert;
-import frc.robot.util.math.Convert.Encoder;
+import frc.util.math.Convert;
+import frc.util.math.Convert.Encoder;
 
 public class ClimbSubsystem extends SubsystemBase {
 

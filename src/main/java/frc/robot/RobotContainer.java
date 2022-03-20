@@ -8,11 +8,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.auton.sequences.*;
+import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
-import frc.robot.util.Controller;
+import frc.util.Controller;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a

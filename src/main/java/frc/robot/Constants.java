@@ -7,8 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
-import frc.robot.util.math.Convert;
-import frc.robot.util.math.Vector2;
+import frc.util.math.Convert;
+import frc.util.math.Vector2;
 import java.util.HashMap;
 
 public final class Constants {

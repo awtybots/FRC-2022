@@ -6,8 +6,8 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.util.Controller;
-import frc.robot.util.math.Vector2;
+import frc.util.Controller;
+import frc.util.math.Vector2;
 
 public class Drive extends CommandBase {
 

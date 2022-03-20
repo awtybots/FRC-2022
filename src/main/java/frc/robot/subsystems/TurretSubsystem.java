@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Turret;
-import frc.robot.util.math.Convert;
-import frc.robot.util.math.Convert.Encoder;
+import frc.util.math.Convert;
+import frc.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
