@@ -11,6 +11,7 @@ import com.revrobotics.ColorSensorV3.ProximitySensorResolution;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -29,12 +30,6 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   private Alliance upperBall = Alliance.Invalid;
 
   private static final int kMinProximity = 250;
-  private static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
-
-  static {
-    kBallColors.put(Alliance.Blue, new Color(0.17, 0.41, 0.43));
-    kBallColors.put(Alliance.Red, new Color(0.41, 0.41, 0.18));
-  }
 
   public ColorSensorsSubsystem() {
     lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort);
@@ -57,14 +52,24 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     return upperSensor.ballPresent();
   }
 
+  public String upperBallAlliance() {
+    return upperBall.toString();
+  }
+
+  public String lowerBallAlliance() {
+    return lowerBall.toString();
+  }
+
   @Override
   public void periodic() {
     lowerBall = lowerSensor.getDetectedBall();
     upperBall = upperSensor.getDetectedBall();
 
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putString("Lower Ball Color", upperSensor.getColor());
-      SmartDashboard.putString("Lower Ball Color", lowerSensor.getColor());
+      SmartDashboard.putString("Upper Ball Color", upperBallAlliance());
+      SmartDashboard.putString("Lower Ball Color", lowerBallAlliance());
+      SmartDashboard.putString("Upper Ball RGB", upperSensor.getColor());
+      SmartDashboard.putString("Lower Ball RGB", lowerSensor.getColor());
     }
   }
 
@@ -81,7 +86,6 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch;
-
 
     public ColorSensor(I2C.Port port) {
       sensor = new ColorSensorV3(port);
