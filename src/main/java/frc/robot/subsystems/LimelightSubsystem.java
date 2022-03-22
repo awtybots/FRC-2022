@@ -15,14 +15,15 @@ public class LimelightSubsystem extends SubsystemBase {
   private final frc.util.vision.Limelight limelight;
   private final VisionTarget upperHub;
 
-  private MedianFilter distFilter = new MedianFilter(5);
+  private final int filterSize = 10;
+
+  private MedianFilter distFilter = new MedianFilter(filterSize);
   private double distToTarget = 0;
-  private MedianFilter xFilter = new MedianFilter(5);
+  private MedianFilter xFilter = new MedianFilter(filterSize);
   private double cameraAngleDelta = 0;
 
   private boolean hasTargetDebounced = false;
-  private Debouncer debouncer = new Debouncer(0.5, DebounceType.kFalling);
-  private boolean inTargetingMode = false;
+  private Debouncer debouncer = new Debouncer(filterSize * 0.02, DebounceType.kFalling);
 
   public LimelightSubsystem() {
     limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
@@ -31,7 +32,6 @@ public class LimelightSubsystem extends SubsystemBase {
             limelight, Field.kVisionTargetHeight, Field.kGoalHeight, Limelight.kShooterOffset);
 
     drivingMode();
-    SmartDashboard.putNumber("AutoAim Turret Output", 0);
   }
 
   @Override

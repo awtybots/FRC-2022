@@ -15,7 +15,6 @@ public class ShootRpmOrSpit extends CommandBase {
   private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   private final double rpm;
-  private boolean alreadySet = false;
 
   public ShootRpmOrSpit(
       double rpm,
@@ -42,30 +41,14 @@ public class ShootRpmOrSpit extends CommandBase {
   }
 
   private void executeShoot(boolean idling) {
-    alreadySet = false;
-
-    if (!limelightSubsystem.hasVisibleTarget()) {
-      turretSubsystem.seek();
-      return;
-    }
-
-    double deltaAngle = limelightSubsystem.cameraTargetAngleDelta();
-
-    turretSubsystem.turnBy(deltaAngle);
+    turretSubsystem.trackTarget(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
 
     if (idling) shooterSubsystem.stop();
     else shooterSubsystem.shootRpm(this.rpm);
   }
 
   private void executeSpit() {
-    if (!alreadySet) {
-      alreadySet = true;
-      if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.cameraTargetAngleDelta());
-      } else {
-        turretSubsystem.spit();
-      }
-    }
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
     shooterSubsystem.spit();
   }
 
@@ -79,7 +62,11 @@ public class ShootRpmOrSpit extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        towerSubsystem.feedShooter();
+        if(colorSensorsSubsystem.isUpperBallPresent()) {
+          towerSubsystem.feedShooter1();
+        } else {
+          towerSubsystem.feedShooter2();
+        }
       } else {
         towerSubsystem.stopUpper();
 
@@ -97,7 +84,7 @@ public class ShootRpmOrSpit extends CommandBase {
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
     towerSubsystem.stop();
-    turretSubsystem.stop();
+    turretSubsystem.idle();
     limelightSubsystem.drivingMode();
   }
 }

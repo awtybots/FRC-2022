@@ -8,6 +8,7 @@ public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
+  private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   private final ShotMap iMap;
 
@@ -15,10 +16,12 @@ public class ShootInterpolated extends CommandBase {
       ShotMap sMap,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      LimelightSubsystem limelightSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
+    this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.iMap = sMap;
 
     addRequirements(towerSubsystem, shooterSubsystem);
@@ -46,7 +49,11 @@ public class ShootInterpolated extends CommandBase {
     shooterSubsystem.shootRpm(launchRpm);
 
     if (shooterSubsystem.isAtTarget()) {
-      towerSubsystem.feedShooter();
+      if(colorSensorsSubsystem.isUpperBallPresent()) {
+        towerSubsystem.feedShooter1();
+      } else {
+        towerSubsystem.feedShooter2();
+      }
     } else {
       towerSubsystem.stopUpper();
     }

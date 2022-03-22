@@ -13,8 +13,6 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
 
-  private boolean alreadySet = false;
-
   public ShootInterpolatedOrSpit(
       ShotMap sMap,
       TowerSubsystem towerSubsystem,
@@ -43,37 +41,28 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   }
 
   private void executeShoot() {
-    alreadySet = false;
-
     if (!limelightSubsystem.hasVisibleTarget()) {
-      turretSubsystem.seek();
+      turretSubsystem.trackTarget(false);
       shooterSubsystem.stop();
       return;
     }
 
     double goalDisplacement = limelightSubsystem.distToTarget();
     if (goalDisplacement == -1) {
-      turretSubsystem.seek();
+      turretSubsystem.trackTarget(false);
       shooterSubsystem.stop();
       return;
     }
 
+    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
+    turretSubsystem.trackTarget(true, visionTargetXOffset);
+
     double launchRpm = iMap.calculateShot(goalDisplacement);
     shooterSubsystem.shootRpm(launchRpm);
-
-    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
-    turretSubsystem.turnBy(visionTargetXOffset);
   }
 
   private void executeSpit() {
-    if (!alreadySet) {
-      alreadySet = true;
-      if (limelightSubsystem.hasVisibleTarget()) {
-        turretSubsystem.spitRelative(limelightSubsystem.cameraTargetAngleDelta());
-      } else {
-        turretSubsystem.spit();
-      }
-    }
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
     shooterSubsystem.spit();
   }
 
@@ -87,7 +76,11 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        towerSubsystem.feedShooter();
+        if(colorSensorsSubsystem.isUpperBallPresent()) {
+          towerSubsystem.feedShooter1();
+        } else {
+          towerSubsystem.feedShooter2();
+        }
       } else {
         towerSubsystem.stopUpper();
 
@@ -105,7 +98,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   public void end(boolean interrupted) {
     towerSubsystem.stop();
     shooterSubsystem.stop();
-    turretSubsystem.stop();
+    turretSubsystem.idle();
     limelightSubsystem.drivingMode();
   }
 }
