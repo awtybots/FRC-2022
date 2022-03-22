@@ -41,7 +41,7 @@ public class ShootRpm extends CommandBase {
     //   towerSubsystem.feedFromLower();
     // }
     if (shooterSubsystem.isAtTarget()) {
-      if (colorSensorsSubsystem.isUpperBallPresent()) {
+      if (colorSensorsSubsystem.upperBallPresent()) {
         towerSubsystem.feedFromUpper();
       } else {
         towerSubsystem.feedFromLower();

@@ -113,8 +113,8 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
+    if (colorSensorsSubsystem.upperBallPresent()) {
+      if (colorSensorsSubsystem.upperBallOurs()) {
         executeShoot(false);
       } else {
         executeSpit();
@@ -129,7 +129,7 @@ public class MovingShots extends CommandBase {
       } else {
         towerSubsystem.stopUpper();
 
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
+        if (colorSensorsSubsystem.lowerBallPresent()) {
           towerSubsystem.stop();
         }
       }

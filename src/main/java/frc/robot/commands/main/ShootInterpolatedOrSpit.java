@@ -66,8 +66,8 @@ public class ShootInterpolatedOrSpit extends CommandBase {
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
+    if (colorSensorsSubsystem.upperBallPresent()) {
+      if (colorSensorsSubsystem.upperBallOurs()) {
         executeShoot();
       } else {
         executeSpit();
@@ -82,7 +82,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       } else {
         towerSubsystem.stopUpper();
 
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
+        if (colorSensorsSubsystem.lowerBallPresent()) {
           towerSubsystem.stop();
         }
       }

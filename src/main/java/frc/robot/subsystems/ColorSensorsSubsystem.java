@@ -10,18 +10,20 @@ import com.revrobotics.ColorSensorV3.ProximitySensorMeasurementRate;
 import com.revrobotics.ColorSensorV3.ProximitySensorResolution;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorSensors;
-import java.util.HashMap;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
   private final ColorSensor lowerSensor;
   private final ColorSensor upperSensor;
+
+  private final Alliance ourAlliance = DriverStation.getAlliance();
 
   private Alliance lowerBall = Alliance.Invalid;
   private Alliance upperBall = Alliance.Invalid;
@@ -35,24 +37,24 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   }
 
   public ColorSensorsSubsystem() {
-    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, "lower");
-    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, "upper");
+    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort);
+    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort);
   }
 
-  public boolean isLowerBallPresent() {
-    return lowerBall != Alliance.Invalid;
+  public boolean lowerBallOurs() {
+    return lowerBall == ourAlliance;
   }
 
-  public boolean isUpperBallPresent() {
-    return upperBall != Alliance.Invalid;
+  public boolean upperBallOurs() {
+    return upperBall == ourAlliance;
   }
 
-  public boolean isLowerBallOurs() {
-    return lowerBall == DriverStation.getAlliance();
+  public boolean lowerBallPresent() {
+    return lowerSensor.ballPresent();
   }
 
-  public boolean isUpperBallOurs() {
-    return upperBall == DriverStation.getAlliance();
+  public boolean upperBallPresent() {
+    return upperSensor.ballPresent();
   }
 
   @Override
@@ -60,21 +62,28 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     lowerBall = lowerSensor.getDetectedBall();
     upperBall = upperSensor.getDetectedBall();
 
-    SmartDashboard.putString("TW - lower ball", lowerBall.toString());
-    SmartDashboard.putString("TW - upper ball", upperBall.toString());
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putString("Lower Ball Color", upperSensor.getColor());
+      SmartDashboard.putString("Lower Ball Color", lowerSensor.getColor());
+    }
   }
 
   private class ColorSensor {
+
     private final double minimumConfidence = 0.90;
+    private final int minimumDistance = 800;
+
+    // These are currently in RGB but converting the RGB values from the
+    // sensor to HSV then matching the colors might be more robust
+    // * Tune these at the field if you want to know the color of the balls
+    private final Color Red = new Color(0.18, 0.41, 0.43);
+    private final Color Blue = new Color(0.45, 0.39, 0.16);
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch;
 
-    private final String id;
 
-    public ColorSensor(I2C.Port port, String id) {
-      this.id = id;
-
+    public ColorSensor(I2C.Port port) {
       sensor = new ColorSensorV3(port);
       sensor.configureColorSensor(
           ColorSensorResolution.kColorSensorRes17bit,
@@ -84,37 +93,29 @@ public class ColorSensorsSubsystem extends SubsystemBase {
           ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
 
       colorMatch = new ColorMatch();
-      for (Color color : kBallColors.values()) {
-        colorMatch.addColorMatch(color);
-      }
+      colorMatch.addColorMatch(Red);
+      colorMatch.addColorMatch(Blue);
       colorMatch.setConfidenceThreshold(minimumConfidence);
+    }
+
+    public boolean ballPresent() {
+      return sensor.getProximity() > minimumDistance;
     }
 
     public Alliance getDetectedBall() {
       Color detectedColor = sensor.getColor();
-      ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
+      ColorMatchResult match = colorMatch.matchColor(detectedColor);
 
-      int proximity = sensor.getProximity(); // 0 to 2047, higher means closer
-
-      if (Constants.TUNING_MODE) {
-        SmartDashboard.putString("TW - " + id + " color", colorToString(detectedColor));
-        SmartDashboard.putNumber("TW - " + id + " confidence", match.confidence);
-        SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
-      }
-
-      if (proximity > kMinProximity) { // if we see a ball but don't know its color, assume its ours
-        return DriverStation.getAlliance();
-      }
-
-      if (match.confidence > minimumConfidence) {
-        for (Alliance alliance : kBallColors.keySet()) {
-          if (match.color == kBallColors.get(alliance)) {
-            return alliance;
-          }
-        }
+      if (match != null) {
+        if (match.color == Red) return Alliance.Red;
+        if (match.color == Blue) return Alliance.Blue;
       }
 
       return Alliance.Invalid;
+    }
+
+    public String getColor() {
+      return colorToString(sensor.getColor());
     }
 
     private String colorToString(Color c) {
