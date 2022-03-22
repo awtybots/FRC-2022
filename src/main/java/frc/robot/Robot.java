@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -26,40 +27,6 @@ public class Robot extends TimedRobot {
     robotContainer = new RobotContainer();
   }
 
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {
-    robotContainer.turnOffLimelightLEDs();
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
-    }
-  }
-
-  /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
-  @Override
-  public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
-    }
-  }
-
-  @Override
-  public void teleopInit() {
-    // Prevents autonomous from continuing into teleop
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
-    }
-  }
-
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
-
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like
    * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
@@ -76,18 +43,40 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
+  /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledInit() {
+    robotContainer.turnOffLimelightLEDs();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
+    }
+  }
 
-  /** This function is called periodically during autonomous. */
+  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
+    autonomousCommand = robotContainer.getAutonomousCommand();
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
+    // schedule the autonomous command (example)
+    if (autonomousCommand != null) {
+      autonomousCommand.schedule();
+    }
+  }
 
-  /** This function is called periodically during test mode. */
   @Override
-  public void testPeriodic() {}
+  public void teleopInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
+    // Prevents autonomous from continuing into teleop
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
+    }
+  }
+
+  @Override
+  public void testInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
+    // Cancels all running commands at the start of test mode.
+    CommandScheduler.getInstance().cancelAll();
+  }
 }

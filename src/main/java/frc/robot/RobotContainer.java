@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -157,5 +158,17 @@ public class RobotContainer {
 
   public void turnOffLimelightLEDs() {
     limelightSubsystem.drivingMode();
+  }
+
+  /**
+   * This is kindof hacky but `getAlliance` can return Invalid when not connected to the DS or FMS
+   * so it's not safe to assume that upon construction of subsystems we will be connected to the DS
+   * or FMS, but by the start of autonomous we will be connected. So that's why this is here. It
+   * doesn't really matter during testing because DS will set it and DS will most likely be open
+   * before we connect, but it's still possible it won't be able to read a valid Alliance, so just
+   * to be sure this is here.
+   */
+  public void setAlliance(Alliance alliance) {
+    colorSensorsSubsystem.setAlliance(alliance);
   }
 }
