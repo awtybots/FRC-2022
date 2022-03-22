@@ -10,8 +10,6 @@ import com.revrobotics.ColorSensorV3.ProximitySensorMeasurementRate;
 import com.revrobotics.ColorSensorV3.ProximitySensorResolution;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -92,6 +90,13 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       sensor.configureColorSensor(
           ColorSensorResolution.kColorSensorRes17bit,
           ColorSensorMeasurementRate.kColorRate25ms,
+          GainFactor.kGain3x);
+      sensor.configureProximitySensor(
+          ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
+
+      sensor.configureColorSensor(
+          ColorSensorResolution.kColorSensorRes17bit,
+          ColorSensorMeasurementRate.kColorRate50ms,
           GainFactor.kGain3x);
       sensor.configureProximitySensor(
           ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
