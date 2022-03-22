@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorSensors;
-import frc.util.math.Convert;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
@@ -20,8 +19,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   private Alliance ourAlliance = Alliance.Invalid;
 
-  private Alliance lowerBall = Alliance.Invalid;
-  private Alliance upperBall = Alliance.Invalid;
+  private Alliance lowerBallColor = Alliance.Invalid;
+  private Alliance upperBallColor = Alliance.Invalid;
 
   private static final int kMinProximity = 250;
 
@@ -35,7 +34,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   }
 
   public boolean upperBallOurs() {
-    return upperBall == ourAlliance;
+    return upperBallColor == ourAlliance;
   }
 
   public boolean upperBallPresent() {
@@ -48,12 +47,12 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    lowerBall = lowerSensor.getDetectedBall();
-    upperBall = upperSensor.getDetectedBall();
+    lowerBallColor = lowerSensor.getBallAlliance();
+    upperBallColor = upperSensor.getBallAlliance();
 
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putString("Upper Ball Color", upperBall.toString());
-      SmartDashboard.putString("Lower Ball Color", lowerBall.toString());
+      SmartDashboard.putString("Upper Ball Color", upperBallColor.toString());
+      SmartDashboard.putString("Lower Ball Color", lowerBallColor.toString());
       SmartDashboard.putString("Upper Ball RGB", upperSensor.rawColor());
       SmartDashboard.putString("Lower Ball RGB", lowerSensor.rawColor());
     }
@@ -65,8 +64,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     private final double minColorConfidence = 0.90; // TODO make sure this a correct value
 
     // Tune these at each field if you want to know the color of the balls
-    private final Color Red = Convert.rgbToHSV(new Color(0.18, 0.41, 0.43));
-    private final Color Blue = Convert.rgbToHSV(new Color(0.45, 0.39, 0.16));
+    private final Color Red = new Color(0.45, 0.39, 0.16);
+    private final Color Blue = new Color(0.18, 0.41, 0.43);
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch = new ColorMatch();
@@ -97,9 +96,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       return sensor.getProximity() > minimumDistance;
     }
 
-    public Alliance getDetectedBall() {
-      // Match color in HSV space for _possible_ better robustness
-      Color detectedColor = Convert.rgbToHSV(sensor.getColor());
+    public Alliance getBallAlliance() {
+      Color detectedColor = sensor.getColor();
       ColorMatchResult match = colorMatch.matchColor(detectedColor);
 
       if (match != null) {
