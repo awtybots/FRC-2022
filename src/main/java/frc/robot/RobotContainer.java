@@ -116,7 +116,7 @@ public class RobotContainer {
     /// === AUTOMAGIC ===
     // operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     // operator.buttonStart.whenHeld(
-    //     new ShootInterpolated(Shooter.shotMap, towerSubsystem, shooterSubsystem,
+    //     new ShootInterpolated(towerSubsystem, shooterSubsystem,
     // limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
