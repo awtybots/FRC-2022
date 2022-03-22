@@ -69,8 +69,8 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   private class ColorSensor {
 
-    private final double minimumConfidence = 0.90;
-    private final int minimumDistance = 800;
+    private final int minimumDistance = 800; // TODO tune value
+    private final double minColorConfidence = 0.90;
 
     // These are currently in RGB but converting the RGB values from the
     // sensor to HSV then matching the colors might be more robust
@@ -79,7 +79,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     private final Color Blue = new Color(0.45, 0.39, 0.16);
 
     private final ColorSensorV3 sensor;
-    private final ColorMatch colorMatch;
+    private final ColorMatch colorMatch = new ColorMatch();
 
     public ColorSensor(I2C.Port port) {
       sensor = new ColorSensorV3(port);
@@ -98,10 +98,9 @@ public class ColorSensorsSubsystem extends SubsystemBase {
           ColorSensorMeasurementRate.kColorRate50ms,
           GainFactor.kGain3x);
 
-      colorMatch = new ColorMatch();
       colorMatch.addColorMatch(Red);
       colorMatch.addColorMatch(Blue);
-      colorMatch.setConfidenceThreshold(minimumConfidence);
+      colorMatch.setConfidenceThreshold(minColorConfidence);
     }
 
     public boolean ballPresent() {
@@ -109,8 +108,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
     }
 
     public Alliance getDetectedBall() {
-      Color detectedColor = sensor.getColor();
-      ColorMatchResult match = colorMatch.matchColor(detectedColor);
+      ColorMatchResult match = colorMatch.matchColor(sensor.getColor());
 
       if (match != null) {
         if (match.color == Red) return Alliance.Red;
