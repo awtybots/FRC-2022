@@ -117,7 +117,7 @@ public class RobotContainer {
     // operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     // operator.buttonStart.whenHeld(
     //     new ShootInterpolated(Shooter.shotMap, towerSubsystem, shooterSubsystem,
-    // limelightSubsystem));
+    // limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
@@ -141,7 +141,7 @@ public class RobotContainer {
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
+    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
   }
 
   public Command getAutonomousCommand() {

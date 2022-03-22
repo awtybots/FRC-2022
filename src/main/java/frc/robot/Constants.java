@@ -4,13 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.util.Color;
 import frc.util.math.Convert;
 import frc.util.math.ShotMap;
 import frc.util.math.Vector2;
-import java.util.HashMap;
 
 public final class Constants {
   public static final boolean TUNING_MODE = true;
@@ -68,12 +65,6 @@ public final class Constants {
 
     public static final double kBallRadius = Convert.inchesToMeters(9.5) / 2.0; // meters
     public static final double kBallMass = 0.270; // kg
-    public static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
-
-    static {
-      kBallColors.put(Alliance.Blue, new Color(0.18, 0.41, 0.43));
-      kBallColors.put(Alliance.Red, new Color(0.45, 0.39, 0.16));
-    }
   }
 
   public static final class Limelight {
