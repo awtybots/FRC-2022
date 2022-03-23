@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -36,6 +37,8 @@ public class RobotContainer {
   private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
+
+  public static final PowerDistribution pdp = new PowerDistribution();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -114,7 +117,7 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    // operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     // operator.buttonStart.whenHeld(
     //     new ShootInterpolated(towerSubsystem, shooterSubsystem,
     // limelightSubsystem, colorSensorsSubsystem));
