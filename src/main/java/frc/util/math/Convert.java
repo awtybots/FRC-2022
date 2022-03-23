@@ -70,6 +70,10 @@ public final class Convert {
     return revsPerSecToEncoderVel(degPerSec / 360.0, gearRatio, encoder);
   }
 
+  public static double encoderVelToAngularVel(double sensorUnitsPer100ms, double gearRatio, Encoder encoder) {
+    return encoderVelToRevsPerSec(sensorUnitsPer100ms, gearRatio, encoder) * 360.0;
+  }
+
   /** @return (encoder ticks per 100ms) per second */
   public static double angularAccelToEncoderAccel(
       double degPerSecPerSec, double gearRatio, Encoder encoder) {
