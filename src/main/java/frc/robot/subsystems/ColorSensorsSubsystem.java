@@ -22,11 +22,11 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   private Alliance lowerBall = Alliance.Invalid;
   private Alliance upperBall = Alliance.Invalid;
 
-  private static final int kMinProximity = 1000; // ! TODO tune proximity
+  private static final int kMinProximity = 250;
   private static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
   static {
-    kBallColors.put(Alliance.Blue, new Color(0.18, 0.41, 0.43));
-    kBallColors.put(Alliance.Red, new Color(0.45, 0.39, 0.16));
+    kBallColors.put(Alliance.Blue, new Color(0.17, 0.41, 0.43));
+    kBallColors.put(Alliance.Red, new Color(0.50, 0.36, 0.14));
   }
 
   public ColorSensorsSubsystem() {
