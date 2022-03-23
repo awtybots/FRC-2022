@@ -1,25 +1,24 @@
 package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.*;
-import frc.util.math.ShotMap;
 
 public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-
-  private final ShotMap iMap;
+  private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   public ShootInterpolated(
-      ShotMap sMap,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      LimelightSubsystem limelightSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-    this.iMap = sMap;
+    this.colorSensorsSubsystem = colorSensorsSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
   }
@@ -42,11 +41,15 @@ public class ShootInterpolated extends CommandBase {
       return;
     }
 
-    double launchRpm = iMap.calculateShot(goalDistance);
+    double launchRpm = Shooter.shotMap.calculateShot(goalDistance);
     shooterSubsystem.shootRpm(launchRpm);
 
     if (shooterSubsystem.isAtTarget()) {
-      towerSubsystem.feedShooter();
+      if(colorSensorsSubsystem.isUpperBallPresent()) {
+        towerSubsystem.feedShooter1();
+      } else {
+        towerSubsystem.feedShooter2();
+      }
     } else {
       towerSubsystem.stopUpper();
     }

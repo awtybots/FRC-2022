@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -11,7 +13,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ColorSensors;
-import frc.robot.Constants.Field;
 
 public class ColorSensorsSubsystem extends SubsystemBase {
 
@@ -20,6 +21,13 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   private Alliance lowerBall = Alliance.Invalid;
   private Alliance upperBall = Alliance.Invalid;
+
+  private static final int kMinProximity = 250;
+  private static final HashMap<Alliance, Color> kBallColors = new HashMap<>();
+  static {
+    kBallColors.put(Alliance.Blue, new Color(0.17, 0.41, 0.43));
+    kBallColors.put(Alliance.Red, new Color(0.50, 0.36, 0.14));
+  }
 
   public ColorSensorsSubsystem() {
     lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, "lower");
@@ -65,7 +73,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       sensor = new ColorSensorV3(port);
 
       colorMatch = new ColorMatch();
-      for (Color color : Field.kBallColors.values()) {
+      for (Color color : kBallColors.values()) {
         colorMatch.addColorMatch(color);
         colorMatch.addColorMatch(color);
       }
@@ -76,21 +84,25 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       Color detectedColor = sensor.getColor();
       ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
-      // ? use proximity value from sensor for better detection accuracy
-      // double proximity = sensor.getProximity(); // 0 to 2047, higher means closer
+      // ! TODO use proximity value from sensor for better detection accuracy
+      int proximity = sensor.getProximity(); // 0 to 2047, higher means closer
 
       if (Constants.TUNING_MODE) {
         SmartDashboard.putString("TW - " + id + " color", colorToString(detectedColor));
         SmartDashboard.putNumber("TW - " + id + " confidence", match.confidence);
-        // SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
+        SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
       }
 
       if (match.confidence > minimumConfidence) {
-        for (Alliance alliance : Field.kBallColors.keySet()) {
-          if (match.color == Field.kBallColors.get(alliance)) {
+        for (Alliance alliance : kBallColors.keySet()) {
+          if (match.color == kBallColors.get(alliance)) {
             return alliance;
           }
         }
+      }
+
+      if(proximity > kMinProximity) { // if we see a ball but don't know its color, assume its ours
+        return DriverStation.getAlliance();
       }
 
       return Alliance.Invalid;

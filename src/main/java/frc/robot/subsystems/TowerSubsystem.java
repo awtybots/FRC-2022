@@ -54,8 +54,14 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   /** only runs upper tower */
-  public void feedShooter() {
-    // lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
+  public void feedShooter1() {
+    lowerMotor.set(ControlMode.PercentOutput, 0.0);
+    upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
+  }
+
+  /** runs both parts of tower */
+  public void feedShooter2() {
+    lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }
 

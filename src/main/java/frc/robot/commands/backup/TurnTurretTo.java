@@ -28,6 +28,6 @@ public class TurnTurretTo extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.stop();
+    turretSubsystem.idle();
   }
 }

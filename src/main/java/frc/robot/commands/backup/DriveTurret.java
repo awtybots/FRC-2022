@@ -30,7 +30,7 @@ public class DriveTurret extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.stop();
+    turretSubsystem.idle();
   }
 
   @Override
