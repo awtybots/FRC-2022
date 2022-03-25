@@ -118,7 +118,8 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem), operator.buttonBack).schedule();
+    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    // new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem), operator.buttonBack).schedule();
     operator.buttonStart.whenHeld(
         new ShootInterpolated(towerSubsystem, shooterSubsystem,
         limelightSubsystem, colorSensorsSubsystem));
