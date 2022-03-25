@@ -72,8 +72,6 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    System.out.println(goalDisplacement); // TODO remove
-
     double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
     double robotSpeed = drivetrainSubsystem.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getCurrentAngle();

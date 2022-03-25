@@ -8,6 +8,7 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.subsystems.*;
 
+// TODO implement
 public class FourBallAuton extends SequentialCommandGroup {
   // private final DrivetrainSubsystem drivetrainSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -33,7 +34,7 @@ public class FourBallAuton extends SequentialCommandGroup {
                 3000.0,
                 towerSubsystem,
                 shooterSubsystem,
-                colorSensorsSubsystem) // TODO tune rpm and time
+                colorSensorsSubsystem)
             .withTimeout(3.0),
         new FourBall1(drivetrainSubsystem),
         new ShootRpm(4000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
