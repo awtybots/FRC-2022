@@ -15,6 +15,7 @@ import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
 import frc.robot.subsystems.*;
 import frc.util.Controller;
+import frc.util.ToggleCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -117,10 +118,10 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    // operator.buttonStart.whenHeld(
-    //     new ShootInterpolated(towerSubsystem, shooterSubsystem,
-    // limelightSubsystem, colorSensorsSubsystem));
+    new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem), operator.buttonBack).schedule();
+    operator.buttonStart.whenHeld(
+        new ShootInterpolated(towerSubsystem, shooterSubsystem,
+        limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
@@ -144,7 +145,8 @@ public class RobotContainer {
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem,
+    // colorSensorsSubsystem));
   }
 
   public Command getAutonomousCommand() {

@@ -31,7 +31,8 @@ public final class Constants {
   }
 
   public static final class Shooter {
-    public static final int kFlywheelMotorCanId = 13;
+    public static final int kMotor1CanId = 10;
+    public static final int kMotor2CanId = 13;
     public static final ShotMap shotMap = new ShotMap();
 
     static { // distance (meters), RPM

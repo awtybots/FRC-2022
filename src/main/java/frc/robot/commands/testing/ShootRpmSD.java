@@ -12,7 +12,10 @@ public class ShootRpmSD extends CommandBase {
   private final ShooterSubsystem shooterSubsystem;
   private final ColorSensorsSubsystem colorSensorsSubsystem;
 
-  public ShootRpmSD(TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem, ColorSensorsSubsystem colorSensorsSubsystem) {
+  public ShootRpmSD(
+      TowerSubsystem towerSubsystem,
+      ShooterSubsystem shooterSubsystem,
+      ColorSensorsSubsystem colorSensorsSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.colorSensorsSubsystem = colorSensorsSubsystem;
@@ -30,7 +33,7 @@ public class ShootRpmSD extends CommandBase {
   @Override
   public void execute() {
     if (shooterSubsystem.isAtTarget()) {
-      if(colorSensorsSubsystem.isUpperBallPresent()) {
+      if (colorSensorsSubsystem.isUpperBallPresent()) {
         towerSubsystem.feedShooter1();
       } else {
         towerSubsystem.feedShooter2();
