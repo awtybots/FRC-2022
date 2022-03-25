@@ -50,7 +50,7 @@ public class FourBallAuton extends SequentialCommandGroup {
 
   @Override
   public void initialize() {
-    turretSubsystem.initPosition(180.0);
+    turretSubsystem.resetEncoderPosition(180.0);
     autoAimCommand.schedule();
 
     super.initialize();

@@ -46,9 +46,9 @@ public class ShootInterpolated extends CommandBase {
 
     if (shooterSubsystem.isAtTarget()) {
       if (colorSensorsSubsystem.isUpperBallPresent()) {
-        towerSubsystem.feedShooter1();
+        towerSubsystem.feedFromUpper();
       } else {
-        towerSubsystem.feedShooter2();
+        towerSubsystem.feedFromLower();
       }
     } else {
       towerSubsystem.stopUpper();
