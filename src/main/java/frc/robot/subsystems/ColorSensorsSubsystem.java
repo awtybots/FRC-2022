@@ -31,7 +31,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   static {
     kBallColors.put(Alliance.Blue, new Color(0.17, 0.41, 0.43));
-    kBallColors.put(Alliance.Red, new Color(0.50, 0.36, 0.14));
+    kBallColors.put(Alliance.Red, new Color(0.41, 0.41, 0.18));
   }
 
   public ColorSensorsSubsystem() {

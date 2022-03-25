@@ -22,11 +22,10 @@ public class ToggleCommand extends CommandBase {
 
   @Override
   public void execute() {
-    if(btn.get() == on)
-      return;
+    if (btn.get() == on) return;
 
     on = btn.get();
-    if(on) {
+    if (on) {
       command.schedule();
     } else {
       command.cancel();
