@@ -12,7 +12,7 @@ public class OneBallHighGoalAuton extends SequentialCommandGroup {
       ShooterSubsystem shooterSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
-        new FunctionalCommand( // TODO replace with StartEndCommand
+        new FunctionalCommand(
                 () -> {},
                 () -> {
                   drivetrainSubsystem.driveVolts(3.0, 3.0);

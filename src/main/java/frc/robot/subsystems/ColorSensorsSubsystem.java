@@ -102,7 +102,11 @@ public class ColorSensorsSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("TW - " + id + " proximity", proximity);
       }
 
-      // ! TODO put this back
+      if (proximity > kMinProximity) { // if we see a ball but don't know its color, assume its ours
+        return DriverStation.getAlliance();
+      }
+      
+      // ! TODO put back
       // if (match.confidence > minimumConfidence) {
       //   for (Alliance alliance : kBallColors.keySet()) {
       //     if (match.color == kBallColors.get(alliance)) {
@@ -110,10 +114,6 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       //     }
       //   }
       // }
-
-      if (proximity > kMinProximity) { // if we see a ball but don't know its color, assume its ours
-        return DriverStation.getAlliance();
-      }
 
       return Alliance.Invalid;
     }
