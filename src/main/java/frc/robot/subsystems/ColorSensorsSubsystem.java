@@ -105,7 +105,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       if (proximity > kMinProximity) { // if we see a ball but don't know its color, assume its ours
         return DriverStation.getAlliance();
       }
-      
+
       // ! TODO put back
       // if (match.confidence > minimumConfidence) {
       //   for (Alliance alliance : kBallColors.keySet()) {
