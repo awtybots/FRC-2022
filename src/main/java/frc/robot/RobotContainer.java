@@ -51,7 +51,7 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonChooser.addOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Zero Ball Auton", new TaxiOffTarmacAuton(drivetrainSubsystem));
-    autonChooser.addOption(
+    autonChooser.setDefaultOption(
         "1 Low Goal 1 High Goal",
         new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
@@ -61,7 +61,7 @@ public class RobotContainer {
             shooterSubsystem,
             limelightSubsystem,
             colorSensorsSubsystem));
-    autonChooser.setDefaultOption(
+    autonChooser.addOption(
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
             drivetrainSubsystem,
