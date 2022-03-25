@@ -37,10 +37,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private static final double kP = 0.1;
+  private static final double kP = 0.15;
   private static final double kI = 0.001;
   private static final double kD = 3.5;
-  private static final double kIZone = 150.0;
+  private static final double kIZone = 500.0;
 
   private final WPI_TalonSRX mMotor;
 
@@ -92,12 +92,12 @@ public class TurretSubsystem extends SubsystemBase {
         Convert.angularAccelToEncoderAccel(
             kMaxAngularAccel, kGearRatio, Encoder.VersaPlanetaryIntegrated));
 
-    SmartDashboard.putNumber("TU - kP", kP);
+    // SmartDashboard.putNumber("TU - kP", kP);
     // SmartDashboard.putNumber("TU - kI", kI);
     // SmartDashboard.putNumber("TU - kIZone", kIZone);
-    SmartDashboard.putNumber("TU - kD", kD);
-    SmartDashboard.putNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed);
-    SmartDashboard.putNumber("TU - kMaxAngularAccel", kMaxAngularAccel);
+    // SmartDashboard.putNumber("TU - kD", kD);
+    // SmartDashboard.putNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed);
+    // SmartDashboard.putNumber("TU - kMaxAngularAccel", kMaxAngularAccel);
 
     mMotor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(kAngleStart, kGearRatio, Encoder.VersaPlanetaryIntegrated));
@@ -113,24 +113,24 @@ public class TurretSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("TU - target angle", mTargetAngle);
       SmartDashboard.putString("TU - state", mState.toString());
 
-      // ! TODO remove
-      mMotor.config_kP(0, SmartDashboard.getNumber("TU - kP", kP));
+      // mMotor.config_kP(0, SmartDashboard.getNumber("TU - kP", kP));
       // mMotor.config_kI(0, SmartDashboard.getNumber("TU - kI", kI));
-      mMotor.config_kD(0, SmartDashboard.getNumber("TU - kD", kD));
-      mMotor.configMotionCruiseVelocity(
-          Convert.angularVelToEncoderVel(
-              SmartDashboard.getNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed),
-              kGearRatio,
-              Encoder.VersaPlanetaryIntegrated));
-      mMotor.configMotionAcceleration(
-          Convert.angularAccelToEncoderAccel(
-              SmartDashboard.getNumber("TU - kMaxAngularAccel", kMaxAngularAccel),
-              kGearRatio,
-              Encoder.VersaPlanetaryIntegrated));
-      SmartDashboard.putNumber(
-          "TU - angular velocity",
-          Convert.encoderVelToAngularVel(
-              mMotor.getSelectedSensorVelocity(), kGearRatio, Encoder.VersaPlanetaryIntegrated));
+      // mMotor.config_IntegralZone(0, SmartDashboard.getNumber("TU - kIZone", kIZone));
+      // mMotor.config_kD(0, SmartDashboard.getNumber("TU - kD", kD));
+      // mMotor.configMotionCruiseVelocity(
+      //     Convert.angularVelToEncoderVel(
+      //         SmartDashboard.getNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed),
+      //         kGearRatio,
+      //         Encoder.VersaPlanetaryIntegrated));
+      // mMotor.configMotionAcceleration(
+      //     Convert.angularAccelToEncoderAccel(
+      //         SmartDashboard.getNumber("TU - kMaxAngularAccel", kMaxAngularAccel),
+      //         kGearRatio,
+      //         Encoder.VersaPlanetaryIntegrated));
+      // SmartDashboard.putNumber(
+      //     "TU - angular velocity",
+      //     Convert.encoderVelToAngularVel(
+      //         mMotor.getSelectedSensorVelocity(), kGearRatio, Encoder.VersaPlanetaryIntegrated));
     }
   }
 

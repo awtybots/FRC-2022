@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-  // private final WPI_TalonFX motor1;
+  private final WPI_TalonFX motor1;
   private final WPI_TalonFX motor2;
   private final WPI_TalonFX[] motors;
 
@@ -33,8 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static final double kSpitRpm = 750.0;
 
-  private static final double kP_Flywheel = 0.7;
-  private static final double kF_Flywheel = calculateKF(2200, 0.50);
+  private static final double kP_Flywheel = 0.35;
+  private static final double kF_Flywheel = calculateKF(2700, 0.50);
 
   private double targetRpm = 0.0;
   private double actualRpm = 0.0;
@@ -44,10 +44,10 @@ public class ShooterSubsystem extends SubsystemBase {
   // private boolean onTarget = false;
 
   public ShooterSubsystem() {
-    // motor1 = new WPI_TalonFX(Shooter.kMotor1CanId);
+    motor1 = new WPI_TalonFX(Shooter.kMotor1CanId);
     motor2 = new WPI_TalonFX(Shooter.kMotor2CanId);
 
-    motors = new WPI_TalonFX[] {motor2}; // ! TODO add back motor 1
+    motors = new WPI_TalonFX[] {motor1, motor2};
 
     configMotors();
   }
@@ -73,7 +73,7 @@ public class ShooterSubsystem extends SubsystemBase {
       motor.config_kP(0, kP_Flywheel);
     }
 
-    // motor1.setInverted(true); // ! put back
+    motor1.setInverted(true);
   }
 
   @Override

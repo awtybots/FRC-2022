@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
+import frc.robot.commands.testing.ShootPercent;
+import frc.robot.commands.testing.ShootRpmSD;
 import frc.robot.subsystems.*;
 import frc.util.Controller;
-import frc.util.ToggleCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -129,8 +130,8 @@ public class RobotContainer {
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    operator.buttonA.whenHeld(
-        new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    // operator.buttonA.whenHeld( // ! TODO put back
+    //     new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonB.whenHeld(
         new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonX.whenHeld(
@@ -146,8 +147,9 @@ public class RobotContainer {
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem,
-    // colorSensorsSubsystem));
+    // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));
+    operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem,
+    colorSensorsSubsystem));
   }
 
   public Command getAutonomousCommand() {
