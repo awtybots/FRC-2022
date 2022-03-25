@@ -19,7 +19,7 @@ import frc.util.math.Convert.Encoder;
 public class TurretSubsystem extends SubsystemBase {
 
   private static final double kAngleMin = -120.0;
-  private static final double kAngleMax = 240.0;
+  private static final double kAngleMax = 230.0;
   private static final double kAngleHalf = (kAngleMin + kAngleMax) / 2.0;
   private static final double kAngleStart = 180.0;
 
