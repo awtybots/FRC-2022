@@ -17,7 +17,7 @@ public class TowerSubsystem extends SubsystemBase {
   private static final double kIntakingSpeedLower = 0.45;
   private static final double kIntakingSpeedUpper = 0.3;
 
-  private static final double kReversingSpeedLower = 0.3;
+  private static final double kReversingSpeedLower = 0.45;
   private static final double kReversingSpeedUpper = 0.3;
 
   private static final double kShootingSpeedLower = 0.3;
