@@ -18,8 +18,8 @@ public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
       LimelightSubsystem limelightSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
-        new ShootRpm(950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
-        new FunctionalCommand( // TODO replace with StartEndCommand
+        new ShootRpm(1000, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
+        new FunctionalCommand(
                 () -> {},
                 () -> {
                   System.out.println("2ball starting");
