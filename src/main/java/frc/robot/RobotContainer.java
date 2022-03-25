@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
-import frc.robot.commands.testing.ShootRpmSD;
 import frc.robot.subsystems.*;
 import frc.util.Controller;
 
@@ -133,11 +132,11 @@ public class RobotContainer {
     operator.buttonA.whenHeld(
         new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonB.whenHeld(
-        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1480
     operator.buttonX.whenHeld(
-        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1540
     operator.buttonY.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));

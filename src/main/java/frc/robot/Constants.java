@@ -36,11 +36,10 @@ public final class Constants {
     public static final ShotMap shotMap = new ShotMap();
 
     static { // distance (meters), RPM
-      shotMap.addShot(3.0, 1600);
-      shotMap.addShot(3.5, 1600);
-      shotMap.addShot(4.0, 1700);
-      shotMap.addShot(4.5, 1800);
-      shotMap.addShot(6.0, 2000);
+      shotMap.addShot(3.40, 1480);
+      shotMap.addShot(3.58, 1540);
+      shotMap.addShot(4.05, 1700);
+      shotMap.addShot(6, 2000); // this one is just an estimation
     }
   }
 
