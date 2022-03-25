@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
-import frc.robot.commands.testing.ShootPercent;
 import frc.robot.commands.testing.ShootRpmSD;
 import frc.robot.subsystems.*;
 import frc.util.Controller;
@@ -120,18 +119,19 @@ public class RobotContainer {
     // === OPERATOR ===
     /// === AUTOMAGIC ===
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    // new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem), operator.buttonBack).schedule();
+    // new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem),
+    // operator.buttonBack).schedule();
     operator.buttonStart.whenHeld(
-        new ShootInterpolated(towerSubsystem, shooterSubsystem,
-        limelightSubsystem, colorSensorsSubsystem));
+        new ShootInterpolated(
+            towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    // operator.buttonA.whenHeld( // ! TODO put back
-    //     new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    operator.buttonA.whenHeld(
+        new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonB.whenHeld(
         new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonX.whenHeld(
@@ -148,8 +148,8 @@ public class RobotContainer {
 
     /// === PROGRAMMER TUNING ===
     // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));
-    operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem,
-    colorSensorsSubsystem));
+    // operator.buttonA.whenHeld(
+    //     new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
   }
 
   public Command getAutonomousCommand() {
