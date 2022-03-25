@@ -22,7 +22,8 @@ public class AutoAim extends CommandBase {
 
   @Override
   public void execute() {
-    turretSubsystem.trackTarget(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.trackTarget(
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
   }
 
   @Override

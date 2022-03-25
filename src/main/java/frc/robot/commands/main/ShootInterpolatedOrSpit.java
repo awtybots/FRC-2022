@@ -59,7 +59,8 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
     shooterSubsystem.spit();
   }
 
@@ -73,7 +74,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if(colorSensorsSubsystem.isUpperBallPresent()) {
+        if (colorSensorsSubsystem.isUpperBallPresent()) {
           towerSubsystem.feedShooter1();
         } else {
           towerSubsystem.feedShooter2();

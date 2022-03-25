@@ -81,7 +81,12 @@ public class MovingShots extends CommandBase {
 
     Vector2 launchVelocityData =
         projectileMotionSolver.getOptimalLaunchVelocityMoving(
-            new Vector2(goalDisplacement, Field.kGoalHeight - Constants.Limelight.kMountingHeight - Constants.Limelight.kShooterOffset.y), robotVelocity);
+            new Vector2(
+                goalDisplacement,
+                Field.kGoalHeight
+                    - Constants.Limelight.kMountingHeight
+                    - Constants.Limelight.kShooterOffset.y),
+            robotVelocity);
 
     if (launchVelocityData == null) {
       shooterSubsystem.stop();
@@ -104,7 +109,8 @@ public class MovingShots extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
   }
 
   @Override
@@ -117,7 +123,7 @@ public class MovingShots extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if(colorSensorsSubsystem.isUpperBallPresent()) {
+        if (colorSensorsSubsystem.isUpperBallPresent()) {
           towerSubsystem.feedShooter1();
         } else {
           towerSubsystem.feedShooter2();
