@@ -78,7 +78,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       sensor = new ColorSensorV3(port);
       sensor.configureColorSensor(
           ColorSensorResolution.kColorSensorRes17bit,
-          ColorSensorMeasurementRate.kColorRate50ms,
+          ColorSensorMeasurementRate.kColorRate25ms,
           GainFactor.kGain3x);
       sensor.configureProximitySensor(
           ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
@@ -106,14 +106,13 @@ public class ColorSensorsSubsystem extends SubsystemBase {
         return DriverStation.getAlliance();
       }
 
-      // ! TODO put back
-      // if (match.confidence > minimumConfidence) {
-      //   for (Alliance alliance : kBallColors.keySet()) {
-      //     if (match.color == kBallColors.get(alliance)) {
-      //       return alliance;
-      //     }
-      //   }
-      // }
+      if (match.confidence > minimumConfidence) {
+        for (Alliance alliance : kBallColors.keySet()) {
+          if (match.color == kBallColors.get(alliance)) {
+            return alliance;
+          }
+        }
+      }
 
       return Alliance.Invalid;
     }
