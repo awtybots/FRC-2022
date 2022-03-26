@@ -32,6 +32,12 @@ public class ShootRpm extends CommandBase {
 
   @Override
   public void execute() {
+    // if (!shooterSubsystem.isAtTarget()) towerSubsystem.stop();
+    // if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //   towerSubsystem.feedFromUpper();
+    // } else {
+    //   towerSubsystem.feedFromLower();
+    // }
     if (shooterSubsystem.isAtTarget()) {
       if (colorSensorsSubsystem.isUpperBallPresent()) {
         towerSubsystem.feedFromUpper();

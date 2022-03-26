@@ -22,8 +22,7 @@ public class Robot extends TimedRobot {
   /** This function is run when the robot is first started up.*/
   @Override
   public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    // This will perform all our button bindings, and put the autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
   }
 
@@ -36,7 +35,7 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
+  /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
   @Override
   public void autonomousInit() {
     autonomousCommand = robotContainer.getAutonomousCommand();
