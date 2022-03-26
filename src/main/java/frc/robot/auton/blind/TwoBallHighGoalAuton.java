@@ -33,7 +33,6 @@ public class TwoBallHighGoalAuton extends SequentialCommandGroup {
                 new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
                     .withTimeout(3.0)),
         new ShootRpm(1850, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            // .alongWith(new AutoAim(turretSubsystem, limelightSubsystem))
             .withTimeout(5.0));
   }
 }

@@ -10,7 +10,7 @@ import frc.util.math.ShotMap;
 import frc.util.math.Vector2;
 
 public final class Constants {
-  public static final boolean TUNING_MODE = true;
+  public static final boolean TUNING_MODE = false;
 
   public static final class Drivetrain {
     public static final int kRightFrontCanId = 0;

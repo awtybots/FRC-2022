@@ -5,7 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +37,6 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
 
-  // public static final PowerDistribution pdp = new PowerDistribution();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,7 +49,7 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonChooser.addOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Zero Ball Auton", new TaxiOffTarmacAuton(drivetrainSubsystem));
-    autonChooser.addOption(
+    autonChooser.setDefaultOption(
         "1 Low Goal 1 High Goal",
         new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
@@ -61,7 +59,7 @@ public class RobotContainer {
             shooterSubsystem,
             limelightSubsystem,
             colorSensorsSubsystem));
-    autonChooser.setDefaultOption( // ! TODO switch back if doesn't work
+    autonChooser.addOption(
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
             drivetrainSubsystem,
@@ -118,8 +116,6 @@ public class RobotContainer {
     // === OPERATOR ===
     /// === AUTOMAGIC ===
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    // new ToggleCommand(new AutoAim(turretSubsystem, limelightSubsystem),
-    // operator.buttonBack).schedule();
     operator.buttonStart.whenHeld(
         new ShootInterpolated(
             towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
