@@ -41,14 +41,16 @@ public class ShootRpmOrSpit extends CommandBase {
   }
 
   private void executeShoot(boolean idling) {
-    turretSubsystem.trackTarget(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.trackTarget(
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
 
     if (idling) shooterSubsystem.stop();
     else shooterSubsystem.shootRpm(this.rpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
     shooterSubsystem.spit();
   }
 
@@ -62,10 +64,10 @@ public class ShootRpmOrSpit extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if(colorSensorsSubsystem.isUpperBallPresent()) {
-          towerSubsystem.feedShooter1();
+        if (colorSensorsSubsystem.isUpperBallPresent()) {
+          towerSubsystem.feedFromUpper();
         } else {
-          towerSubsystem.feedShooter2();
+          towerSubsystem.feedFromLower();
         }
       } else {
         towerSubsystem.stopUpper();

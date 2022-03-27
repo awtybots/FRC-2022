@@ -1,6 +1,7 @@
 package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
@@ -28,15 +29,22 @@ public class ShootRpm extends CommandBase {
   @Override
   public void initialize() {
     shooterSubsystem.shootRpm(this.rpm);
+    RobotContainer.ledSubsystem.blink();
   }
 
   @Override
   public void execute() {
+    // if (!shooterSubsystem.isAtTarget()) towerSubsystem.stop();
+    // if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //   towerSubsystem.feedFromUpper();
+    // } else {
+    //   towerSubsystem.feedFromLower();
+    // }
     if (shooterSubsystem.isAtTarget()) {
-      if(colorSensorsSubsystem.isUpperBallPresent()) {
-        towerSubsystem.feedShooter1();
+      if (colorSensorsSubsystem.isUpperBallPresent()) {
+        towerSubsystem.feedFromUpper();
       } else {
-        towerSubsystem.feedShooter2();
+        towerSubsystem.feedFromLower();
       }
     } else {
       towerSubsystem.stop();
@@ -47,5 +55,6 @@ public class ShootRpm extends CommandBase {
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
     towerSubsystem.stop();
+    RobotContainer.ledSubsystem.turnOn();
   }
 }

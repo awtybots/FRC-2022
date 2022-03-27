@@ -10,7 +10,7 @@ import frc.util.math.ShotMap;
 import frc.util.math.Vector2;
 
 public final class Constants {
-  public static final boolean TUNING_MODE = true;
+  public static final boolean TUNING_MODE = false;
 
   public static final class Drivetrain {
     public static final int kRightFrontCanId = 0;
@@ -31,15 +31,15 @@ public final class Constants {
   }
 
   public static final class Shooter {
-    public static final int kFlywheelMotorCanId = 10;
+    public static final int kMotor1CanId = 10;
+    public static final int kMotor2CanId = 13;
     public static final ShotMap shotMap = new ShotMap();
 
     static { // distance (meters), RPM
-      shotMap.addShot(3.0, 1600);
-      shotMap.addShot(3.5, 1600);
-      shotMap.addShot(4.0, 1700);
-      shotMap.addShot(4.5, 1800);
-      shotMap.addShot(6.0, 2000);
+      shotMap.addShot(3.90, 1500);
+      shotMap.addShot(4.20, 1630);
+      shotMap.addShot(5.80, 2000);
+      shotMap.addShot(6.37, 2200);
     }
   }
 

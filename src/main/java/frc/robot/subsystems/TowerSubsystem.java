@@ -14,11 +14,11 @@ public class TowerSubsystem extends SubsystemBase {
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
-  private static final double kIntakingSpeedLower = 0.5;
+  private static final double kIntakingSpeedLower = 0.4;
   private static final double kIntakingSpeedUpper = 0.3;
 
-  private static final double kReversingSpeedLower = 0.3;
-  private static final double kReversingSpeedUpper = 0.3;
+  private static final double kReversingSpeedLower = 0.5;
+  private static final double kReversingSpeedUpper = 0.4;
 
   private static final double kShootingSpeedLower = 0.3;
   private static final double kShootingSpeedUpper = 0.75;
@@ -39,6 +39,9 @@ public class TowerSubsystem extends SubsystemBase {
     upperMotor.setInverted(false);
     lowerMotor.setInverted(false);
 
+    upperMotor.configVoltageCompSaturation(12.0);
+    lowerMotor.configVoltageCompSaturation(12.0);
+
     upperMotor.setNeutralMode(NeutralMode.Brake);
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
@@ -54,13 +57,13 @@ public class TowerSubsystem extends SubsystemBase {
   }
 
   /** only runs upper tower */
-  public void feedShooter1() {
+  public void feedFromUpper() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }
 
   /** runs both parts of tower */
-  public void feedShooter2() {
+  public void feedFromLower() {
     lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }

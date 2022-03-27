@@ -18,7 +18,7 @@ public class TwoBallHighGoalAuton extends SequentialCommandGroup {
       LimelightSubsystem limelightSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
-        new FunctionalCommand( // TODO replace with StartEndCommand
+        new FunctionalCommand(
                 () -> {},
                 () -> {
                   drivetrainSubsystem.driveVolts(3.0, 3.0);
@@ -32,7 +32,7 @@ public class TwoBallHighGoalAuton extends SequentialCommandGroup {
             .alongWith(
                 new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
                     .withTimeout(3.0)),
-        new ShootRpm(1950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
+        new ShootRpm(1850, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
             .withTimeout(5.0));
   }
 }

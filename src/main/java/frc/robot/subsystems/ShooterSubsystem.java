@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-  private final WPI_TalonFX flywheel;
+  private final WPI_TalonFX motor1;
+  private final WPI_TalonFX motor2;
+  private final WPI_TalonFX[] motors;
 
   private static final double kGearRatio = 1.0;
   public static final double kLaunchAngle = 65.0;
@@ -31,8 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public static final double kSpitRpm = 750.0;
 
-  private static final double kP_Flywheel = 0.7;
-  private static final double kF_Flywheel = calculateKF(2200, 0.50);
+  private static final double kP_Flywheel = 0.35;
+  private static final double kF_Flywheel = calculateKF(2700, 0.50);
 
   private double targetRpm = 0.0;
   private double actualRpm = 0.0;
@@ -42,7 +44,11 @@ public class ShooterSubsystem extends SubsystemBase {
   // private boolean onTarget = false;
 
   public ShooterSubsystem() {
-    flywheel = new WPI_TalonFX(Shooter.kFlywheelMotorCanId);
+    motor1 = new WPI_TalonFX(Shooter.kMotor1CanId);
+    motor2 = new WPI_TalonFX(Shooter.kMotor2CanId);
+
+    motors = new WPI_TalonFX[] {motor1, motor2};
+
     configMotors();
   }
 
@@ -55,16 +61,19 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private void configMotors() {
-    flywheel.configFactoryDefault();
+    for (WPI_TalonFX motor : motors) {
+      motor.configFactoryDefault();
 
-    flywheel.configVoltageCompSaturation(12.0);
-    flywheel.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+      motor.configVoltageCompSaturation(12.0);
+      motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-    flywheel.setInverted(true); // note: no need to adjust sensorPhase for Falcons
-    flywheel.setNeutralMode(NeutralMode.Coast);
+      motor.setNeutralMode(NeutralMode.Coast);
 
-    flywheel.config_kF(0, kF_Flywheel);
-    flywheel.config_kP(0, kP_Flywheel);
+      motor.config_kF(0, kF_Flywheel);
+      motor.config_kP(0, kP_Flywheel);
+    }
+
+    motor1.setInverted(true);
   }
 
   @Override
@@ -92,24 +101,33 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shootRpm(double rpm) {
     targetRpm = rpm;
-    flywheel.set(
-        ControlMode.Velocity,
-        Convert.rpmToEncoderVel(clampToBounds(rpm), kGearRatio, Encoder.TalonFXIntegrated));
+    for (WPI_TalonFX motor : motors) {
+      motor.set(
+          ControlMode.Velocity,
+          Convert.rpmToEncoderVel(clampToBounds(rpm), kGearRatio, Encoder.TalonFXIntegrated));
+    }
   }
 
   public void shootPercent(double percent) {
     targetRpm = percent;
-    flywheel.set(ControlMode.PercentOutput, percent);
+    for (WPI_TalonFX motor : motors) {
+      motor.set(ControlMode.PercentOutput, percent);
+    }
   }
 
   private double getRpm() {
-    return Convert.encoderVelToRpm(
-        flywheel.getSelectedSensorVelocity(), kGearRatio, Encoder.TalonFXIntegrated);
+    double sum = 0.0;
+    for (WPI_TalonFX motor : motors) {
+      sum +=
+          Convert.encoderVelToRpm(
+              motor.getSelectedSensorVelocity(), kGearRatio, Encoder.TalonFXIntegrated);
+    }
+    return sum / motors.length;
   }
 
   public void stop() {
     targetRpm = 0;
-    flywheel.set(ControlMode.PercentOutput, 0);
+    for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0);
   }
 
   public boolean isAtTarget() {

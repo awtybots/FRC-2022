@@ -8,7 +8,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,8 +18,8 @@ import frc.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private static final double kAngleMin = -125.0;
-  private static final double kAngleMax = 235.0;
+  private static final double kAngleMin = -120.0;
+  private static final double kAngleMax = 230.0;
   private static final double kAngleHalf = (kAngleMin + kAngleMax) / 2.0;
   private static final double kAngleStart = 180.0;
 
@@ -38,10 +37,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private static final double kP = 0.1;
+  private static final double kP = 0.15;
   private static final double kI = 0.001;
   private static final double kD = 3.5;
-  private static final double kIZone = 150.0;
+  private static final double kIZone = 500.0;
 
   private final WPI_TalonSRX mMotor;
 
@@ -66,7 +65,7 @@ public class TurretSubsystem extends SubsystemBase {
     configMotors();
   }
 
-  public void initPosition(double angle) {
+  public void resetEncoderPosition(double angle) {
     mMotor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(angle, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     mCurrentAngle = angle;
@@ -87,16 +86,18 @@ public class TurretSubsystem extends SubsystemBase {
     mMotor.config_IntegralZone(0, kIZone);
     mMotor.configClosedLoopPeakOutput(0, kClosedLoopPeakOutput);
     mMotor.configMotionCruiseVelocity(
-        Convert.angularVelToEncoderVel(kMaxAngularSpeed, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+        Convert.angularVelToEncoderVel(
+            kMaxAngularSpeed, kGearRatio, Encoder.VersaPlanetaryIntegrated));
     mMotor.configMotionAcceleration(
-        Convert.angularAccelToEncoderAccel(kMaxAngularAccel, kGearRatio, Encoder.VersaPlanetaryIntegrated));
+        Convert.angularAccelToEncoderAccel(
+            kMaxAngularAccel, kGearRatio, Encoder.VersaPlanetaryIntegrated));
 
-    SmartDashboard.putNumber("TU - kP", kP);
+    // SmartDashboard.putNumber("TU - kP", kP);
     // SmartDashboard.putNumber("TU - kI", kI);
     // SmartDashboard.putNumber("TU - kIZone", kIZone);
-    SmartDashboard.putNumber("TU - kD", kD);
-    SmartDashboard.putNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed);
-    SmartDashboard.putNumber("TU - kMaxAngularAccel", kMaxAngularAccel);
+    // SmartDashboard.putNumber("TU - kD", kD);
+    // SmartDashboard.putNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed);
+    // SmartDashboard.putNumber("TU - kMaxAngularAccel", kMaxAngularAccel);
 
     mMotor.setSelectedSensorPosition(
         Convert.angleToEncoderPos(kAngleStart, kGearRatio, Encoder.VersaPlanetaryIntegrated));
@@ -112,16 +113,26 @@ public class TurretSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("TU - target angle", mTargetAngle);
       SmartDashboard.putString("TU - state", mState.toString());
 
-      // ! TODO remove
-      mMotor.config_kP(0, SmartDashboard.getNumber("TU - kP", kP));
+      // mMotor.config_kP(0, SmartDashboard.getNumber("TU - kP", kP));
       // mMotor.config_kI(0, SmartDashboard.getNumber("TU - kI", kI));
-      mMotor.config_kD(0, SmartDashboard.getNumber("TU - kD", kD));
-      mMotor.configMotionCruiseVelocity(Convert.angularVelToEncoderVel(SmartDashboard.getNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed), kGearRatio, Encoder.VersaPlanetaryIntegrated));
-      mMotor.configMotionAcceleration(Convert.angularAccelToEncoderAccel(SmartDashboard.getNumber("TU - kMaxAngularAccel", kMaxAngularAccel), kGearRatio, Encoder.VersaPlanetaryIntegrated));
-      SmartDashboard.putNumber("TU - angular velocity", Convert.encoderVelToAngularVel(mMotor.getSelectedSensorVelocity(), kGearRatio, Encoder.VersaPlanetaryIntegrated));
+      // mMotor.config_IntegralZone(0, SmartDashboard.getNumber("TU - kIZone", kIZone));
+      // mMotor.config_kD(0, SmartDashboard.getNumber("TU - kD", kD));
+      // mMotor.configMotionCruiseVelocity(
+      //     Convert.angularVelToEncoderVel(
+      //         SmartDashboard.getNumber("TU - kMaxAngularSpeed", kMaxAngularSpeed),
+      //         kGearRatio,
+      //         Encoder.VersaPlanetaryIntegrated));
+      // mMotor.configMotionAcceleration(
+      //     Convert.angularAccelToEncoderAccel(
+      //         SmartDashboard.getNumber("TU - kMaxAngularAccel", kMaxAngularAccel),
+      //         kGearRatio,
+      //         Encoder.VersaPlanetaryIntegrated));
+      // SmartDashboard.putNumber(
+      //     "TU - angular velocity",
+      //     Convert.encoderVelToAngularVel(
+      //         mMotor.getSelectedSensorVelocity(), kGearRatio, Encoder.VersaPlanetaryIntegrated));
     }
   }
-
 
   // PRIVATE HELPER METHODS
 
@@ -143,8 +154,6 @@ public class TurretSubsystem extends SubsystemBase {
     return MathUtil.clamp(angle, kAngleMin, kAngleMax);
   }
 
-
-
   // PUBLIC METHODS
 
   public void turnTo(double absoluteAngle) {
@@ -159,15 +168,15 @@ public class TurretSubsystem extends SubsystemBase {
   public void trackTarget(boolean hasTarget, double targetOffsetAngle) {
     double boundedGoalAngle = clampToBounds(mCurrentAngle + targetOffsetAngle);
 
-    if(mState == State.kIdle) {
+    if (mState == State.kIdle) {
       mState = State.kTracking;
     }
 
-    if(mState == State.kTracking) {
-      if(hasTarget) {
+    if (mState == State.kTracking) {
+      if (hasTarget) {
         turnToPrivate(boundedGoalAngle);
       } else {
-        if(mCurrentAngle > kAngleHalf) {
+        if (mCurrentAngle > kAngleHalf) {
           mState = State.kSeekingRight;
           turnToPrivate(kAngleMax);
         } else {
@@ -175,15 +184,15 @@ public class TurretSubsystem extends SubsystemBase {
           turnToPrivate(kAngleMin);
         }
       }
-    } else if(mState == State.kSeekingLeft || mState == State.kSeekingRight) {
-      if(hasTarget) {
+    } else if (mState == State.kSeekingLeft || mState == State.kSeekingRight) {
+      if (hasTarget) {
         mState = State.kTracking;
         turnToPrivate(boundedGoalAngle);
-      } else if(isAtTarget()) {
-        if(mState == State.kSeekingLeft) {
+      } else if (isAtTarget()) {
+        if (mState == State.kSeekingLeft) {
           mState = State.kSeekingRight;
           turnToPrivate(kAngleMax);
-        } else if(mState == State.kSeekingRight) {
+        } else if (mState == State.kSeekingRight) {
           mState = State.kSeekingLeft;
           turnToPrivate(kAngleMin);
         }
@@ -192,14 +201,13 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void spit(boolean hasTarget, double targetOffsetAngle) {
-    if(mState == State.kSpittingRelative || mState == State.kSpittingAbsolute)
-      return;
+    if (mState == State.kSpittingRelative || mState == State.kSpittingAbsolute) return;
 
-    if(hasTarget) {
+    if (hasTarget) {
       mState = State.kSpittingRelative;
 
       double boundedAngle = clampToBounds(mCurrentAngle + targetOffsetAngle + kSpitRelativeAngle);
-      if(boundedAngle == kAngleMax) {
+      if (boundedAngle == kAngleMax) {
         boundedAngle = clampToBounds(mCurrentAngle + targetOffsetAngle - kSpitRelativeAngle);
       }
 
@@ -207,7 +215,7 @@ public class TurretSubsystem extends SubsystemBase {
     } else {
       mState = State.kSpittingAbsolute;
 
-      if(mCurrentAngle > 0.0) {
+      if (mCurrentAngle > 0.0) {
         turnToPrivate(kSpitAngle);
       } else {
         turnToPrivate(-kSpitAngle);
@@ -230,7 +238,7 @@ public class TurretSubsystem extends SubsystemBase {
 
     double pctOut = rate * kManualPeakPercentOutput;
 
-    if((atMinBound && rate > 0) || (atMaxBound && rate < 0)) {
+    if ((atMinBound && rate > 0) || (atMaxBound && rate < 0)) {
       pctOut = 0.0;
     }
     mMotor.set(ControlMode.PercentOutput, pctOut);
@@ -244,5 +252,4 @@ public class TurretSubsystem extends SubsystemBase {
   public double getCurrentAngle() {
     return mCurrentAngle;
   }
-
 }

@@ -8,6 +8,7 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.subsystems.*;
 
+// TODO implement
 public class FourBallAuton extends SequentialCommandGroup {
   // private final DrivetrainSubsystem drivetrainSubsystem;
   private final IntakeSubsystem intakeSubsystem;
@@ -29,11 +30,7 @@ public class FourBallAuton extends SequentialCommandGroup {
     addCommands(
         new InstantCommand(intakeSubsystem::start, intakeSubsystem),
         new FourBall0(drivetrainSubsystem),
-        new ShootRpm(
-                3000.0,
-                towerSubsystem,
-                shooterSubsystem,
-                colorSensorsSubsystem) // TODO tune rpm and time
+        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
             .withTimeout(3.0),
         new FourBall1(drivetrainSubsystem),
         new ShootRpm(4000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
@@ -50,7 +47,7 @@ public class FourBallAuton extends SequentialCommandGroup {
 
   @Override
   public void initialize() {
-    turretSubsystem.initPosition(180.0);
+    turretSubsystem.resetEncoderPosition(180.0);
     autoAimCommand.schedule();
 
     super.initialize();

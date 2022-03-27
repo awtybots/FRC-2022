@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,8 @@ public class RobotContainer {
   private final Controller driver = new Controller(0);
   private final Controller operator = new Controller(1);
 
+  public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
+
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
@@ -35,10 +38,9 @@ public class RobotContainer {
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
+  public static final LedSubsystem ledSubsystem = new LedSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
-
-  public static final PowerDistribution pdp = new PowerDistribution();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,7 +53,7 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonChooser.addOption("Do Nothing", new InstantCommand());
     autonChooser.addOption("Zero Ball Auton", new TaxiOffTarmacAuton(drivetrainSubsystem));
-    autonChooser.addOption(
+    autonChooser.setDefaultOption(
         "1 Low Goal 1 High Goal",
         new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
@@ -61,7 +63,7 @@ public class RobotContainer {
             shooterSubsystem,
             limelightSubsystem,
             colorSensorsSubsystem));
-    autonChooser.setDefaultOption(
+    autonChooser.addOption(
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
             drivetrainSubsystem,
@@ -118,9 +120,9 @@ public class RobotContainer {
     // === OPERATOR ===
     /// === AUTOMAGIC ===
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    // operator.buttonStart.whenHeld(
-    //     new ShootInterpolated(towerSubsystem, shooterSubsystem,
-    // limelightSubsystem, colorSensorsSubsystem));
+    operator.buttonStart.whenHeld(
+        new ShootInterpolated(
+            towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
     operator.bumperLeft.whenHeld(new ReverseTower(towerSubsystem));
@@ -130,11 +132,11 @@ public class RobotContainer {
     operator.buttonA.whenHeld(
         new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
     operator.buttonB.whenHeld(
-        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1480
     operator.buttonX.whenHeld(
-        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1540
     operator.buttonY.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
@@ -144,7 +146,9 @@ public class RobotContainer {
     operator.dpadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // operator.buttonA.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));
+    // operator.buttonA.whenHeld(
+    //     new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
   }
 
   public Command getAutonomousCommand() {

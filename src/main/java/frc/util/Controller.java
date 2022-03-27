@@ -10,26 +10,12 @@ public class Controller {
   private double kDeadzoneStick = 0.08;
   private double kDeadzoneTrigger = 0.05;
 
-  public JoystickButton buttonA;
-  public JoystickButton buttonX;
-  public JoystickButton buttonY;
-  public JoystickButton buttonB;
-  public JoystickButton buttonBack;
-  public JoystickButton buttonStart;
-
-  public JoystickButton bumperLeft;
-  public JoystickButton bumperRight;
-
-  public JoystickButton joystickClickLeft;
-  public JoystickButton joystickClickRight;
-
-  public POVButton dpadUp;
-  public POVButton dpadRight;
-  public POVButton dpadDown;
-  public POVButton dpadLeft;
-
-  public Button triggerLeft;
-  public Button triggerRight;
+  public JoystickButton buttonA, buttonX, buttonY, buttonB;
+  public JoystickButton buttonBack, buttonStart;
+  public JoystickButton bumperLeft, bumperRight;
+  public POVButton dpadUp, dpadRight, dpadDown, dpadLeft;
+  public Button triggerLeft, triggerRight;
+  public JoystickButton joystickClickLeft, joystickClickRight;
 
   public Controller(int port) {
     controller = new XboxController(port);
