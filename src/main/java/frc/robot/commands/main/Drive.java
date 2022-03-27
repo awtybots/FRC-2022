@@ -22,8 +22,8 @@ public class Drive extends CommandBase {
 
   @SuppressWarnings("unused")
   private Vector2 splitArcadeDrive() {
-    double forward = controller.getLeftY();
-    double rotate = controller.getRightX();
+    double forward = controller.getLeftStickY();
+    double rotate = controller.getRightStickX();
     rotate = davidRotate(rotate);
 
     return new Vector2(forward, rotate);
@@ -31,7 +31,7 @@ public class Drive extends CommandBase {
 
   private Vector2 gtaDrive() {
     double forward = controller.getRightTrigger() - controller.getLeftTrigger();
-    double rotate = controller.getLeftX();
+    double rotate = controller.getLeftStickX();
     rotate = davidRotate(rotate);
 
     return new Vector2(forward, rotate);
