@@ -13,9 +13,7 @@ public class Controller {
   public JoystickButton buttonA, buttonX, buttonY, buttonB;
   public JoystickButton buttonBack, buttonStart;
   public JoystickButton bumperLeft, bumperRight;
-
   public POVButton dpadUp, dpadRight, dpadDown, dpadLeft;
-
   public Button triggerLeft, triggerRight;
   public JoystickButton joystickClickLeft, joystickClickRight;
 
