@@ -52,7 +52,7 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
@@ -141,6 +141,6 @@ public class MovingShots extends CommandBase {
     towerSubsystem.stop();
     shooterSubsystem.stop();
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

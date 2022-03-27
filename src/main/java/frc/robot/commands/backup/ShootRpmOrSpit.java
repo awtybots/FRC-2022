@@ -33,7 +33,7 @@ public class ShootRpmOrSpit extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
@@ -83,6 +83,6 @@ public class ShootRpmOrSpit extends CommandBase {
     shooterSubsystem.stop();
     towerSubsystem.stop();
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

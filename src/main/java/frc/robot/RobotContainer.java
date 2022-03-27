@@ -132,7 +132,7 @@ public class RobotContainer {
   }
 
   public void turnOffLimelightLEDs() {
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 
   public void updateAlliance() {

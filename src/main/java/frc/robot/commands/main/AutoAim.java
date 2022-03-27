@@ -17,7 +17,7 @@ public class AutoAim extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   @Override
@@ -29,6 +29,6 @@ public class AutoAim extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

@@ -22,7 +22,7 @@ public class ShootInterpolated extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   @Override
@@ -48,6 +48,6 @@ public class ShootInterpolated extends CommandBase {
   public void end(boolean interrupted) {
     towerSubsystem.stop();
     shooterSubsystem.stop();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

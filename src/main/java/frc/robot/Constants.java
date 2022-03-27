@@ -73,6 +73,7 @@ public final class Constants {
     public static final int kPipelineShooting = 1;
 
     public enum LimelightOrientation {
+      kLandscape,
       kUpsideDown,
       kPortrait;
     }

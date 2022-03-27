@@ -6,6 +6,7 @@ import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Camera;
+import frc.robot.Constants.Camera.LimelightOrientation;
 import frc.robot.Constants.Field;
 import frc.util.math.Vector2;
 import frc.util.vision.Limelight;
@@ -28,11 +29,16 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public LimelightSubsystem() {
     upperHub = new VisionTarget(Field.kVisionTargetHeight, Field.kGoalHeight);
-    limelight =
-        new RotatableLimelight(
-            Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
+    if (Camera.kOrientation == LimelightOrientation.kLandscape) {
+      limelight =
+          new Limelight(Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
+    } else {
+      limelight =
+          new RotatableLimelight(
+              Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
+    }
 
-    drivingMode();
+    enableDrivingMode();
   }
 
   @Override
@@ -67,11 +73,11 @@ public class LimelightSubsystem extends SubsystemBase {
     return angleToTarget;
   }
 
-  public void drivingMode() {
+  public void enableDrivingMode() {
     limelight.setPipeline(Camera.kPipelineDriving);
   }
 
-  public void shootingMode() {
+  public void enableShootingMode() {
     limelight.setPipeline(Camera.kPipelineShooting);
   }
 
