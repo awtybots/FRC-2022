@@ -140,10 +140,10 @@ public class RobotContainer {
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(Operator, turretSubsystem));
-    Operator.DPadLeft.whileHeld(new TurnTurretTo(-90.0, turretSubsystem));
-    Operator.DPadUp.whileHeld(new TurnTurretTo(0.0, turretSubsystem));
-    Operator.DPadRight.whileHeld(new TurnTurretTo(90.0, turretSubsystem));
-    Operator.DPadDown.whileHeld(new TurnTurretTo(180.0, turretSubsystem));
+    Operator.DPadLeft.whenHeld(new TurnTurretTo(-90.0, turretSubsystem));
+    Operator.DPadUp.whenHeld(new TurnTurretTo(0.0, turretSubsystem));
+    Operator.DPadRight.whenHeld(new TurnTurretTo(90.0, turretSubsystem));
+    Operator.DPadDown.whenHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
     // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));
