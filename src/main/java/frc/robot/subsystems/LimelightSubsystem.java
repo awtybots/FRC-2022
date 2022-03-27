@@ -20,12 +20,13 @@ public class LimelightSubsystem extends SubsystemBase {
   private final int filterSize = 10;
 
   private final MedianFilter distFilter = new MedianFilter(filterSize);
-  private final MedianFilter xFilter = new MedianFilter(filterSize);
+  private final MedianFilter thetaFilter = new MedianFilter(filterSize);
   private double angleToTarget = 0;
   private double distToTarget = 0;
 
   private boolean hasTarget = false;
-  private final Debouncer targetVisible = new Debouncer(filterSize * 0.02, DebounceType.kFalling);
+  private final Debouncer visibilityFilter =
+      new Debouncer(filterSize * 0.02, DebounceType.kFalling);
 
   public LimelightSubsystem() {
     upperHub = new VisionTarget(Field.kVisionTargetHeight, Field.kGoalHeight);
@@ -47,7 +48,7 @@ public class LimelightSubsystem extends SubsystemBase {
     Vector2 targetDisplacement = limelight.getDisplacementFrom(upperHub);
 
     if (hasTarget && targetDisplacement != null) {
-      angleToTarget = xFilter.calculate(limelight.targetXOffset());
+      angleToTarget = thetaFilter.calculate(limelight.targetXOffset());
       distToTarget = distFilter.calculate(targetDisplacement.x + Field.kGoalRadius);
     } else {
       angleToTarget = 0;
@@ -61,7 +62,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public boolean hasVisibleTarget() {
     boolean hasTargetRaw = limelight.hasVisibleTarget();
-    hasTarget = targetVisible.calculate(hasTargetRaw);
+    hasTarget = visibilityFilter.calculate(hasTargetRaw);
     return hasTarget;
   }
 
