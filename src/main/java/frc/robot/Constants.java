@@ -67,14 +67,13 @@ public final class Constants {
     public static final Vector2 kShooterOffset =
         new Vector2(Convert.inchesToMeters(5.0), Convert.inchesToMeters(-5.5));
 
-    public static final LimelightMountDirection kMountingDirection =
-        LimelightMountDirection.kLandscape;
+    public static final LimelightOrientation kOrientation = LimelightOrientation.kUpsideDown;
 
     public static final int kPipelineDriving = 0;
     public static final int kPipelineShooting = 1;
 
-    public enum LimelightMountDirection {
-      kLandscape,
+    public enum LimelightOrientation {
+      kUpsideDown,
       kPortrait;
     }
   }

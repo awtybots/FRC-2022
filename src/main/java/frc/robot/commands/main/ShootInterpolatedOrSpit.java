@@ -48,7 +48,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       return;
     }
 
-    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
+    double visionTargetXOffset = limelightSubsystem.angleToTarget();
     turretSubsystem.trackTarget(true, visionTargetXOffset);
 
     double launchRpm = Shooter.shotMap.calculateShot(goalDisplacement);
@@ -56,8 +56,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
     shooterSubsystem.spit();
   }
 

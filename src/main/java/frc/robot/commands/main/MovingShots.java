@@ -69,7 +69,7 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
+    double visionTargetXOffset = limelightSubsystem.angleToTarget();
     double robotSpeed = drivetrainSubsystem.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getCurrentAngle();
     Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
@@ -104,8 +104,7 @@ public class MovingShots extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
   }
 
   @Override

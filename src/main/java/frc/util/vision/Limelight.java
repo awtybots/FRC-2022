@@ -41,32 +41,40 @@ public class Limelight extends SubsystemBase {
   }
 
   public boolean hasVisibleTarget() {
-    double res = getValue(TableEntry.HasValidTargets);
-    return res == 1.0;
+    return getValue(TableEntry.HasValidTargets) == 1.0;
   }
 
   /**
-   * @return the horizontal angle (between -29.8deg and 29.8deg) from crosshair to center of target
+   * Get the horizontal angle from the crosshair to the center of the target
+   *
+   * @return An angle between -29.8deg and 29.8deg
    */
   public double targetXOffset() {
     return getValue(TableEntry.TargetXOffset);
   }
 
   /**
-   * @return the vertical angle (between -24.85deg and 24.85deg) from crosshair to center of target
+   * Get the vertical angle from the crosshair to the center of the target
+   *
+   * @return An angle between -24.85deg and 24.85deg
    */
   public double targetYOffset() {
     return getValue(TableEntry.TargetYOffset);
   }
 
-  /** Set the current camera pipeline (integer from 0 to 9, inclusive) */
+  /**
+   * Set the current pipeline for vision processing
+   *
+   * @param pipeline integer from 0 to 9, inclusive
+   */
   public void setPipeline(int pipeline) {
     if (pipeline < 10 && pipeline > -1) setValue(TableEntry.CurrentPipeline, pipeline);
   }
 
-  public void toggleDriverMode(boolean enabled) {
-    setValue(TableEntry.OperationMode, enabled ? 1.0 : 0.0);
-  }
+  // @Deprecated
+  // public void toggleDriverMode(boolean enabled) {
+  //   setValue(TableEntry.OperationMode, enabled ? 1.0 : 0.0);
+  // }
 
   public void toggleLED(LEDMode state) {
     setValue(TableEntry.LEDMode, state.ordinal());
