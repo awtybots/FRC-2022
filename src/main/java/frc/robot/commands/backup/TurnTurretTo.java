@@ -6,13 +6,11 @@ import frc.robot.subsystems.TurretSubsystem;
 public class TurnTurretTo extends CommandBase {
 
   private final TurretSubsystem turretSubsystem;
-
   private final double angle;
 
   public TurnTurretTo(double angle, TurretSubsystem turretSubsystem) {
     addRequirements(turretSubsystem);
     this.turretSubsystem = turretSubsystem;
-
     this.angle = angle;
   }
 
