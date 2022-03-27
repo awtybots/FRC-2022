@@ -5,14 +5,15 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Camera;
 import frc.robot.Constants.Field;
-import frc.robot.Constants.Limelight;
 import frc.util.math.Vector2;
+import frc.util.vision.Limelight;
 import frc.util.vision.VisionTarget;
 
 public class LimelightSubsystem extends SubsystemBase {
 
-  private final frc.util.vision.Limelight limelight;
+  private final Limelight limelight;
   private final VisionTarget upperHub;
 
   private final int filterSize = 10;
@@ -26,10 +27,11 @@ public class LimelightSubsystem extends SubsystemBase {
   private Debouncer debouncer = new Debouncer(filterSize * 0.02, DebounceType.kFalling);
 
   public LimelightSubsystem() {
-    limelight = new RotatableLimelight(Limelight.kMountingHeight, Limelight.kMountingAngle);
+    limelight =
+        new RotatableLimelight(
+            Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
     upperHub =
-        new VisionTarget(
-            limelight, Field.kVisionTargetHeight, Field.kGoalHeight, Limelight.kShooterOffset);
+        new VisionTarget(Field.kVisionTargetHeight, Field.kGoalHeight, Camera.kShooterOffset);
 
     drivingMode();
   }
@@ -37,7 +39,8 @@ public class LimelightSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     boolean hasTarget = hasVisibleTarget();
-    Vector2 targetVector = upperHub.getGoalDisplacement();
+    Vector2 targetVector = limelight.getDisplacementFrom(upperHub);
+
     if (hasTarget && targetVector != null) {
       cameraAngleDelta = xFilter.calculate(limelight.targetXOffset());
       distToTarget = distFilter.calculate(targetVector.x + Field.kGoalRadius);
@@ -45,6 +48,7 @@ public class LimelightSubsystem extends SubsystemBase {
       cameraAngleDelta = 0;
       distToTarget = -1;
     }
+
     SmartDashboard.putBoolean("Target Visible", hasTarget);
     SmartDashboard.putNumber("Camera Angle Delta", cameraAngleDelta);
     SmartDashboard.putNumber("Distance to Target", distToTarget);
@@ -65,22 +69,23 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public void drivingMode() {
-    limelight.setPipeline(Limelight.kPipelineDriving);
+    limelight.setPipeline(Camera.kPipelineDriving);
   }
 
   public void shootingMode() {
-    limelight.setPipeline(Limelight.kPipelineShooting);
+    limelight.setPipeline(Camera.kPipelineShooting);
   }
 
   private class RotatableLimelight extends frc.util.vision.Limelight {
 
-    public RotatableLimelight(double mountingHeight, double mountingAngle) {
-      super(mountingHeight, mountingAngle);
+    public RotatableLimelight(
+        double mountingHeight, double mountingAngle, Vector2 mechanismOffset) {
+      super(mountingHeight, mountingAngle, mechanismOffset);
     }
 
     @Override
     public double targetXOffset() {
-      switch (Limelight.kMountingDirection) {
+      switch (Camera.kMountingDirection) {
         case kLandscape:
           return -super.targetXOffset();
         case kPortrait:
@@ -91,7 +96,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     @Override
     public double targetYOffset() {
-      switch (Limelight.kMountingDirection) {
+      switch (Camera.kMountingDirection) {
         case kLandscape:
           return -super.targetYOffset();
         case kPortrait:

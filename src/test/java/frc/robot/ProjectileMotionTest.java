@@ -1,7 +1,7 @@
 package frc.robot;
 
+import frc.robot.Constants.Camera;
 import frc.robot.Constants.Field;
-import frc.robot.Constants.Limelight;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.util.math.ProjectileMotionSolver;
 import frc.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
@@ -25,8 +25,7 @@ public class ProjectileMotionTest {
 
     Vector2 goalDisplacement =
         new Vector2(
-            3.0,
-            Field.kVisionTargetHeight - (Limelight.kMountingHeight + Limelight.kShooterOffset.y));
+            3.0, Field.kVisionTargetHeight - (Camera.kMountingHeight + Camera.kShooterOffset.y));
 
     double launchVelStationary =
         projectileMotionSolver.getOptimalLaunchVelocityStationary(goalDisplacement);

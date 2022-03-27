@@ -79,8 +79,8 @@ public class MovingShots extends CommandBase {
             new Vector2(
                 goalDisplacement,
                 Field.kGoalHeight
-                    - Constants.Limelight.kMountingHeight
-                    - Constants.Limelight.kShooterOffset.y),
+                    - Constants.Camera.kMountingHeight
+                    - Constants.Camera.kShooterOffset.y),
             robotVelocity);
 
     if (launchVelocityData == null) {

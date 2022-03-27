@@ -5,25 +5,39 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTableType;
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.util.math.Vector2;
 
 public class Limelight extends SubsystemBase {
 
-  private double mountingHeight;
-  private double mountingAngle;
+  public final double mountingHeight;
+  public final double mountingAngle;
+  public final Vector2 offsetFromMechanism;
 
   private final NetworkTable netTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-  public Limelight(double mountingHeight, double mountingAngle) {
+  public Limelight(double mountingHeight, double mountingAngle, Vector2 offsetFromMechanism) {
     this.mountingAngle = mountingAngle;
     this.mountingHeight = mountingHeight;
+    this.offsetFromMechanism = offsetFromMechanism;
   }
 
-  public double getMountingHeight() {
-    return mountingHeight;
-  }
+  /**
+   * Get the relative displacement vector from the mechanism to the goal. The x axis is horizontal
+   * displacement and the y axis is vertical displacement. Values are in meters.
+   *
+   * @return The displacement vector, or null if no vision target is detected.
+   */
+  public Vector2 getDisplacementFrom(VisionTarget target) {
+    if (!hasVisibleTarget()) return null;
 
-  public double getMountingAngle() {
-    return mountingAngle;
+    double angleY = targetYOffset();
+
+    double opposite = target.height - this.mountingHeight;
+    double tangent = Math.tan(Math.toRadians(this.mountingAngle + angleY));
+    double adjacent = opposite / tangent;
+
+    return new Vector2(adjacent, target.goalHeight - this.mountingHeight)
+        .minus(this.offsetFromMechanism);
   }
 
   public boolean hasVisibleTarget() {

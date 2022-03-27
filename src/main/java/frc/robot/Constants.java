@@ -61,7 +61,7 @@ public final class Constants {
     public static final double kBallMass = 0.270; // kg
   }
 
-  public static final class Limelight {
+  public static final class Camera {
     public static final double kMountingAngle = 39.0; // degrees up from horizontal
     public static final double kMountingHeight = Convert.inchesToMeters(40.0); // meters from ground
     public static final Vector2 kShooterOffset =
