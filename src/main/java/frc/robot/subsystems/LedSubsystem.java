@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
 public class LedSubsystem extends SubsystemBase {
@@ -24,16 +24,16 @@ public class LedSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    switch(state) {
+    switch (state) {
       case kBlinkingOn:
-        if(timer.get() > kBlinkPeriod) {
+        if (timer.get() > kBlinkPeriod) {
           state = State.kBlinkingOff;
           timer.reset();
           toggle(false);
         }
         break;
       case kBlinkingOff:
-        if(timer.get() > kBlinkPeriod) {
+        if (timer.get() > kBlinkPeriod) {
           state = State.kBlinkingOn;
           timer.reset();
           toggle(true);
