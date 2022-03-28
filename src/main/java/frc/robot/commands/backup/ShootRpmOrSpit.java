@@ -34,7 +34,7 @@ public class ShootRpmOrSpit extends CommandBase {
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
-    towerSubsystem.ingest();
+    towerSubsystem.load();
   }
 
   private void aimForShooting() {

@@ -21,7 +21,7 @@ import frc.robot.Constants.Tower;
 public class TowerSubsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
-  private boolean shouldFeed = false;
+  private boolean firing = false;
 
   private Alliance ourAlliance;
   private final ColorSensor lowerSensor;
@@ -84,17 +84,17 @@ public class TowerSubsystem extends SubsystemBase {
         reverseBoth();
 
       case Feeding:
-        if (!shouldFeed) {
-          ingest();
+        if (!firing) {
+          load();
         } else {
-          if (upperPresent) feedFromUpper();
-          if (lowerPresent) feedFromLower();
+          if (upperPresent) {
+            feedFromUpper();
+          } else feedFromLower();
         }
-
       case Loading:
-        if (upperPresent) stopUpper();
+        if (!upperPresent) intake();
+        if (upperPresent && !lowerPresent) intakeLowerOnly();
         if (upperPresent && lowerPresent) stopBoth();
-        if (!upperPresent && !lowerPresent) intake();
     }
   }
 
@@ -107,13 +107,13 @@ public class TowerSubsystem extends SubsystemBase {
     m_state = State.Reversing;
   }
 
-  public void ingest() {
+  public void load() {
     m_state = State.Loading;
   }
 
   public void feed(boolean ready) {
     m_state = State.Feeding;
-    shouldFeed = ready;
+    firing = ready;
   }
 
   /// -------- Motor Control -------- ///
@@ -122,18 +122,22 @@ public class TowerSubsystem extends SubsystemBase {
     upperMotor.set(ControlMode.PercentOutput, kIntakingSpeedUpper);
   }
 
+  private void intakeLowerOnly() {
+    lowerMotor.set(ControlMode.PercentOutput, kIntakingSpeedLower);
+  }
+
   private void reverseBoth() {
     lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
   }
 
-  /** only runs upper tower */
+  /** stops lower tower, runs upper tower */
   private void feedFromUpper() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }
 
-  /** runs both parts of tower */
+  /** runs upper and lower tower */
   private void feedFromLower() {
     lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);

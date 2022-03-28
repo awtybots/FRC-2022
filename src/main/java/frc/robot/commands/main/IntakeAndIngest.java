@@ -19,7 +19,7 @@ public class IntakeAndIngest extends CommandBase {
   @Override
   public void initialize() {
     intakeSubsystem.start();
-    towerSubsystem.ingest();
+    towerSubsystem.load();
   }
 
   @Override
