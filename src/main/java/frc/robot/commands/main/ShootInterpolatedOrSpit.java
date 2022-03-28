@@ -9,27 +9,21 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
+  private double launchRpm;
 
   public ShootInterpolatedOrSpit(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
 
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
 
-    addRequirements(
-        towerSubsystem,
-        shooterSubsystem,
-        turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
+    addRequirements(towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem);
   }
 
   @Override
@@ -37,7 +31,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
     limelightSubsystem.shootingMode();
   }
 
-  private void executeShoot() {
+  private void aimForShooting() {
     if (!limelightSubsystem.hasVisibleTarget()) {
       turretSubsystem.trackTarget(false);
       shooterSubsystem.stop();
@@ -54,42 +48,25 @@ public class ShootInterpolatedOrSpit extends CommandBase {
     double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
     turretSubsystem.trackTarget(true, visionTargetXOffset);
 
-    double launchRpm = Shooter.shotMap.calculateShot(goalDisplacement);
-    shooterSubsystem.shootRpm(launchRpm);
+    launchRpm = Shooter.shotMap.calculateShot(goalDisplacement);
   }
 
-  private void executeSpit() {
+  private void aimForSpitting() {
     turretSubsystem.spit(
         limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
-    shooterSubsystem.spit();
   }
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot();
-      } else {
-        executeSpit();
-      }
-
-      if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if (colorSensorsSubsystem.isUpperBallPresent()) {
-          towerSubsystem.feedFromUpper();
-        } else {
-          towerSubsystem.feedFromLower();
-        }
-      } else {
-        towerSubsystem.stopUpper();
-
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
-          towerSubsystem.stop();
-        }
-      }
+    if (towerSubsystem.upperBallOurs()) {
+      aimForShooting();
+      shooterSubsystem.shootRpm(launchRpm);
     } else {
-      executeShoot();
-      towerSubsystem.intake();
+      aimForSpitting();
+      shooterSubsystem.spit();
     }
+
+    towerSubsystem.feed(turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget());
   }
 
   @Override

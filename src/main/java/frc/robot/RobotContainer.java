@@ -112,8 +112,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(Driver, drivetrainSubsystem));
-    Driver.RightBumper.whenHeld(
-        new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
+    Driver.RightBumper.whenHeld(new IntakeAndIngest(intakeSubsystem, towerSubsystem));
     Driver.LeftBumper.whenHeld(
         new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
 
@@ -121,22 +120,17 @@ public class RobotContainer {
     /// === AUTOMAGIC ===
     Operator.ButtonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     Operator.ButtonStart.whenHeld(
-        new ShootInterpolated(
-            towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
+        new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
 
     /// === MANUAL ===
     Operator.LeftBumper.whenHeld(new ReverseTower(towerSubsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(Operator, climbSubsystem));
 
     /// === SHOOTING ===
-    Operator.ButtonA.whenHeld(
-        new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
-    Operator.ButtonB.whenHeld(
-        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1480
-    Operator.ButtonX.whenHeld(
-        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1540
-    Operator.ButtonY.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1700
+    Operator.ButtonA.whenHeld(new ShootRpm(750, towerSubsystem, shooterSubsystem));
+    Operator.ButtonB.whenHeld(new ShootRpm(1600, towerSubsystem, shooterSubsystem)); // 1480
+    Operator.ButtonX.whenHeld(new ShootRpm(1800, towerSubsystem, shooterSubsystem)); // 1540
+    Operator.ButtonY.whenHeld(new ShootRpm(2300, towerSubsystem, shooterSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(Operator, turretSubsystem));

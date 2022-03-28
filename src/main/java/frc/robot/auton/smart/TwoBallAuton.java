@@ -27,11 +27,8 @@ public class TwoBallAuton extends SequentialCommandGroup {
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
         new TwoBall0(drivetrainSubsystem)
-            .alongWith(
-                new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
-                    .withTimeout(5.0)),
-        new ShootRpm(1950.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(5.0));
+            .alongWith(new IntakeAndIngest(intakeSubsystem, towerSubsystem).withTimeout(5.0)),
+        new ShootRpm(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
 

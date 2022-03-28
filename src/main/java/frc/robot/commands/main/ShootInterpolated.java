@@ -8,17 +8,14 @@ public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   public ShootInterpolated(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
   }
@@ -26,32 +23,19 @@ public class ShootInterpolated extends CommandBase {
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
+    towerSubsystem.ingest();
   }
 
   @Override
   public void execute() {
-    if (!limelightSubsystem.hasVisibleTarget()) {
-      shooterSubsystem.stop();
-      return;
-    }
-
     double goalDistance = limelightSubsystem.distToTarget();
+
     if (goalDistance == -1) {
       shooterSubsystem.stop();
-      return;
-    }
-
-    double launchRpm = Shooter.shotMap.calculateShot(goalDistance);
-    shooterSubsystem.shootRpm(launchRpm);
-
-    if (shooterSubsystem.isAtTarget()) {
-      if (colorSensorsSubsystem.isUpperBallPresent()) {
-        towerSubsystem.feedFromUpper();
-      } else {
-        towerSubsystem.feedFromLower();
-      }
     } else {
-      towerSubsystem.stopUpper();
+      double launchRpm = Shooter.shotMap.calculateShot(goalDistance);
+      shooterSubsystem.shootRpm(launchRpm);
+      towerSubsystem.feed(shooterSubsystem.isAtTarget());
     }
   }
 

@@ -12,6 +12,9 @@ import frc.robot.Constants.Tower;
 
 public class TowerSubsystem extends SubsystemBase {
 
+  private State m_state = State.Idle;
+  private boolean shouldFeed = false;
+
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
   private static final double kIntakingSpeedLower = 0.4;
@@ -29,7 +32,7 @@ public class TowerSubsystem extends SubsystemBase {
 
     configMotors();
 
-    stop();
+    stopBoth();
   }
 
   private void configMotors() {
@@ -46,34 +49,97 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void intake() {
+  public void stop() {
+    m_state = State.Idle;
+  }
+
+  public void reverse() {
+    m_state = State.Reversing;
+  }
+
+  public void ingest() {
+    m_state = State.Loading;
+  }
+
+  public void feed(boolean ready) {
+    m_state = State.Feeding;
+    shouldFeed = ready;
+  }
+
+  private void intake() {
     lowerMotor.set(ControlMode.PercentOutput, kIntakingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kIntakingSpeedUpper);
   }
 
-  public void reverseBoth() {
+  private void reverseBoth() {
     lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
   }
 
   /** only runs upper tower */
-  public void feedFromUpper() {
+  private void feedFromUpper() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }
 
   /** runs both parts of tower */
-  public void feedFromLower() {
+  private void feedFromLower() {
     lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
   }
 
-  public void stopUpper() {
+  private void stopUpper() {
     upperMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
-  public void stop() {
+  private void stopBoth() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public boolean upperBallOurs() {
+    return true;
+  }
+
+  private boolean upperBallPresent() {
+    return true;
+  }
+
+  private boolean lowerBallPresent() {
+    return true;
+  }
+
+  @Override
+  public void periodic() {
+    boolean upperPresent = upperBallPresent();
+    boolean lowerPresent = lowerBallPresent();
+
+    switch (m_state) {
+      case Idle:
+        stopBoth();
+
+      case Reversing:
+        reverseBoth();
+
+      case Feeding:
+        if (!shouldFeed) {
+          if (lowerPresent && !upperPresent) ingest();
+        } else {
+          if (upperPresent) feedFromUpper();
+          if (lowerPresent) feedFromLower();
+        }
+
+      case Loading:
+        if (upperPresent) stopUpper();
+        if (upperPresent && lowerPresent) stopBoth();
+        if (!upperPresent && !lowerPresent) intake();
+    }
+  }
+
+  enum State {
+    Reversing,
+    Idle,
+    Feeding,
+    Loading,
   }
 }

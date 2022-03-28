@@ -1,7 +1,6 @@
 package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
@@ -12,7 +11,6 @@ public class ShootRpmOrSpit extends CommandBase {
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final LimelightSubsystem limelightSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
 
   private final double rpm;
 
@@ -21,14 +19,12 @@ public class ShootRpmOrSpit extends CommandBase {
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
 
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
     this.limelightSubsystem = limelightSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
 
     this.rpm = rpm;
 
@@ -38,48 +34,30 @@ public class ShootRpmOrSpit extends CommandBase {
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
+    towerSubsystem.ingest();
   }
 
-  private void executeShoot(boolean idling) {
+  private void aimForShooting() {
     turretSubsystem.trackTarget(
         limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
-
-    if (idling) shooterSubsystem.stop();
-    else shooterSubsystem.shootRpm(this.rpm);
   }
 
-  private void executeSpit() {
+  private void aimForSpitting() {
     turretSubsystem.spit(
         limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
-    shooterSubsystem.spit();
   }
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot(false);
-      } else {
-        executeSpit();
-      }
-
-      if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if (colorSensorsSubsystem.isUpperBallPresent()) {
-          towerSubsystem.feedFromUpper();
-        } else {
-          towerSubsystem.feedFromLower();
-        }
-      } else {
-        towerSubsystem.stopUpper();
-
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
-          towerSubsystem.stop();
-        }
-      }
+    if (towerSubsystem.upperBallOurs()) {
+      aimForShooting();
+      shooterSubsystem.shootRpm(this.rpm);
     } else {
-      towerSubsystem.intake();
-      executeShoot(true);
+      aimForSpitting();
+      shooterSubsystem.spit();
     }
+
+    towerSubsystem.feed(turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget());
   }
 
   @Override
