@@ -22,8 +22,6 @@ public class ColorSensorsSubsystem extends SubsystemBase {
   private Alliance lowerBallColor = Alliance.Invalid;
   private Alliance upperBallColor = Alliance.Invalid;
 
-  private static final int kMinProximity = 250;
-
   public ColorSensorsSubsystem() {
     lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort);
     upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort);
@@ -60,12 +58,12 @@ public class ColorSensorsSubsystem extends SubsystemBase {
 
   private class ColorSensor {
 
-    private final int minimumDistance = 800; // TODO find a good value
-    private final double minColorConfidence = 0.90; // TODO make sure this a correct value
+    private final int minimumDistance = 250;
+    private final double minColorConfidence = 0.90;
 
     // Tune these at each field if you want to know the color of the balls
-    private final Color Red = new Color(0.45, 0.39, 0.16);
-    private final Color Blue = new Color(0.18, 0.41, 0.43);
+    private final Color Red = new Color(0.41, 0.41, 0.18);
+    private final Color Blue = new Color(0.17, 0.41, 0.43);
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch = new ColorMatch();

@@ -74,7 +74,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       }
 
       if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if (colorSensorsSubsystem.isUpperBallPresent()) {
+        if (colorSensorsSubsystem.upperBallPresent()) {
           towerSubsystem.feedFromUpper();
         } else {
           towerSubsystem.feedFromLower();

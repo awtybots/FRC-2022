@@ -33,7 +33,7 @@ public class ShootRpmSD extends CommandBase {
   @Override
   public void execute() {
     if (shooterSubsystem.isAtTarget()) {
-      if (colorSensorsSubsystem.isUpperBallPresent()) {
+      if (colorSensorsSubsystem.upperBallPresent()) {
         towerSubsystem.feedFromUpper();
       } else {
         towerSubsystem.feedFromLower();
