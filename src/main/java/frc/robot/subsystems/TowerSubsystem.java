@@ -85,7 +85,7 @@ public class TowerSubsystem extends SubsystemBase {
 
       case Feeding:
         if (!shouldFeed) {
-          if (lowerPresent && !upperPresent) ingest();
+          ingest();
         } else {
           if (upperPresent) feedFromUpper();
           if (lowerPresent) feedFromLower();
