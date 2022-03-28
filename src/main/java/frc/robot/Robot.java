@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -24,11 +25,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // This will perform all our button bindings, and put the autonomous chooser on the dashboard.
     robotContainer = new RobotContainer();
+    robotContainer.setAlliance(DriverStation.getAlliance());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
     robotContainer.turnOffLimelightLEDs();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -38,6 +41,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
   @Override
   public void autonomousInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
     autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command
@@ -48,6 +52,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
     // Prevents autonomous from continuing into teleop
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
@@ -56,6 +61,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    robotContainer.setAlliance(DriverStation.getAlliance());
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }

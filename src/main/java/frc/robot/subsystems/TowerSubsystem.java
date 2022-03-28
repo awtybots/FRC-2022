@@ -7,13 +7,25 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.ColorSensorV3.*;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ColorSensors;
 import frc.robot.Constants.Tower;
 
 public class TowerSubsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
   private boolean shouldFeed = false;
+
+  private Alliance ourAlliance;
+  private final ColorSensor lowerSensor;
+  private final ColorSensor upperSensor;
 
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
@@ -27,6 +39,9 @@ public class TowerSubsystem extends SubsystemBase {
   private static final double kShootingSpeedUpper = 0.75;
 
   public TowerSubsystem() {
+    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort);
+    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort);
+
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonSRX(Tower.kLowerMotorCanId);
 
@@ -49,6 +64,41 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
+  private enum State {
+    Reversing,
+    Idle,
+    Feeding,
+    Loading,
+  }
+
+  @Override
+  public void periodic() {
+    boolean upperPresent = upperBallPresent();
+    boolean lowerPresent = lowerBallPresent();
+
+    switch (m_state) {
+      case Idle:
+        stopBoth();
+
+      case Reversing:
+        reverseBoth();
+
+      case Feeding:
+        if (!shouldFeed) {
+          if (lowerPresent && !upperPresent) ingest();
+        } else {
+          if (upperPresent) feedFromUpper();
+          if (lowerPresent) feedFromLower();
+        }
+
+      case Loading:
+        if (upperPresent) stopUpper();
+        if (upperPresent && lowerPresent) stopBoth();
+        if (!upperPresent && !lowerPresent) intake();
+    }
+  }
+
+  /// -------- State Machine API -------- ///
   public void stop() {
     m_state = State.Idle;
   }
@@ -66,6 +116,7 @@ public class TowerSubsystem extends SubsystemBase {
     shouldFeed = ready;
   }
 
+  /// -------- Motor Control -------- ///
   private void intake() {
     lowerMotor.set(ControlMode.PercentOutput, kIntakingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kIntakingSpeedUpper);
@@ -97,49 +148,79 @@ public class TowerSubsystem extends SubsystemBase {
     upperMotor.set(ControlMode.PercentOutput, 0.0);
   }
 
+  /// -------- Color Sensors -------- ///
   public boolean upperBallOurs() {
-    return true;
+    return upperSensor.getBallAlliance() == ourAlliance;
   }
 
   private boolean upperBallPresent() {
-    return true;
+    return upperSensor.ballPresent();
   }
 
   private boolean lowerBallPresent() {
-    return true;
+    return lowerSensor.ballPresent();
   }
 
-  @Override
-  public void periodic() {
-    boolean upperPresent = upperBallPresent();
-    boolean lowerPresent = lowerBallPresent();
+  public void setAlliance(Alliance ours) {
+    this.ourAlliance = ours;
+  }
 
-    switch (m_state) {
-      case Idle:
-        stopBoth();
+  private class ColorSensor {
 
-      case Reversing:
-        reverseBoth();
+    private final int minimumDistance = 250;
+    private final double minColorConfidence = 0.90;
 
-      case Feeding:
-        if (!shouldFeed) {
-          if (lowerPresent && !upperPresent) ingest();
-        } else {
-          if (upperPresent) feedFromUpper();
-          if (lowerPresent) feedFromLower();
-        }
+    // Tune these at each field if you want to know the color of the balls
+    private final Color Red = new Color(0.41, 0.41, 0.18);
+    private final Color Blue = new Color(0.17, 0.41, 0.43);
 
-      case Loading:
-        if (upperPresent) stopUpper();
-        if (upperPresent && lowerPresent) stopBoth();
-        if (!upperPresent && !lowerPresent) intake();
+    private final ColorSensorV3 sensor;
+    private final ColorMatch colorMatch = new ColorMatch();
+
+    public ColorSensor(I2C.Port port) {
+      sensor = new ColorSensorV3(port);
+      sensor.configureColorSensor(
+          ColorSensorResolution.kColorSensorRes17bit,
+          ColorSensorMeasurementRate.kColorRate25ms,
+          GainFactor.kGain3x);
+      sensor.configureProximitySensor(
+          ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
+
+      sensor.configureProximitySensor(
+          ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
+
+      sensor.configureColorSensor(
+          ColorSensorResolution.kColorSensorRes17bit,
+          ColorSensorMeasurementRate.kColorRate50ms,
+          GainFactor.kGain3x);
+
+      colorMatch.addColorMatch(Red);
+      colorMatch.addColorMatch(Blue);
+      colorMatch.setConfidenceThreshold(minColorConfidence);
     }
-  }
 
-  enum State {
-    Reversing,
-    Idle,
-    Feeding,
-    Loading,
+    public boolean ballPresent() {
+      return sensor.getProximity() > minimumDistance;
+    }
+
+    public Alliance getBallAlliance() {
+      Color detectedColor = sensor.getColor();
+      ColorMatchResult match = colorMatch.matchColor(detectedColor);
+
+      if (match != null) {
+        if (match.color == Red) return Alliance.Red;
+        if (match.color == Blue) return Alliance.Blue;
+      }
+
+      return Alliance.Invalid;
+    }
+
+    public String rawColor() {
+      return rgbToString(sensor.getColor());
+    }
+
+    private String rgbToString(Color c) {
+      return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
+    }
   }
 }

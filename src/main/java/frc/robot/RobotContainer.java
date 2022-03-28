@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,7 +38,6 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
   public static final LedSubsystem ledSubsystem = new LedSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -61,8 +61,7 @@ public class RobotContainer {
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
+            limelightSubsystem));
     autonChooser.addOption(
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
@@ -71,8 +70,7 @@ public class RobotContainer {
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
+            limelightSubsystem));
     // autonChooser.addOption(
     //     "One Ball Auton",
     //     new OneBallAuton(
@@ -151,5 +149,9 @@ public class RobotContainer {
 
   public void turnOffLimelightLEDs() {
     limelightSubsystem.drivingMode();
+  }
+
+  public void setAlliance(Alliance ours) {
+    towerSubsystem.setAlliance(ours);
   }
 }
