@@ -17,7 +17,8 @@ public class ShootInterpolated extends CommandBase {
     this.shooterSubsystem = shooterSubsystem;
     this.limelightSubsystem = limelightSubsystem;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(shooterSubsystem);
+    towerSubsystem.claim();
   }
 
   @Override
@@ -42,6 +43,7 @@ public class ShootInterpolated extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     towerSubsystem.stop();
+    towerSubsystem.free();
     shooterSubsystem.stop();
     limelightSubsystem.drivingMode();
   }

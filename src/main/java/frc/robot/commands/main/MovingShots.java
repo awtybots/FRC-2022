@@ -54,6 +54,7 @@ public class MovingShots extends CommandBase {
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
+    towerSubsystem.claim();
   }
 
   private void aimForShooting() {
@@ -128,6 +129,7 @@ public class MovingShots extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     towerSubsystem.stop();
+    towerSubsystem.free();
     shooterSubsystem.stop();
     turretSubsystem.idle();
     limelightSubsystem.drivingMode();

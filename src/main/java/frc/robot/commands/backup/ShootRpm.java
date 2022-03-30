@@ -7,33 +7,35 @@ import frc.robot.subsystems.TowerSubsystem;
 
 public class ShootRpm extends CommandBase {
 
-  private final TowerSubsystem towerSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
+  private final TowerSubsystem tower;
+  private final ShooterSubsystem shooter;
   private final double rpm;
 
   public ShootRpm(double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
-    this.towerSubsystem = towerSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
+    this.tower = towerSubsystem;
+    this.shooter = shooterSubsystem;
     this.rpm = rpm;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(shooterSubsystem); // tower does arbitration, scheduler isn't involved
   }
 
   @Override
   public void initialize() {
-    shooterSubsystem.shootRpm(this.rpm);
+    shooter.shootRpm(this.rpm);
     RobotContainer.ledSubsystem.blink();
+    tower.claim();
   }
 
   @Override
   public void execute() {
-    towerSubsystem.feed(shooterSubsystem.isAtTarget());
+    tower.feed(shooter.isAtTarget());
   }
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.stop();
-    towerSubsystem.stop();
+    shooter.stop();
+    tower.stop();
+    tower.free();
     RobotContainer.ledSubsystem.turnOn();
   }
 }

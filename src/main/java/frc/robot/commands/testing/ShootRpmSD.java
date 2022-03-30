@@ -22,6 +22,7 @@ public class ShootRpmSD extends CommandBase {
   @Override
   public void initialize() {
     shooterSubsystem.shootRpm(SmartDashboard.getNumber("SH - set rpm", 0.0));
+    towerSubsystem.claim();
     towerSubsystem.load();
   }
 
@@ -33,6 +34,7 @@ public class ShootRpmSD extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
+    towerSubsystem.free();
     towerSubsystem.stop();
   }
 }

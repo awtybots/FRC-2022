@@ -20,6 +20,7 @@ public class TowerSubsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
   private boolean firing = false;
+  private boolean shooterHasControl = false;
 
   private Alliance ourAlliance = Alliance.Invalid;
   private final Color kRed = new Color(0.41, 0.41, 0.18);
@@ -62,7 +63,19 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  private enum State {
+  public boolean available() {
+    return !shooterHasControl;
+  }
+
+  public void claim() {
+    shooterHasControl = true;
+  }
+
+  public void free() {
+    shooterHasControl = false;
+  }
+
+  public enum State {
     Reversing,
     Idle,
     Feeding,

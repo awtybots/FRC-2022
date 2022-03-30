@@ -6,25 +6,27 @@ import frc.robot.subsystems.TowerSubsystem;
 
 /** comprehensive intake command */
 public class IntakeAndIngest extends CommandBase {
-  private final IntakeSubsystem intakeSubsystem;
-  private final TowerSubsystem towerSubsystem;
+  private final IntakeSubsystem intake;
+  private final TowerSubsystem tower;
 
   public IntakeAndIngest(IntakeSubsystem intakeSubsystem, TowerSubsystem towerSubsystem) {
-    addRequirements(intakeSubsystem, towerSubsystem);
 
-    this.intakeSubsystem = intakeSubsystem;
-    this.towerSubsystem = towerSubsystem;
+    addRequirements(intakeSubsystem); // tower does arbitration, scheduler isn't involved
+
+    this.intake = intakeSubsystem;
+    this.tower = towerSubsystem;
   }
 
   @Override
   public void initialize() {
-    intakeSubsystem.start();
-    towerSubsystem.load();
+    intake.start();
+    if (tower.available())
+      tower.load();
   }
 
   @Override
   public void end(boolean interrupted) {
-    intakeSubsystem.stop();
-    towerSubsystem.stop();
+    intake.stop();
+    if (tower.available()) tower.stop();
   }
 }

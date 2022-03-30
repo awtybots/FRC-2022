@@ -28,12 +28,13 @@ public class ShootRpmOrSpit extends CommandBase {
 
     this.rpm = rpm;
 
-    addRequirements(towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem);
+    addRequirements(shooterSubsystem, turretSubsystem, limelightSubsystem); // Tower does arbitration
   }
 
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
+    towerSubsystem.claim();
     towerSubsystem.load();
   }
 
@@ -64,6 +65,7 @@ public class ShootRpmOrSpit extends CommandBase {
   public void end(boolean interrupted) {
     shooterSubsystem.stop();
     towerSubsystem.stop();
+    towerSubsystem.free();
     turretSubsystem.idle();
     limelightSubsystem.drivingMode();
   }

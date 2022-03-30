@@ -29,6 +29,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   @Override
   public void initialize() {
     limelightSubsystem.shootingMode();
+    towerSubsystem.claim();
   }
 
   private void aimForShooting() {
@@ -73,6 +74,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   public void end(boolean interrupted) {
     towerSubsystem.stop();
     shooterSubsystem.stop();
+    towerSubsystem.free();
     turretSubsystem.idle();
     limelightSubsystem.drivingMode();
   }
