@@ -30,7 +30,6 @@ public class MovingShots extends CommandBase {
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       DrivetrainSubsystem drivetrainSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
@@ -42,7 +41,7 @@ public class MovingShots extends CommandBase {
         towerSubsystem,
         shooterSubsystem,
         turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
+        limelightSubsystem); // drive subsystem only observed
 
     projectileMotionSolver =
         new ProjectileMotionSolver(

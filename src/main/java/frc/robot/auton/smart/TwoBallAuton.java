@@ -23,8 +23,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
         new TwoBall0(drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(intakeSubsystem, towerSubsystem).withTimeout(5.0)),
