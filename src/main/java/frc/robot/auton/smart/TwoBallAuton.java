@@ -9,7 +9,6 @@ import frc.robot.subsystems.*;
 
 public class TwoBallAuton extends SequentialCommandGroup {
   // private final DrivetrainSubsystem drivetrainSubsystem;
-  // private final IntakeSubsystem intakeSubsystem;
   // private final TowerSubsystem towerSubsystem;
   // private final TurretSubsystem turretSubsystem;
   // private final ShooterSubsystem shooterSubsystem;
@@ -19,7 +18,6 @@ public class TwoBallAuton extends SequentialCommandGroup {
 
   public TwoBallAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
@@ -27,16 +25,13 @@ public class TwoBallAuton extends SequentialCommandGroup {
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
         new TwoBall0(drivetrainSubsystem)
-            .alongWith(
-                new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
-                    .withTimeout(5.0)),
+            .alongWith(new IntakeAndIngest(towerSubsystem, colorSensorsSubsystem).withTimeout(5.0)),
         new ShootRpm(1950.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
             .withTimeout(5.0));
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
 
     // this.drivetrainSubsystem = drivetrainSubsystem;
-    // this.intakeSubsystem = intakeSubsystem;
     // this.towerSubsystem = towerSubsystem;
     // this.turretSubsystem = turretSubsystem;
     // this.shooterSubsystem = shooterSubsystem;

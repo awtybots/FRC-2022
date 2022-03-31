@@ -25,8 +25,8 @@ import frc.util.Controller;
  */
 public class RobotContainer {
 
-  private final Controller Driver = new Controller(0);
-  private final Controller Operator = new Controller(1);
+  private final Controller driver = new Controller(0);
+  private final Controller operator = new Controller(1);
 
   public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
@@ -34,7 +34,6 @@ public class RobotContainer {
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
@@ -57,7 +56,6 @@ public class RobotContainer {
         "1 Low Goal 1 High Goal",
         new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
-            intakeSubsystem,
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
@@ -67,7 +65,6 @@ public class RobotContainer {
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
             drivetrainSubsystem,
-            intakeSubsystem,
             towerSubsystem,
             turretSubsystem,
             shooterSubsystem,
@@ -81,7 +78,6 @@ public class RobotContainer {
     //     "2 Ball Stupid",
     //     new TwoBallAutonStupid(
     //         drivetrainSubsystem,
-    //         intakeSubsystem,
     //         towerSubsystem,
     //         turretSubsystem,
     //         shooterSubsystem,
@@ -91,7 +87,6 @@ public class RobotContainer {
     //     "Two Ball Auton",
     //     new TwoBallAuton(
     //         drivetrainSubsystem,
-    //         intakeSubsystem,
     //         towerSubsystem,
     //         turretSubsystem,
     //         shooterSubsystem,
@@ -101,7 +96,6 @@ public class RobotContainer {
     //     "Four Ball Auton",
     //     new FourBallAuton(
     //         drivetrainSubsystem,
-    //         intakeSubsystem,
     //         towerSubsystem,
     //         turretSubsystem,
     //         shooterSubsystem,
@@ -111,39 +105,37 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // === DRIVER ===
-    drivetrainSubsystem.setDefaultCommand(new Drive(Driver, drivetrainSubsystem));
-    Driver.RightBumper.whenHeld(
-        new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem));
-    Driver.LeftBumper.whenHeld(
-        new ReverseIntake(intakeSubsystem).alongWith(new ReverseTower(towerSubsystem)));
+    drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
+    driver.rightBumper.whenHeld(new IntakeAndIngest(towerSubsystem, colorSensorsSubsystem));
+    driver.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    Operator.ButtonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    Operator.ButtonStart.whenHeld(
+    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    operator.buttonStart.whenHeld(
         new ShootInterpolated(
             towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
-    Operator.LeftBumper.whenHeld(new ReverseTower(towerSubsystem));
-    climbSubsystem.setDefaultCommand(new DriveClimber(Operator, climbSubsystem));
+    operator.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
+    climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    Operator.ButtonA.whenHeld(
+    operator.buttonA.whenHeld(
         new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
-    Operator.ButtonB.whenHeld(
+    operator.buttonB.whenHeld(
         new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1480
-    Operator.ButtonX.whenHeld(
+    operator.buttonX.whenHeld(
         new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1540
-    Operator.ButtonY.whenHeld(
+    operator.buttonY.whenHeld(
         new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1700
 
     /// === TURRET ===
-    turretSubsystem.setDefaultCommand(new DriveTurret(Operator, turretSubsystem));
-    Operator.DPadLeft.whenHeld(new TurnTurretTo(-90.0, turretSubsystem));
-    Operator.DPadUp.whenHeld(new TurnTurretTo(0.0, turretSubsystem));
-    Operator.DPadRight.whenHeld(new TurnTurretTo(90.0, turretSubsystem));
-    Operator.DPadDown.whenHeld(new TurnTurretTo(180.0, turretSubsystem));
+    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
+    operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, turretSubsystem));
+    operator.dPadUp.whenHeld(new TurnTurretTo(0.0, turretSubsystem));
+    operator.dPadRight.whenHeld(new TurnTurretTo(90.0, turretSubsystem));
+    operator.dPadDown.whenHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
     // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));

@@ -7,11 +7,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Tower;
 
 public class TowerSubsystem extends SubsystemBase {
 
+  private final DoubleSolenoid pistons;
   private final WPI_TalonSRX upperMotor, lowerMotor;
 
   private static final double kIntakingSpeedLower = 0.4;
@@ -24,6 +28,8 @@ public class TowerSubsystem extends SubsystemBase {
   private static final double kShootingSpeedUpper = 0.75;
 
   public TowerSubsystem() {
+    pistons =
+        new DoubleSolenoid(PneumaticsModuleType.REVPH, Tower.kSolenoidDown, Tower.kSolenoidUp);
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonSRX(Tower.kLowerMotorCanId);
 
@@ -46,14 +52,20 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
+  private void togglePistons(boolean out) {
+    pistons.set(out ? Value.kForward : Value.kReverse);
+  }
+
   public void intake() {
     lowerMotor.set(ControlMode.PercentOutput, kIntakingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, kIntakingSpeedUpper);
+    togglePistons(true);
   }
 
   public void reverseBoth() {
     lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
+    togglePistons(true);
   }
 
   /** only runs upper tower */
@@ -75,5 +87,6 @@ public class TowerSubsystem extends SubsystemBase {
   public void stop() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, 0.0);
+    togglePistons(false);
   }
 }

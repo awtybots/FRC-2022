@@ -11,7 +11,6 @@ public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
 
   public TwoBallLowAndHighAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
@@ -31,9 +30,7 @@ public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0)
-            .alongWith(
-                new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
-                    .withTimeout(3.0)),
+            .alongWith(new IntakeAndIngest(towerSubsystem, colorSensorsSubsystem).withTimeout(3.0)),
         new ShootRpm(2000, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
             .withTimeout(5.0));
   }

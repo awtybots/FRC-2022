@@ -8,37 +8,37 @@ public class Controller {
   private final double kDeadzoneStick = 0.08;
   private final double kDeadzoneTrigger = 0.05;
 
-  public final JoystickButton ButtonA, ButtonX, ButtonY, ButtonB;
-  public final JoystickButton ButtonBack, ButtonStart;
-  public final JoystickButton LeftBumper, RightBumper;
+  public final JoystickButton buttonA, buttonX, buttonY, buttonB;
+  public final JoystickButton buttonBack, buttonStart;
+  public final JoystickButton leftBumper, rightBumper;
 
   // D-Pad
-  public POVButton DPadUp, DPadRight, DPadDown, DPadLeft;
+  public POVButton dPadUp, dPadRight, dPadDown, dPadLeft;
 
   /** Allows using the triggers as buttons, for example <pre> mController.leftTrigger.whenPressed(new CommandToRun());*/
-  public Button LeftTrigger, RightTrigger;
+  public Button leftTrigger, rightTrigger;
 
   /** @param port The port index on the Driver Station that the controller is plugged into. */
   public Controller(int port) {
     controller = new XboxController(port);
 
-    ButtonA = createButton(XboxController.Button.kA.value);
-    ButtonX = createButton(XboxController.Button.kX.value);
-    ButtonY = createButton(XboxController.Button.kY.value);
-    ButtonB = createButton(XboxController.Button.kB.value);
-    ButtonBack = createButton(XboxController.Button.kBack.value);
-    ButtonStart = createButton(XboxController.Button.kStart.value);
+    buttonA = createButton(XboxController.Button.kA.value);
+    buttonX = createButton(XboxController.Button.kX.value);
+    buttonY = createButton(XboxController.Button.kY.value);
+    buttonB = createButton(XboxController.Button.kB.value);
+    buttonBack = createButton(XboxController.Button.kBack.value);
+    buttonStart = createButton(XboxController.Button.kStart.value);
 
-    LeftBumper = createButton(XboxController.Button.kLeftBumper.value);
-    RightBumper = createButton(XboxController.Button.kRightBumper.value);
+    leftBumper = createButton(XboxController.Button.kLeftBumper.value);
+    rightBumper = createButton(XboxController.Button.kRightBumper.value);
 
-    DPadUp = new POVButton(controller, 0);
-    DPadRight = new POVButton(controller, 90);
-    DPadDown = new POVButton(controller, 180);
-    DPadLeft = new POVButton(controller, 270);
+    dPadUp = new POVButton(controller, 0);
+    dPadRight = new POVButton(controller, 90);
+    dPadDown = new POVButton(controller, 180);
+    dPadLeft = new POVButton(controller, 270);
 
-    LeftTrigger = new Button(() -> getLeftTrigger() > kDeadzoneTrigger);
-    RightTrigger = new Button(() -> getRightTrigger() > kDeadzoneTrigger);
+    leftTrigger = new Button(() -> getLeftTrigger() > kDeadzoneTrigger);
+    rightTrigger = new Button(() -> getRightTrigger() > kDeadzoneTrigger);
   }
 
   /** The X (left/right) position of the right joystick on the controller from -1.0 to 1.0 */
