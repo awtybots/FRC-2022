@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,7 +17,8 @@ import frc.robot.Constants.Tower;
 public class TowerSubsystem extends SubsystemBase {
 
   private final DoubleSolenoid pistons;
-  private final WPI_TalonSRX upperMotor, lowerMotor;
+  private final WPI_TalonSRX upperMotor;
+  private final WPI_TalonFX lowerMotor;
 
   private static final double kIntakingSpeedLower = 0.4;
   private static final double kIntakingSpeedUpper = 0.3;
@@ -31,7 +33,7 @@ public class TowerSubsystem extends SubsystemBase {
     pistons =
         new DoubleSolenoid(PneumaticsModuleType.REVPH, Tower.kSolenoidDown, Tower.kSolenoidUp);
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
-    lowerMotor = new WPI_TalonSRX(Tower.kLowerMotorCanId);
+    lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);
 
     configMotors();
 
