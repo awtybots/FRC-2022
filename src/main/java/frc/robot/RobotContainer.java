@@ -30,6 +30,7 @@ public class RobotContainer {
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();
+  private final TowerV2Subsystem towerV2Subsystem = new TowerV2Subsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
@@ -54,7 +55,7 @@ public class RobotContainer {
         "1 Low Goal 1 High Goal",
         new TwoBallLowAndHighAuton(
             drivetrainSubsystem,
-            towerSubsystem,
+            towerV2Subsystem,
             turretSubsystem,
             shooterSubsystem,
             limelightSubsystem,
@@ -63,7 +64,7 @@ public class RobotContainer {
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
             drivetrainSubsystem,
-            towerSubsystem,
+            towerV2Subsystem,
             turretSubsystem,
             shooterSubsystem,
             limelightSubsystem,
@@ -104,8 +105,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // === DRIVER ===
     drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
-    driver.rightBumper.whenHeld(new IntakeAndIngest(towerSubsystem, colorSensorsSubsystem));
-    driver.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
+    driver.rightBumper.whenHeld(new IntakeAndIngest(towerV2Subsystem));
+    driver.leftBumper.whenHeld(new ReverseTower(towerV2Subsystem));
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
@@ -115,18 +116,14 @@ public class RobotContainer {
             towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
 
     /// === MANUAL ===
-    operator.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
+    operator.leftBumper.whenHeld(new ReverseTower(towerV2Subsystem));
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    operator.buttonA.whenHeld(
-        new ShootRpm(750, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
-    operator.buttonB.whenHeld(
-        new ShootRpm(1600, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1480
-    operator.buttonX.whenHeld(
-        new ShootRpm(1800, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1540
-    operator.buttonY.whenHeld(
-        new ShootRpm(2300, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)); // 1700
+    operator.buttonA.whenHeld(new ShootRpm(750, towerV2Subsystem, shooterSubsystem));
+    operator.buttonB.whenHeld(new ShootRpm(1600, towerV2Subsystem, shooterSubsystem)); // 1480
+    operator.buttonX.whenHeld(new ShootRpm(1800, towerV2Subsystem, shooterSubsystem)); // 1540
+    operator.buttonY.whenHeld(new ShootRpm(2300, towerV2Subsystem, shooterSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));

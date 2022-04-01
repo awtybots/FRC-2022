@@ -8,7 +8,7 @@ import frc.robot.subsystems.*;
 public class OneBallHighGoalAuton extends SequentialCommandGroup {
   public OneBallHighGoalAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
+      TowerV2Subsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       ColorSensorsSubsystem colorSensorsSubsystem) {
     addCommands(
@@ -23,7 +23,6 @@ public class OneBallHighGoalAuton extends SequentialCommandGroup {
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0),
-        new ShootRpm(1950, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(5.0));
+        new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(5.0));
   }
 }

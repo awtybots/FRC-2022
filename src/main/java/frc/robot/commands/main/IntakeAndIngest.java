@@ -1,20 +1,16 @@
 package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ColorSensorsSubsystem;
-import frc.robot.subsystems.TowerSubsystem;
+import frc.robot.subsystems.TowerV2Subsystem;
 
 /** comprehensive intake command */
 public class IntakeAndIngest extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
+  private final TowerV2Subsystem towerSubsystem;
 
-  public IntakeAndIngest(
-      TowerSubsystem towerSubsystem, ColorSensorsSubsystem colorSensorsSubsystem) {
+  public IntakeAndIngest(TowerV2Subsystem towerSubsystem) {
     addRequirements(towerSubsystem);
 
     this.towerSubsystem = towerSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
   }
 
   @Override
@@ -23,18 +19,7 @@ public class IntakeAndIngest extends CommandBase {
   }
 
   @Override
-  public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      towerSubsystem.stopUpper();
-
-      if (colorSensorsSubsystem.isLowerBallPresent()) {
-        cancel();
-      }
-    }
-  }
-
-  @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stop();
+    towerSubsystem.stowIntake();
   }
 }
