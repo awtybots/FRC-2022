@@ -45,7 +45,7 @@ public class TowerSubsystem extends SubsystemBase {
     lowerMotor.configFactoryDefault();
 
     upperMotor.setInverted(false);
-    lowerMotor.setInverted(false);
+    lowerMotor.setInverted(true);
 
     upperMotor.configVoltageCompSaturation(12.0);
     lowerMotor.configVoltageCompSaturation(12.0);

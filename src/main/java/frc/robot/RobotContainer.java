@@ -5,8 +5,6 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,7 +26,7 @@ public class RobotContainer {
   private final Controller driver = new Controller(0);
   private final Controller operator = new Controller(1);
 
-  public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
+  // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final TowerSubsystem towerSubsystem = new TowerSubsystem();

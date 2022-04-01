@@ -21,7 +21,7 @@ public final class Constants {
 
   public static final class Tower {
     public static final int kUpperMotorCanId = 7;
-    public static final int kLowerMotorCanId = 5;
+    public static final int kLowerMotorCanId = 14;
 
     public static final int kSolenoidUp = 15;
     public static final int kSolenoidDown = 0;
