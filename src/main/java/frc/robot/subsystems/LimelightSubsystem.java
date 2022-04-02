@@ -6,7 +6,6 @@ import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Camera;
-import frc.robot.Constants.Camera.LimelightOrientation;
 import frc.robot.Constants.Field;
 import frc.util.math.Vector2;
 import frc.util.vision.Limelight;
@@ -30,9 +29,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public LimelightSubsystem() {
     upperHub = new VisionTarget(Field.kVisionTargetHeight, Field.kGoalHeight);
-      limelight =
-          new RotatableLimelight(
-              Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
+    limelight =
+        new RotatableLimelight(
+            Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
 
     enableDrivingMode();
   }
