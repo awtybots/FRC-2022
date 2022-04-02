@@ -109,7 +109,7 @@ public class ColorSensorsSubsystem extends SubsystemBase {
       if (match.confidence > minimumConfidence) {
         for (Alliance alliance : kBallColors.keySet()) {
           if (match.color == kBallColors.get(alliance)) {
-            return alliance;
+            // return alliance; // TODO put back color detection once tuned
           }
         }
       }

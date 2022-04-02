@@ -91,7 +91,6 @@ public class TowerV2Subsystem extends SubsystemBase {
         }
 
       case Loading:
-        // TODO ensure there's no balls in the tower before we send lower one up
         if (!upperPresent) loadBoth();
         if (upperPresent && !lowerPresent) loadLower();
         if (upperPresent && lowerPresent) stop();
