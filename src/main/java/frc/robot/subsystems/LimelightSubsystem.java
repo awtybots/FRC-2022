@@ -30,14 +30,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
   public LimelightSubsystem() {
     upperHub = new VisionTarget(Field.kVisionTargetHeight, Field.kGoalHeight);
-    if (Camera.kOrientation == LimelightOrientation.kLandscape) {
-      limelight =
-          new Limelight(Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
-    } else {
       limelight =
           new RotatableLimelight(
               Camera.kMountingHeight, Camera.kMountingAngle, Camera.kShooterOffset);
-    }
 
     enableDrivingMode();
   }
@@ -96,6 +91,8 @@ public class LimelightSubsystem extends SubsystemBase {
     @Override
     public double targetXOffset() {
       switch (Camera.kOrientation) {
+        case kLandscape:
+          return super.targetXOffset();
         case kUpsideDown:
           return -super.targetXOffset();
         case kPortrait:
@@ -108,6 +105,8 @@ public class LimelightSubsystem extends SubsystemBase {
     @Override
     public double targetYOffset() {
       switch (Camera.kOrientation) {
+        case kLandscape:
+          return super.targetYOffset();
         case kUpsideDown:
           return -super.targetYOffset();
         case kPortrait:
