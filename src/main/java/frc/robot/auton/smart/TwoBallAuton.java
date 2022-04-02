@@ -13,7 +13,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
 
   public TwoBallAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {

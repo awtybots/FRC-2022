@@ -3,11 +3,11 @@ package frc.robot.commands.backup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TowerV2Subsystem;
+import frc.robot.subsystems.TowerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class ShootRpmOrSpit extends CommandBase {
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final LimelightSubsystem limelightSubsystem;
@@ -16,7 +16,7 @@ public class ShootRpmOrSpit extends CommandBase {
 
   public ShootRpmOrSpit(
       double rpm,
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       LimelightSubsystem limelightSubsystem) {

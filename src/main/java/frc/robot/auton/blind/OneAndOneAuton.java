@@ -11,7 +11,7 @@ public class OneAndOneAuton extends SequentialCommandGroup {
 
   public OneAndOneAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {

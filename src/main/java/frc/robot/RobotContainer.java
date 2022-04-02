@@ -29,7 +29,7 @@ public class RobotContainer {
   // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
-  private final TowerV2Subsystem towerV2Subsystem = new TowerV2Subsystem();
+  private final TowerSubsystem towerV2Subsystem = new TowerSubsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();

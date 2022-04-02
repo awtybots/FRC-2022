@@ -3,14 +3,14 @@ package frc.robot.commands.testing;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TowerV2Subsystem;
+import frc.robot.subsystems.TowerSubsystem;
 
 public class ShootRpmSD extends CommandBase {
 
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
 
-  public ShootRpmSD(TowerV2Subsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
+  public ShootRpmSD(TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
 

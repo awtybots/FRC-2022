@@ -11,7 +11,7 @@ public class TwoBallRightSide extends SequentialCommandGroup {
 
   public TwoBallRightSide(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {

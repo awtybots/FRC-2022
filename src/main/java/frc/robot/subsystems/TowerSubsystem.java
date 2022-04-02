@@ -17,7 +17,7 @@ import frc.robot.Constants.ColorSensors;
 import frc.robot.Constants.Tower;
 import frc.util.ColorSensor;
 
-public class TowerV2Subsystem extends SubsystemBase {
+public class TowerSubsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
   private boolean firing = false;
@@ -44,7 +44,7 @@ public class TowerV2Subsystem extends SubsystemBase {
   private static final double kShootingSpeedLower = 0.75;
   private static final double kShootingSpeedUpper = 0.75;
 
-  public TowerV2Subsystem() {
+  public TowerSubsystem() {
     upperSensor =
         new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
     lowerSensor =

@@ -6,13 +6,13 @@ import frc.robot.subsystems.*;
 
 public class ShootInterpolatedOrSpit extends CommandBase {
 
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final LimelightSubsystem limelightSubsystem;
 
   public ShootInterpolatedOrSpit(
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       LimelightSubsystem limelightSubsystem) {

@@ -16,7 +16,7 @@ import frc.util.math.Vector2;
  * tower.
  */
 public class MovingShots extends CommandBase {
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final LimelightSubsystem limelightSubsystem;
@@ -25,7 +25,7 @@ public class MovingShots extends CommandBase {
   private final ProjectileMotionSolver projectileMotionSolver;
 
   public MovingShots(
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       DrivetrainSubsystem drivetrainSubsystem,

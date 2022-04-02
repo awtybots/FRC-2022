@@ -1,13 +1,13 @@
 package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TowerV2Subsystem;
+import frc.robot.subsystems.TowerSubsystem;
 
 /** comprehensive intake command */
 public class IntakeAndIngest extends CommandBase {
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
 
-  public IntakeAndIngest(TowerV2Subsystem towerSubsystem) {
+  public IntakeAndIngest(TowerSubsystem towerSubsystem) {
     addRequirements(towerSubsystem);
 
     this.towerSubsystem = towerSubsystem;

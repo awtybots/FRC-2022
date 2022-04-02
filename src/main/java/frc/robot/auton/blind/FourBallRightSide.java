@@ -11,7 +11,7 @@ public class FourBallRightSide extends SequentialCommandGroup {
 
   public FourBallRightSide(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {

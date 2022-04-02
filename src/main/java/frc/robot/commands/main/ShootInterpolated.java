@@ -5,12 +5,12 @@ import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.*;
 
 public class ShootInterpolated extends CommandBase {
-  private final TowerV2Subsystem towerSubsystem;
+  private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final LimelightSubsystem limelightSubsystem;
 
   public ShootInterpolated(
-      TowerV2Subsystem towerSubsystem,
+      TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
