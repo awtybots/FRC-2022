@@ -89,7 +89,6 @@ public class RobotContainer {
             turretSubsystem,
             shooterSubsystem,
             limelightSubsystem));
-
   }
 
   private void configureButtonBindings() {
@@ -112,8 +111,8 @@ public class RobotContainer {
     /// === SHOOTING ===
     operator.buttonA.whenHeld(new ShootRpm(750, towerV2Subsystem, shooterSubsystem));
     operator.buttonB.whenHeld(new ShootRpm(1600, towerV2Subsystem, shooterSubsystem)); // 1480
-    operator.buttonX.whenHeld(new ShootRpm(2000, towerV2Subsystem, shooterSubsystem)); // 1540
-    operator.buttonY.whenHeld(new ShootRpm(2300, towerV2Subsystem, shooterSubsystem)); // 1700
+    operator.buttonX.whenHeld(new ShootRpm(1900, towerV2Subsystem, shooterSubsystem)); // 1540
+    operator.buttonY.whenHeld(new ShootRpm(2150, towerV2Subsystem, shooterSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));

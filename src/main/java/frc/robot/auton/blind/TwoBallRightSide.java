@@ -28,9 +28,7 @@ public class TwoBallRightSide extends SequentialCommandGroup {
                 drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
             .withTimeout(3.0),
-        new AutoAim(turretSubsystem, limelightSubsystem)
-            .withTimeout(2.0),
-        new ShootRpm(1950, towerSubsystem, shooterSubsystem)
-            .withTimeout(3.0));
+        new AutoAim(turretSubsystem, limelightSubsystem).withTimeout(2.0),
+        new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0));
   }
 }
