@@ -13,7 +13,7 @@ public class ColorSensor {
   private final int minimumDistance;
   private final double minColorConfidence;
 
-  private final Color Red, Blue;
+  private final Color redColor, blueColor;
 
   private final ColorSensorV3 sensor;
   private final ColorMatch colorMatch = new ColorMatch();
@@ -21,8 +21,8 @@ public class ColorSensor {
   public ColorSensor(I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
     this.minimumDistance = minDistance;
     this.minColorConfidence = minConfidence;
-    this.Red = red;
-    this.Blue = blue;
+    this.redColor = red;
+    this.blueColor = blue;
 
     colorMatch.addColorMatch(red);
     colorMatch.addColorMatch(blue);
@@ -55,8 +55,8 @@ public class ColorSensor {
     ColorMatchResult match = colorMatch.matchColor(detectedColor);
 
     if (match != null) {
-      if (match.color == Red) return Alliance.Red;
-      if (match.color == Blue) return Alliance.Blue;
+      if (match.color == redColor) return Alliance.Red;
+      if (match.color == blueColor) return Alliance.Blue;
     }
 
     return Alliance.Invalid;

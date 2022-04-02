@@ -9,8 +9,7 @@ public class OneBallHighGoalAuton extends SequentialCommandGroup {
   public OneBallHighGoalAuton(
       DrivetrainSubsystem drivetrainSubsystem,
       TowerV2Subsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      ShooterSubsystem shooterSubsystem) {
     addCommands(
         new FunctionalCommand(
                 () -> {},

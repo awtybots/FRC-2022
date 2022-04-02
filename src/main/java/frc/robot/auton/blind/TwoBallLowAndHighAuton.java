@@ -14,8 +14,7 @@ public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
       TowerV2Subsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
         new ShootRpm(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
         new FunctionalCommand(

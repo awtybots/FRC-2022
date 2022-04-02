@@ -18,8 +18,7 @@ public class FourBallAuton extends SequentialCommandGroup {
       TowerV2Subsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
         new InstantCommand(towerSubsystem::intake, towerSubsystem),
         new FourBall0(drivetrainSubsystem),

@@ -30,13 +30,11 @@ public class RobotContainer {
   // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
-  private final TowerSubsystem towerSubsystem = new TowerSubsystem();
   private final TowerV2Subsystem towerV2Subsystem = new TowerV2Subsystem();
   private final TurretSubsystem turretSubsystem = new TurretSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  private final ColorSensorsSubsystem colorSensorsSubsystem = new ColorSensorsSubsystem();
   public static final LedSubsystem ledSubsystem = new LedSubsystem();
 
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -64,8 +62,7 @@ public class RobotContainer {
             towerV2Subsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
+            limelightSubsystem));
     autonChooser.addOption(
         "2 Ball High Goal",
         new TwoBallHighGoalAuton(
@@ -73,8 +70,7 @@ public class RobotContainer {
             towerV2Subsystem,
             turretSubsystem,
             shooterSubsystem,
-            limelightSubsystem,
-            colorSensorsSubsystem));
+            limelightSubsystem));
     // autonChooser.addOption(
     //     "One Ball Auton",
     //     new OneBallAuton(
@@ -120,7 +116,7 @@ public class RobotContainer {
     operator.buttonBack.whenPressed(new ToggleAutoAim(driveTurretCommand, turretSubsystem, limelightSubsystem));
     operator.buttonStart.whenHeld(
         new ShootInterpolated(
-            towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
+            towerV2Subsystem, shooterSubsystem, limelightSubsystem));
 
     /// === MANUAL ===
     operator.leftBumper.whenHeld(new ReverseTower(towerV2Subsystem));

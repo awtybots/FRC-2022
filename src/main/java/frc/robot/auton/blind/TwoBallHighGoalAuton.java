@@ -14,8 +14,7 @@ public class TwoBallHighGoalAuton extends SequentialCommandGroup {
       TowerV2Subsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
         new FunctionalCommand(
                 () -> {},

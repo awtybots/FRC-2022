@@ -22,27 +22,30 @@ public class TowerV2Subsystem extends SubsystemBase {
   private State m_state = State.Idle;
   private boolean firing = false;
 
-  private Alliance ourAlliance = Alliance.Invalid;
   private final Color kRed = new Color(0.41, 0.41, 0.18);
   private final Color kBlue = new Color(0.17, 0.41, 0.43);
+  private final int kMinDistance = 250;
+  private final double kMinConfidence = 0.90;
+
+  private Alliance ourAlliance = Alliance.Invalid;
   private final ColorSensor lowerSensor, upperSensor;
 
   private final WPI_TalonSRX upperMotor;
   private final WPI_TalonFX lowerMotor;
   private final DoubleSolenoid pistons;
 
-  private static final double kLoadingSpeedLower = 0.4;
+  private static final double kLoadingSpeedLower = 0.6;
   private static final double kLoadingSpeedUpper = 0.3;
 
   private static final double kReversingSpeedLower = 0.5;
   private static final double kReversingSpeedUpper = 0.4;
 
-  private static final double kShootingSpeedLower = 0.3;
+  private static final double kShootingSpeedLower = 0.7;
   private static final double kShootingSpeedUpper = 0.75;
 
   public TowerV2Subsystem() {
-    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, 250, 0.90);
-    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, 250, 0.90);
+    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinDistance, kMinConfidence);
+    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, kMinDistance, kMinConfidence);
 
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);
