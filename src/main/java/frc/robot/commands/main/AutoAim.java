@@ -17,18 +17,18 @@ public class AutoAim extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   @Override
   public void execute() {
     turretSubsystem.trackTarget(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
   }
 
   @Override
   public void end(boolean interrupted) {
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

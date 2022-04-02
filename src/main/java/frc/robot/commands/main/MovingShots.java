@@ -52,7 +52,7 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
@@ -69,7 +69,7 @@ public class MovingShots extends CommandBase {
       return;
     }
 
-    double visionTargetXOffset = limelightSubsystem.cameraTargetAngleDelta();
+    double visionTargetXOffset = limelightSubsystem.angleToTarget();
     double robotSpeed = drivetrainSubsystem.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getCurrentAngle();
     Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
@@ -79,8 +79,8 @@ public class MovingShots extends CommandBase {
             new Vector2(
                 goalDisplacement,
                 Field.kGoalHeight
-                    - Constants.Limelight.kMountingHeight
-                    - Constants.Limelight.kShooterOffset.y),
+                    - Constants.Camera.kMountingHeight
+                    - Constants.Camera.kShooterOffset.y),
             robotVelocity);
 
     if (launchVelocityData == null) {
@@ -104,8 +104,7 @@ public class MovingShots extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
   }
 
   @Override
@@ -142,6 +141,6 @@ public class MovingShots extends CommandBase {
     towerSubsystem.stop();
     shooterSubsystem.stop();
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }

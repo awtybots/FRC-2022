@@ -33,20 +33,19 @@ public class ShootRpmOrSpit extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.shootingMode();
+    limelightSubsystem.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
     turretSubsystem.trackTarget(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
 
     if (idling) shooterSubsystem.stop();
     else shooterSubsystem.shootRpm(this.rpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.cameraTargetAngleDelta());
+    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
     shooterSubsystem.spit();
   }
 
@@ -84,6 +83,6 @@ public class ShootRpmOrSpit extends CommandBase {
     shooterSubsystem.stop();
     towerSubsystem.stop();
     turretSubsystem.idle();
-    limelightSubsystem.drivingMode();
+    limelightSubsystem.enableDrivingMode();
   }
 }
