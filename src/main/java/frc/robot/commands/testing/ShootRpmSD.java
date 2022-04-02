@@ -10,9 +10,7 @@ public class ShootRpmSD extends CommandBase {
   private final TowerV2Subsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
 
-  public ShootRpmSD(
-      TowerV2Subsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem) {
+  public ShootRpmSD(TowerV2Subsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
 

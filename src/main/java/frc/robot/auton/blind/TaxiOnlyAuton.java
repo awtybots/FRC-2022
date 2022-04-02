@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class TaxiOffTarmacAuton extends SequentialCommandGroup {
-  public TaxiOffTarmacAuton(DrivetrainSubsystem drivetrainSubsystem) {
+public class TaxiOnlyAuton extends SequentialCommandGroup {
+  public TaxiOnlyAuton(DrivetrainSubsystem drivetrainSubsystem) {
     addCommands(
         new FunctionalCommand(
                 () -> {},

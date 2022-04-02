@@ -24,7 +24,8 @@ public class TowerV2Subsystem extends SubsystemBase {
 
   private final Color kRed = new Color(0.41, 0.41, 0.18);
   private final Color kBlue = new Color(0.17, 0.41, 0.43);
-  private final int kMinDistance = 250;
+  private final int kMinProximityL = 250;
+  private final int kMinProximityU = 250;
   private final double kMinConfidence = 0.90;
 
   private Alliance ourAlliance = Alliance.Invalid;
@@ -34,18 +35,20 @@ public class TowerV2Subsystem extends SubsystemBase {
   private final WPI_TalonFX lowerMotor;
   private final DoubleSolenoid pistons;
 
-  private static final double kLoadingSpeedLower = 0.6;
+  private static final double kLoadingSpeedLower = 0.5;
   private static final double kLoadingSpeedUpper = 0.3;
 
   private static final double kReversingSpeedLower = 0.5;
   private static final double kReversingSpeedUpper = 0.4;
 
-  private static final double kShootingSpeedLower = 0.7;
+  private static final double kShootingSpeedLower = 0.75;
   private static final double kShootingSpeedUpper = 0.75;
 
   public TowerV2Subsystem() {
-    upperSensor = new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinDistance, kMinConfidence);
-    lowerSensor = new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, kMinDistance, kMinConfidence);
+    upperSensor =
+        new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
+    lowerSensor =
+        new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, kMinProximityL, kMinConfidence);
 
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);
@@ -64,7 +67,7 @@ public class TowerV2Subsystem extends SubsystemBase {
     lowerMotor.configFactoryDefault();
 
     upperMotor.setInverted(false);
-    lowerMotor.setInverted(false);
+    lowerMotor.setInverted(true);
 
     upperMotor.configVoltageCompSaturation(12.0);
     lowerMotor.configVoltageCompSaturation(12.0);
@@ -91,7 +94,7 @@ public class TowerV2Subsystem extends SubsystemBase {
           if (!upperPresent) feedBoth();
           if (upperPresent) feedUpper();
           break;
-        }
+        } // else, do not break and load
 
       case Loading:
         if (!upperPresent) loadBoth();

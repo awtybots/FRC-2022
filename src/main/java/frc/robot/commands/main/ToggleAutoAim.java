@@ -7,14 +7,17 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class ToggleAutoAim extends InstantCommand {
 
-  public ToggleAutoAim(DriveTurret driveTurretCommand, TurretSubsystem turretSubsystem, LimelightSubsystem limelightSubsystem) {
-    super(() -> {
-      if(turretSubsystem.getDefaultCommand() instanceof AutoAim) {
-        turretSubsystem.setDefaultCommand(driveTurretCommand);
-      } else {
-        turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
-      }
-    });
+  public ToggleAutoAim(
+      DriveTurret driveTurretCommand,
+      TurretSubsystem turretSubsystem,
+      LimelightSubsystem limelightSubsystem) {
+    super(
+        () -> {
+          if (turretSubsystem.getDefaultCommand() instanceof AutoAim) {
+            turretSubsystem.setDefaultCommand(driveTurretCommand);
+          } else {
+            turretSubsystem.setDefaultCommand(new AutoAim(turretSubsystem, limelightSubsystem));
+          }
+        });
   }
-
 }

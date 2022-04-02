@@ -23,8 +23,8 @@ public final class Constants {
     public static final int kUpperMotorCanId = 7;
     public static final int kLowerMotorCanId = 14;
 
-    public static final int kSolenoidUp = 15;
-    public static final int kSolenoidDown = 0;
+    public static final int kSolenoidUp = 0;
+    public static final int kSolenoidDown = 15;
   }
 
   public static final class Turret {
