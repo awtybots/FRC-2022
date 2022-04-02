@@ -9,20 +9,17 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   private final TowerSubsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
 
   public ShootInterpolatedOrSpit(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
 
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
 
     addRequirements(
@@ -66,30 +63,31 @@ public class ShootInterpolatedOrSpit extends CommandBase {
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot();
-      } else {
-        executeSpit();
-      }
+    // TODO port
+    // if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
+    //     executeShoot();
+    //   } else {
+    //     executeSpit();
+    //   }
 
-      if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if (colorSensorsSubsystem.isUpperBallPresent()) {
-          towerSubsystem.feedFromUpper();
-        } else {
-          towerSubsystem.feedFromLower();
-        }
-      } else {
-        towerSubsystem.stopUpper();
+    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
+    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //       towerSubsystem.feedFromUpper();
+    //     } else {
+    //       towerSubsystem.feedFromLower();
+    //     }
+    //   } else {
+    //     towerSubsystem.stopUpper();
 
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
-          towerSubsystem.stop();
-        }
-      }
-    } else {
-      executeShoot();
-      towerSubsystem.intake();
-    }
+    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
+    //       towerSubsystem.stop();
+    //     }
+    //   }
+    // } else {
+    //   executeShoot();
+    //   towerSubsystem.intake();
+    // }
   }
 
   @Override

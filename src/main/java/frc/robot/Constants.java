@@ -21,9 +21,10 @@ public final class Constants {
 
   public static final class Tower {
     public static final int kUpperMotorCanId = 7;
-    public static final int kLowerMotorCanId = 5;
+    public static final int kLowerMotorCanId = 14;
 
-    public static final int kLowerMotorChannel = 16;
+    public static final int kSolenoidUp = 0;
+    public static final int kSolenoidDown = 15;
   }
 
   public static final class Turret {
@@ -41,13 +42,6 @@ public final class Constants {
       shotMap.addShot(5.80, 2000);
       shotMap.addShot(6.37, 2200);
     }
-  }
-
-  public static final class Intake {
-    public static final int kMotorCanId = 8;
-
-    public static final int kSolenoidUp = 15;
-    public static final int kSolenoidDown = 0;
   }
 
   public static final class Climber {

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
 
 public class LedSubsystem extends SubsystemBase {
 
@@ -44,7 +43,7 @@ public class LedSubsystem extends SubsystemBase {
   }
 
   private void toggle(boolean on) {
-    RobotContainer.pdh.setSwitchableChannel(on);
+    // RobotContainer.pdh.setSwitchableChannel(on);
   }
 
   // PUBLIC

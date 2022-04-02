@@ -176,7 +176,7 @@ public class TurretSubsystem extends SubsystemBase {
       if (hasTarget) {
         turnToPrivate(boundedGoalAngle);
       } else {
-        if (mCurrentAngle > kAngleHalf) {
+        if (mCurrentAngle > kAngleHalf && false) { // ! TODO fix bandaid
           mState = State.kSeekingRight;
           turnToPrivate(kAngleMax);
         } else {

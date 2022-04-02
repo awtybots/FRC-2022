@@ -10,44 +10,28 @@ import frc.robot.subsystems.*;
 
 // TODO implement
 public class FourBallAuton extends SequentialCommandGroup {
-  // private final DrivetrainSubsystem drivetrainSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
-  // private final TowerSubsystem towerSubsystem;
-  private final TurretSubsystem turretSubsystem;
-  // private final ShooterSubsystem shooterSubsystem;
-  // private final LimelightSubsystem limelightSubsystem;
 
   private final AutoAim autoAimCommand;
 
   public FourBallAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
-        new InstantCommand(intakeSubsystem::start, intakeSubsystem),
+        new InstantCommand(towerSubsystem::intake, towerSubsystem),
         new FourBall0(drivetrainSubsystem),
-        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(3.0),
+        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem).withTimeout(3.0),
+        new InstantCommand(towerSubsystem::intake, towerSubsystem),
         new FourBall1(drivetrainSubsystem),
-        new ShootRpm(4000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(4000.0, towerSubsystem, shooterSubsystem));
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
-
-    // this.drivetrainSubsystem = drivetrainSubsystem;
-    this.intakeSubsystem = intakeSubsystem;
-    // this.towerSubsystem = towerSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    // this.shooterSubsystem = shooterSubsystem;
-    // this.limelightSubsystem = limelightSubsystem;
   }
 
   @Override
   public void initialize() {
-    turretSubsystem.resetEncoderPosition(180.0);
     autoAimCommand.schedule();
 
     super.initialize();
@@ -57,7 +41,6 @@ public class FourBallAuton extends SequentialCommandGroup {
   public void cancel() {
     super.cancel();
 
-    intakeSubsystem.stop();
     autoAimCommand.cancel();
   }
 }

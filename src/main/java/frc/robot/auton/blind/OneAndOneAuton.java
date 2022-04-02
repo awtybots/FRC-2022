@@ -6,21 +6,21 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
 
-// this is good
-public class TwoBallHighGoalAuton extends SequentialCommandGroup {
+// this is good and cool and tested :) 6pt gaurunteed
+public class OneAndOneAuton extends SequentialCommandGroup {
 
-  public TwoBallHighGoalAuton(
+  public OneAndOneAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      IntakeSubsystem intakeSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
+        new ShootRpm(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
                 () -> {
+                  System.out.println("2ball starting");
                   drivetrainSubsystem.driveVolts(3.0, 3.0);
                 },
                 interrupted -> {
@@ -29,10 +29,7 @@ public class TwoBallHighGoalAuton extends SequentialCommandGroup {
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0)
-            .alongWith(
-                new IntakeAndIngest(intakeSubsystem, towerSubsystem, colorSensorsSubsystem)
-                    .withTimeout(3.0)),
-        new ShootRpm(1850, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(5.0));
+            .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(3.0)),
+        new ShootRpm(2000, towerSubsystem, shooterSubsystem).withTimeout(5.0));
   }
 }
