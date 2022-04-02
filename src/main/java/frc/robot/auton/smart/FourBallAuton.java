@@ -15,19 +15,17 @@ public class FourBallAuton extends SequentialCommandGroup {
 
   public FourBallAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
+      TowerV2Subsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
         new InstantCommand(towerSubsystem::intake, towerSubsystem),
         new FourBall0(drivetrainSubsystem),
-        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(3.0),
+        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem).withTimeout(3.0),
         new InstantCommand(towerSubsystem::intake, towerSubsystem),
         new FourBall1(drivetrainSubsystem),
-        new ShootRpm(4000.0, towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+        new ShootRpm(4000.0, towerSubsystem, shooterSubsystem));
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
   }

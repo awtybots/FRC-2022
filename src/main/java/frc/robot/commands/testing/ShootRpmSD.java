@@ -2,23 +2,17 @@ package frc.robot.commands.testing;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ColorSensorsSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.TowerSubsystem;
+import frc.robot.subsystems.TowerV2Subsystem;
 
 public class ShootRpmSD extends CommandBase {
 
-  private final TowerSubsystem towerSubsystem;
+  private final TowerV2Subsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
 
-  public ShootRpmSD(
-      TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+  public ShootRpmSD(TowerV2Subsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
 
@@ -32,15 +26,7 @@ public class ShootRpmSD extends CommandBase {
 
   @Override
   public void execute() {
-    if (shooterSubsystem.isAtTarget()) {
-      if (colorSensorsSubsystem.isUpperBallPresent()) {
-        towerSubsystem.feedFromUpper();
-      } else {
-        towerSubsystem.feedFromLower();
-      }
-    } else {
-      towerSubsystem.stop();
-    }
+    towerSubsystem.feed(shooterSubsystem.isAtTarget());
   }
 
   @Override

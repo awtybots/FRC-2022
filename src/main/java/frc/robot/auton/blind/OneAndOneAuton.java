@@ -7,17 +7,16 @@ import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
 
 // this is good and cool and tested :) 6pt gaurunteed
-public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
+public class OneAndOneAuton extends SequentialCommandGroup {
 
-  public TwoBallLowAndHighAuton(
+  public OneAndOneAuton(
       DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
+      TowerV2Subsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
       ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem) {
+      LimelightSubsystem limelightSubsystem) {
     addCommands(
-        new ShootRpm(1000, towerSubsystem, shooterSubsystem, colorSensorsSubsystem).withTimeout(4),
+        new ShootRpm(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
                 () -> {
@@ -30,8 +29,7 @@ public class TwoBallLowAndHighAuton extends SequentialCommandGroup {
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0)
-            .alongWith(new IntakeAndIngest(towerSubsystem, colorSensorsSubsystem).withTimeout(3.0)),
-        new ShootRpm(2000, towerSubsystem, shooterSubsystem, colorSensorsSubsystem)
-            .withTimeout(5.0));
+            .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(3.0)),
+        new ShootRpm(2000, towerSubsystem, shooterSubsystem).withTimeout(5.0));
   }
 }

@@ -16,27 +16,24 @@ import frc.util.math.Vector2;
  * tower.
  */
 public class MovingShots extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
+  private final TowerV2Subsystem towerSubsystem;
   private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
-  private final ColorSensorsSubsystem colorSensorsSubsystem;
   private final LimelightSubsystem limelightSubsystem;
   private final DrivetrainSubsystem drivetrainSubsystem;
 
   private final ProjectileMotionSolver projectileMotionSolver;
 
   public MovingShots(
-      TowerSubsystem towerSubsystem,
+      TowerV2Subsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
       DrivetrainSubsystem drivetrainSubsystem,
-      ColorSensorsSubsystem colorSensorsSubsystem,
       LimelightSubsystem limelightSubsystem) {
     this.towerSubsystem = towerSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
     this.drivetrainSubsystem = drivetrainSubsystem;
-    this.colorSensorsSubsystem = colorSensorsSubsystem;
     this.limelightSubsystem = limelightSubsystem;
 
     addRequirements(
@@ -113,30 +110,31 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void execute() {
-    if (colorSensorsSubsystem.isUpperBallPresent()) {
-      if (colorSensorsSubsystem.isUpperBallOurs()) {
-        executeShoot(false);
-      } else {
-        executeSpit();
-      }
+    // TODO port
+    // if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
+    //     executeShoot(false);
+    //   } else {
+    //     executeSpit();
+    //   }
 
-      if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-        if (colorSensorsSubsystem.isUpperBallPresent()) {
-          towerSubsystem.feedFromUpper();
-        } else {
-          towerSubsystem.feedFromLower();
-        }
-      } else {
-        towerSubsystem.stopUpper();
+    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
+    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
+    //       towerSubsystem.feedFromUpper();
+    //     } else {
+    //       towerSubsystem.feedFromLower();
+    //     }
+    //   } else {
+    //     towerSubsystem.stopUpper();
 
-        if (colorSensorsSubsystem.isLowerBallPresent()) {
-          towerSubsystem.stop();
-        }
-      }
-    } else {
-      executeShoot(true);
-      towerSubsystem.intake();
-    }
+    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
+    //       towerSubsystem.stop();
+    //     }
+    //   }
+    // } else {
+    //   executeShoot(true);
+    //   towerSubsystem.intake();
+    // }
   }
 
   @Override
