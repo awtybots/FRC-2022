@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,8 +45,13 @@ public class RobotContainer {
   public RobotContainer() {
     addAutonomousChoices();
     SmartDashboard.putData(autonChooser);
-    CameraServer.startAutomaticCapture();
     configureButtonBindings();
+    miscellaneousStartup();
+  }
+
+  private void miscellaneousStartup() {
+    LiveWindow.disableAllTelemetry();
+    CameraServer.startAutomaticCapture();
   }
 
   private void addAutonomousChoices() {
