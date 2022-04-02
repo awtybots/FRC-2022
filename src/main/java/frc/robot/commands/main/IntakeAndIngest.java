@@ -19,7 +19,12 @@ public class IntakeAndIngest extends CommandBase {
   }
 
   @Override
+  public boolean isFinished() {
+    return towerSubsystem.isFull();
+  }
+
+  @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stowIntake();
+    towerSubsystem.stopIntaking();
   }
 }

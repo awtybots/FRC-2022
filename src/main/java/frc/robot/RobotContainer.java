@@ -110,7 +110,8 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
+    DriveTurret driveTurretCommand = new DriveTurret(operator, turretSubsystem);
+    operator.buttonBack.whenPressed(new ToggleAutoAim(driveTurretCommand, turretSubsystem, limelightSubsystem));
     operator.buttonStart.whenHeld(
         new ShootInterpolated(
             towerSubsystem, shooterSubsystem, limelightSubsystem, colorSensorsSubsystem));
@@ -126,7 +127,7 @@ public class RobotContainer {
     operator.buttonY.whenHeld(new ShootRpm(2300, towerV2Subsystem, shooterSubsystem)); // 1700
 
     /// === TURRET ===
-    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
+    turretSubsystem.setDefaultCommand(driveTurretCommand);
     operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, turretSubsystem));
     operator.dPadUp.whenHeld(new TurnTurretTo(0.0, turretSubsystem));
     operator.dPadRight.whenHeld(new TurnTurretTo(90.0, turretSubsystem));
@@ -144,5 +145,9 @@ public class RobotContainer {
 
   public void turnOffLimelightLEDs() {
     limelightSubsystem.drivingMode();
+  }
+
+  public void updateAlliance() {
+    towerV2Subsystem.updateAlliance();
   }
 }

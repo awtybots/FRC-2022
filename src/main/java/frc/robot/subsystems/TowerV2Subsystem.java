@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +21,6 @@ public class TowerV2Subsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
   private boolean firing = false;
-  private boolean shooterHasControl = false;
 
   private Alliance ourAlliance = Alliance.Invalid;
   private final Color kRed = new Color(0.41, 0.41, 0.18);
@@ -70,23 +70,6 @@ public class TowerV2Subsystem extends SubsystemBase {
     lowerMotor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void deployIntake() {
-    pistons.set(Value.kForward);
-  }
-
-  public void intake() {
-    load();
-    deployIntake();
-  }
-
-  public void stowIntake() {
-    retractIntake();
-  }
-
-  public void retractIntake() {
-    pistons.set(Value.kReverse);
-  }
-
   public enum State {
     Reversing,
     Idle,
@@ -101,10 +84,10 @@ public class TowerV2Subsystem extends SubsystemBase {
 
     switch (m_state) {
       case Feeding:
-        if (!firing) load();
-        else {
+        if (firing) {
           if (!upperPresent) feedBoth();
           if (upperPresent) feedUpper();
+          break;
         }
 
       case Loading:
@@ -115,8 +98,11 @@ public class TowerV2Subsystem extends SubsystemBase {
 
       case Reversing:
         reverseBoth();
+        break;
+
       case Idle:
         stopBoth();
+        break;
     }
 
     SmartDashboard.putBoolean("Upper Ball Present", upperPresent);
@@ -132,17 +118,6 @@ public class TowerV2Subsystem extends SubsystemBase {
   }
 
   /// -------- State Machine API -------- ///
-  public boolean available() {
-    return !shooterHasControl;
-  }
-
-  public void lock() {
-    shooterHasControl = true;
-  }
-
-  public void unlock() {
-    shooterHasControl = false;
-  }
 
   public void stop() {
     m_state = State.Idle;
@@ -153,6 +128,7 @@ public class TowerV2Subsystem extends SubsystemBase {
   }
 
   public void load() {
+    if (m_state == State.Feeding) return;
     m_state = State.Loading;
   }
 
@@ -162,7 +138,30 @@ public class TowerV2Subsystem extends SubsystemBase {
     firing = ready;
   }
 
-  /// -------- Motor Control -------- ///
+  public void intake() {
+    load();
+    deployIntake();
+  }
+
+  public void stopIntaking() {
+    stop();
+    retractIntake();
+  }
+
+  public boolean isFull() {
+    return upperBallPresent() && lowerBallPresent();
+  }
+
+  /// -------- Actuator Control -------- ///
+
+  public void deployIntake() {
+    pistons.set(Value.kForward);
+  }
+
+  public void retractIntake() {
+    pistons.set(Value.kReverse);
+  }
+
   private void reverseBoth() {
     lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
     upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
@@ -209,7 +208,7 @@ public class TowerV2Subsystem extends SubsystemBase {
     return lowerSensor.ballPresent();
   }
 
-  public void setAlliance(Alliance ours) {
-    this.ourAlliance = ours;
+  public void updateAlliance() {
+    this.ourAlliance = DriverStation.getAlliance();
   }
 }
