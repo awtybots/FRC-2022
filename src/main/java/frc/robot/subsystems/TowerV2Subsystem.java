@@ -95,6 +95,7 @@ public class TowerV2Subsystem extends SubsystemBase {
         if (!upperPresent) loadBoth();
         if (upperPresent && !lowerPresent) loadLower();
         if (upperPresent && lowerPresent) stop();
+        break;
 
       case Reversing:
         reverseBoth();
