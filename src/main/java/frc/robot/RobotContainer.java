@@ -6,11 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
 import frc.robot.commands.backup.*;
 import frc.robot.commands.main.*;
+import frc.robot.commands.testing.*;
 import frc.robot.subsystems.*;
 import frc.util.AutonManager;
 import frc.util.Controller;
@@ -109,7 +111,8 @@ public class RobotContainer {
     climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
 
     /// === SHOOTING ===
-    operator.rightTrigger.whenHeld(new FeedShooter(towerSubsystem, shooterSubsystem));
+    operator.rightTrigger.whenHeld(
+        new FeedShooter(towerSubsystem, shooterSubsystem, turretSubsystem));
     operator.buttonA.whenHeld(new SpinupRpm(750, shooterSubsystem));
     operator.buttonB.whenHeld(new SpinupRpm(1600, shooterSubsystem)); // 1480
     operator.buttonX.whenHeld(new SpinupRpm(1900, shooterSubsystem)); // 1540
@@ -127,9 +130,10 @@ public class RobotContainer {
     operator.dPadDown.whenHeld(new TurnTurretTo(180.0, turretSubsystem));
 
     /// === PROGRAMMER TUNING ===
-    // operator.buttonA.whenHeld(new ShootPercent(0.5, shooterSubsystem));
-    // operator.buttonA.whenHeld(
-    //     new ShootRpmSD(towerSubsystem, shooterSubsystem, colorSensorsSubsystem));
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putNumber("SH - set rpm", 0);
+      operator.leftTrigger.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
+    }
   }
 
   public Command getAutonomousCommand() {

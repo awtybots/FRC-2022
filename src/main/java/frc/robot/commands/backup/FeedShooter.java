@@ -4,24 +4,18 @@
 
 package frc.robot.commands.backup;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
 
-public class FeedShooter extends CommandBase {
+public class FeedShooter extends RunCommand {
 
   private final TowerSubsystem tower;
-  private final ShooterSubsystem shooter;
 
-  public FeedShooter(TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
-    this.tower = towerSubsystem;
-    this.shooter = shooterSubsystem;
-    addRequirements(towerSubsystem);
-  }
-
-  @Override
-  public void execute() {
-    tower.feed(shooter.isAtTarget());
+  public FeedShooter(TowerSubsystem tower, ShooterSubsystem shooter, TurretSubsystem turret) {
+    super(() -> tower.feed(turret.isAtTarget() && shooter.isAtTarget()), tower);
+    this.tower = tower;
   }
 
   @Override

@@ -20,9 +20,6 @@ public class DriveClimber extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
-
-  @Override
   public void execute() {
     double rate = controller.getRightTrigger() - controller.getLeftTrigger();
     climber.drive(rate);
@@ -31,10 +28,5 @@ public class DriveClimber extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     climber.stop();
-  }
-
-  @Override
-  public boolean isFinished() {
-    return false;
   }
 }

@@ -245,7 +245,8 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return Math.abs(mCurrentAngle - mTargetAngle) < kMaxAcceptableAngleError;
+    return mState == State.kManualOverride
+        || Math.abs(mCurrentAngle - mTargetAngle) < kMaxAcceptableAngleError;
   }
 
   /** public accessor method */
