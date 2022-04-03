@@ -5,27 +5,27 @@ import frc.robot.subsystems.TurretSubsystem;
 
 public class TurnTurretTo extends CommandBase {
 
-  private final TurretSubsystem turretSubsystem;
+  private final TurretSubsystem turret;
   private final double angle;
 
   public TurnTurretTo(double angle, TurretSubsystem turretSubsystem) {
     addRequirements(turretSubsystem);
-    this.turretSubsystem = turretSubsystem;
+    this.turret = turretSubsystem;
     this.angle = angle;
   }
 
   @Override
   public void initialize() {
-    turretSubsystem.turnTo(angle);
+    turret.turnTo(angle);
   }
 
   @Override
   public boolean isFinished() {
-    return turretSubsystem.isAtTarget();
+    return turret.isAtTarget();
   }
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.idle();
+    turret.idle();
   }
 }

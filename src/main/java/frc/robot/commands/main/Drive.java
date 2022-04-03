@@ -11,12 +11,12 @@ import frc.util.math.Vector2;
 
 public class Drive extends CommandBase {
 
-  private final DrivetrainSubsystem drivetrainSubsystem;
+  private final DrivetrainSubsystem drivetrain;
   private final Controller controller;
 
   public Drive(Controller controller, DrivetrainSubsystem drive) {
     addRequirements(drive);
-    this.drivetrainSubsystem = drive;
+    this.drivetrain = drive;
     this.controller = controller;
   }
 
@@ -47,7 +47,7 @@ public class Drive extends CommandBase {
   @Override
   public void execute() {
     Vector2 processedDriveInput = gtaDrive();
-    drivetrainSubsystem.drive(processedDriveInput.x, processedDriveInput.y);
+    drivetrain.drive(processedDriveInput.x, processedDriveInput.y);
   }
 
   @Override

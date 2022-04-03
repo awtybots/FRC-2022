@@ -5,26 +5,26 @@ import frc.robot.subsystems.TowerSubsystem;
 
 /** comprehensive intake command */
 public class IntakeAndIngest extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
+  private final TowerSubsystem tower;
 
   public IntakeAndIngest(TowerSubsystem towerSubsystem) {
     addRequirements(towerSubsystem);
 
-    this.towerSubsystem = towerSubsystem;
+    this.tower = towerSubsystem;
   }
 
   @Override
   public void initialize() {
-    towerSubsystem.intake();
+    tower.intake();
   }
 
   @Override
   public boolean isFinished() {
-    return towerSubsystem.isFull();
+    return tower.isFull();
   }
 
   @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stopIntaking();
+    tower.stopIntaking();
   }
 }

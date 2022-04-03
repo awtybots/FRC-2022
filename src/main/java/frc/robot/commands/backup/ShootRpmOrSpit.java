@@ -7,10 +7,10 @@ import frc.robot.subsystems.TowerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class ShootRpmOrSpit extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
-  private final TurretSubsystem turretSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
+  private final TowerSubsystem tower;
+  private final ShooterSubsystem shooter;
+  private final TurretSubsystem turret;
+  private final LimelightSubsystem limelight;
 
   private final double rpm;
 
@@ -21,10 +21,10 @@ public class ShootRpmOrSpit extends CommandBase {
       TurretSubsystem turretSubsystem,
       LimelightSubsystem limelightSubsystem) {
 
-    this.towerSubsystem = towerSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    this.limelightSubsystem = limelightSubsystem;
+    this.tower = towerSubsystem;
+    this.shooter = shooterSubsystem;
+    this.turret = turretSubsystem;
+    this.limelight = limelightSubsystem;
 
     this.rpm = rpm;
 
@@ -33,20 +33,19 @@ public class ShootRpmOrSpit extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.enableShootingMode();
+    limelight.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
-    turretSubsystem.trackTarget(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
+    turret.trackTarget(limelight.hasVisibleTarget(), limelight.angleToTarget());
 
-    if (idling) shooterSubsystem.stop();
-    else shooterSubsystem.shootRpm(this.rpm);
+    if (idling) shooter.stop();
+    else shooter.shootRpm(this.rpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
-    shooterSubsystem.spit();
+    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
+    shooter.spit();
   }
 
   @Override
@@ -80,9 +79,9 @@ public class ShootRpmOrSpit extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.stop();
-    towerSubsystem.stop();
-    turretSubsystem.idle();
-    limelightSubsystem.enableDrivingMode();
+    shooter.stop();
+    tower.stop();
+    turret.idle();
+    limelight.enableDrivingMode();
   }
 }

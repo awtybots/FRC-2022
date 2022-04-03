@@ -10,12 +10,12 @@ import frc.util.Controller;
 
 public class DriveClimber extends CommandBase {
 
-  private final ClimbSubsystem climbSubsystem;
+  private final ClimbSubsystem climber;
   private final Controller controller;
 
   public DriveClimber(Controller controller, ClimbSubsystem climbSubsystem) {
     addRequirements(climbSubsystem);
-    this.climbSubsystem = climbSubsystem;
+    this.climber = climbSubsystem;
     this.controller = controller;
   }
 
@@ -25,12 +25,12 @@ public class DriveClimber extends CommandBase {
   @Override
   public void execute() {
     double rate = controller.getRightTrigger() - controller.getLeftTrigger();
-    climbSubsystem.drive(rate);
+    climber.drive(rate);
   }
 
   @Override
   public void end(boolean interrupted) {
-    climbSubsystem.stop();
+    climber.stop();
   }
 
   @Override

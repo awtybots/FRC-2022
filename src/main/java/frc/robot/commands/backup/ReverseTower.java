@@ -5,7 +5,7 @@ import frc.robot.subsystems.TowerSubsystem;
 
 public class ReverseTower extends StartEndCommand {
 
-  public ReverseTower(TowerSubsystem towerSubsystem) {
-    super(towerSubsystem::reverse, towerSubsystem::stop, towerSubsystem);
+  public ReverseTower(TowerSubsystem tower) {
+    super(tower::reverse, tower::stop, tower);
   }
 }

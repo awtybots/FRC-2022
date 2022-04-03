@@ -5,49 +5,49 @@ import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.*;
 
 public class ShootInterpolated extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
+  private final TowerSubsystem tower;
+  private final ShooterSubsystem shooter;
+  private final LimelightSubsystem limelight;
 
   public ShootInterpolated(
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {
-    this.towerSubsystem = towerSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
-    this.limelightSubsystem = limelightSubsystem;
+    this.tower = towerSubsystem;
+    this.shooter = shooterSubsystem;
+    this.limelight = limelightSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
   }
 
   @Override
   public void initialize() {
-    limelightSubsystem.enableShootingMode();
+    limelight.enableShootingMode();
   }
 
   @Override
   public void execute() {
-    if (!limelightSubsystem.hasVisibleTarget()) {
-      shooterSubsystem.stop();
+    if (!limelight.hasVisibleTarget()) {
+      shooter.stop();
       return;
     }
 
-    double goalDistance = limelightSubsystem.distToTarget();
+    double goalDistance = limelight.distToTarget();
     if (goalDistance == -1) {
-      shooterSubsystem.stop();
+      shooter.stop();
       return;
     }
 
     double launchRpm = Shooter.shotMap.calculateShot(goalDistance);
-    shooterSubsystem.shootRpm(launchRpm);
+    shooter.shootRpm(launchRpm);
 
-    towerSubsystem.feed(shooterSubsystem.isAtTarget());
+    tower.feed(shooter.isAtTarget());
   }
 
   @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stop();
-    shooterSubsystem.stop();
-    limelightSubsystem.enableDrivingMode();
+    tower.stop();
+    shooter.stop();
+    limelight.enableDrivingMode();
   }
 }

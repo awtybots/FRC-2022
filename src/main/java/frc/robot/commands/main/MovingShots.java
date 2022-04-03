@@ -16,11 +16,11 @@ import frc.util.math.Vector2;
  * tower.
  */
 public class MovingShots extends CommandBase {
-  private final TowerSubsystem towerSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
-  private final TurretSubsystem turretSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
-  private final DrivetrainSubsystem drivetrainSubsystem;
+  private final TowerSubsystem tower;
+  private final ShooterSubsystem shooter;
+  private final TurretSubsystem turret;
+  private final LimelightSubsystem limelight;
+  private final DrivetrainSubsystem drivetrain;
 
   private final ProjectileMotionSolver projectileMotionSolver;
 
@@ -30,11 +30,11 @@ public class MovingShots extends CommandBase {
       TurretSubsystem turretSubsystem,
       DrivetrainSubsystem drivetrainSubsystem,
       LimelightSubsystem limelightSubsystem) {
-    this.towerSubsystem = towerSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    this.drivetrainSubsystem = drivetrainSubsystem;
-    this.limelightSubsystem = limelightSubsystem;
+    this.tower = towerSubsystem;
+    this.shooter = shooterSubsystem;
+    this.turret = turretSubsystem;
+    this.drivetrain = drivetrainSubsystem;
+    this.limelight = limelightSubsystem;
 
     addRequirements(
         towerSubsystem,
@@ -52,26 +52,26 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.enableShootingMode();
+    limelight.enableShootingMode();
   }
 
   private void executeShoot(boolean idling) {
-    if (!limelightSubsystem.hasVisibleTarget()) {
-      turretSubsystem.trackTarget(false);
-      shooterSubsystem.stop();
+    if (!limelight.hasVisibleTarget()) {
+      turret.trackTarget(false);
+      shooter.stop();
       return;
     }
 
-    double goalDisplacement = limelightSubsystem.distToTarget();
+    double goalDisplacement = limelight.distToTarget();
     if (goalDisplacement == -1) {
-      turretSubsystem.trackTarget(false);
-      shooterSubsystem.stop();
+      turret.trackTarget(false);
+      shooter.stop();
       return;
     }
 
-    double visionTargetXOffset = limelightSubsystem.angleToTarget();
-    double robotSpeed = drivetrainSubsystem.getSpeed();
-    double driveToGoalAngle = visionTargetXOffset + turretSubsystem.getCurrentAngle();
+    double visionTargetXOffset = limelight.angleToTarget();
+    double robotSpeed = drivetrain.getSpeed();
+    double driveToGoalAngle = visionTargetXOffset + turret.getCurrentAngle();
     Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
 
     Vector2 launchVelocityData =
@@ -84,7 +84,7 @@ public class MovingShots extends CommandBase {
             robotVelocity);
 
     if (launchVelocityData == null) {
-      shooterSubsystem.stop();
+      shooter.stop();
       return;
     }
 
@@ -93,10 +93,10 @@ public class MovingShots extends CommandBase {
 
     double launchRpm = ShooterSubsystem.ballVelocityToFlywheelRpm(launchVelocity);
 
-    turretSubsystem.trackTarget(true, visionTargetXOffset + horizontalLaunchAngle);
+    turret.trackTarget(true, visionTargetXOffset + horizontalLaunchAngle);
 
     if (idling) {
-      shooterSubsystem.stop();
+      shooter.stop();
     } else {
       // shooterSubsystem.shootRpm(launchRpm);
       SmartDashboard.putNumber("moving shots rpm", launchRpm);
@@ -104,7 +104,7 @@ public class MovingShots extends CommandBase {
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
+    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
   }
 
   @Override
@@ -138,9 +138,9 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stop();
-    shooterSubsystem.stop();
-    turretSubsystem.idle();
-    limelightSubsystem.enableDrivingMode();
+    tower.stop();
+    shooter.stop();
+    turret.idle();
+    limelight.enableDrivingMode();
   }
 }

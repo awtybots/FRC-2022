@@ -6,10 +6,10 @@ import frc.robot.subsystems.*;
 
 public class ShootInterpolatedOrSpit extends CommandBase {
 
-  private final TowerSubsystem towerSubsystem;
-  private final ShooterSubsystem shooterSubsystem;
-  private final TurretSubsystem turretSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
+  private final TowerSubsystem tower;
+  private final ShooterSubsystem shooter;
+  private final TurretSubsystem turret;
+  private final LimelightSubsystem limelight;
 
   public ShootInterpolatedOrSpit(
       TowerSubsystem towerSubsystem,
@@ -17,10 +17,10 @@ public class ShootInterpolatedOrSpit extends CommandBase {
       TurretSubsystem turretSubsystem,
       LimelightSubsystem limelightSubsystem) {
 
-    this.towerSubsystem = towerSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
-    this.turretSubsystem = turretSubsystem;
-    this.limelightSubsystem = limelightSubsystem;
+    this.tower = towerSubsystem;
+    this.shooter = shooterSubsystem;
+    this.turret = turretSubsystem;
+    this.limelight = limelightSubsystem;
 
     addRequirements(
         towerSubsystem,
@@ -31,33 +31,33 @@ public class ShootInterpolatedOrSpit extends CommandBase {
 
   @Override
   public void initialize() {
-    limelightSubsystem.enableShootingMode();
+    limelight.enableShootingMode();
   }
 
   private void executeShoot() {
-    if (!limelightSubsystem.hasVisibleTarget()) {
-      turretSubsystem.trackTarget(false);
-      shooterSubsystem.stop();
+    if (!limelight.hasVisibleTarget()) {
+      turret.trackTarget(false);
+      shooter.stop();
       return;
     }
 
-    double goalDisplacement = limelightSubsystem.distToTarget();
+    double goalDisplacement = limelight.distToTarget();
     if (goalDisplacement == -1) {
-      turretSubsystem.trackTarget(false);
-      shooterSubsystem.stop();
+      turret.trackTarget(false);
+      shooter.stop();
       return;
     }
 
-    double visionTargetXOffset = limelightSubsystem.angleToTarget();
-    turretSubsystem.trackTarget(true, visionTargetXOffset);
+    double visionTargetXOffset = limelight.angleToTarget();
+    turret.trackTarget(true, visionTargetXOffset);
 
     double launchRpm = Shooter.shotMap.calculateShot(goalDisplacement);
-    shooterSubsystem.shootRpm(launchRpm);
+    shooter.shootRpm(launchRpm);
   }
 
   private void executeSpit() {
-    turretSubsystem.spit(limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
-    shooterSubsystem.spit();
+    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
+    shooter.spit();
   }
 
   @Override
@@ -91,9 +91,9 @@ public class ShootInterpolatedOrSpit extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    towerSubsystem.stop();
-    shooterSubsystem.stop();
-    turretSubsystem.idle();
-    limelightSubsystem.enableDrivingMode();
+    tower.stop();
+    shooter.stop();
+    turret.idle();
+    limelight.enableDrivingMode();
   }
 }

@@ -5,30 +5,29 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class AutoAim extends CommandBase {
-  private final TurretSubsystem turretSubsystem;
-  private final LimelightSubsystem limelightSubsystem;
+  private final TurretSubsystem turret;
+  private final LimelightSubsystem limelight;
 
   public AutoAim(TurretSubsystem turretSubsystem, LimelightSubsystem limelightSubsystem) {
-    this.turretSubsystem = turretSubsystem;
-    this.limelightSubsystem = limelightSubsystem;
+    this.turret = turretSubsystem;
+    this.limelight = limelightSubsystem;
 
     addRequirements(turretSubsystem, limelightSubsystem);
   }
 
   @Override
   public void initialize() {
-    limelightSubsystem.enableShootingMode();
+    limelight.enableShootingMode();
   }
 
   @Override
   public void execute() {
-    turretSubsystem.trackTarget(
-        limelightSubsystem.hasVisibleTarget(), limelightSubsystem.angleToTarget());
+    turret.trackTarget(limelight.hasVisibleTarget(), limelight.angleToTarget());
   }
 
   @Override
   public void end(boolean interrupted) {
-    turretSubsystem.idle();
-    limelightSubsystem.enableDrivingMode();
+    turret.idle();
+    limelight.enableDrivingMode();
   }
 }
