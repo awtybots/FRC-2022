@@ -1,4 +1,4 @@
-package frc.robot.auton.trajectories;
+package frc.robot.auton.smart.trajectories;
 
 import frc.robot.subsystems.DrivetrainSubsystem;
 

@@ -1,7 +1,7 @@
 package frc.robot.auton.smart;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.auton.trajectories.TwoBall0;
+import frc.robot.auton.smart.trajectories.TwoBall0;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.commands.main.IntakeAndIngest;

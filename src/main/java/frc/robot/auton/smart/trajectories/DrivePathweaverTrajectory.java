@@ -1,4 +1,4 @@
-package frc.robot.auton.trajectories;
+package frc.robot.auton.smart.trajectories;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
