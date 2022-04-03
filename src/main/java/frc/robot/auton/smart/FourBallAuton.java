@@ -8,7 +8,6 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.subsystems.*;
 
-// TODO implement
 public class FourBallAuton extends SequentialCommandGroup {
 
   private final AutoAim autoAimCommand;

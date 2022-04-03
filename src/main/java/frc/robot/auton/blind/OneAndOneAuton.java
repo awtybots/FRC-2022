@@ -6,7 +6,6 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
 
-// this is good and cool and tested :) 6pt gaurunteed
 public class OneAndOneAuton extends SequentialCommandGroup {
 
   public OneAndOneAuton(
@@ -19,13 +18,8 @@ public class OneAndOneAuton extends SequentialCommandGroup {
         new ShootRpm(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  System.out.println("2ball starting");
-                  drivetrainSubsystem.driveVolts(3.0, 3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0)

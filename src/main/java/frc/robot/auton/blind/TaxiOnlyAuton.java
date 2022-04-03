@@ -9,12 +9,8 @@ public class TaxiOnlyAuton extends SequentialCommandGroup {
     addCommands(
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(3.0, 3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0));

@@ -94,7 +94,7 @@ public class TowerSubsystem extends SubsystemBase {
           if (!upperPresent) feedBoth();
           if (upperPresent) feedUpper();
           break;
-        } // else, do not break and load
+        } // else, fallthrough to load
 
       case Loading:
         if (!upperPresent) loadBoth();

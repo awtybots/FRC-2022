@@ -6,7 +6,6 @@ import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
 
-// this is good
 public class TwoBallLeftSide extends SequentialCommandGroup {
 
   public TwoBallLeftSide(
@@ -18,12 +17,8 @@ public class TwoBallLeftSide extends SequentialCommandGroup {
     addCommands(
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(3.0, 3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .withTimeout(2.0)

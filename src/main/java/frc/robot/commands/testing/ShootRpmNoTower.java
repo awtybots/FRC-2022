@@ -6,11 +6,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootRpmNoTower extends StartEndCommand {
 
   public ShootRpmNoTower(double rpm, ShooterSubsystem shooterSubsystem) {
-    super(
-        () -> {
-          shooterSubsystem.shootRpm(rpm);
-        },
-        shooterSubsystem::stop,
-        shooterSubsystem);
+    super(() -> shooterSubsystem.shootRpm(rpm), shooterSubsystem::stop, shooterSubsystem);
   }
 }

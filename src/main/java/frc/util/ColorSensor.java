@@ -34,16 +34,9 @@ public class ColorSensor {
         ColorSensorResolution.kColorSensorRes17bit,
         ColorSensorMeasurementRate.kColorRate25ms,
         GainFactor.kGain3x);
-    sensor.configureProximitySensor(
-        ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
 
     sensor.configureProximitySensor(
         ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
-
-    sensor.configureColorSensor(
-        ColorSensorResolution.kColorSensorRes17bit,
-        ColorSensorMeasurementRate.kColorRate50ms,
-        GainFactor.kGain3x);
   }
 
   public boolean ballPresent() {

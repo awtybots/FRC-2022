@@ -18,12 +18,8 @@ public class FourBallRightSide extends SequentialCommandGroup {
     addCommands(
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(3.0, 3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
@@ -32,12 +28,8 @@ public class FourBallRightSide extends SequentialCommandGroup {
         new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0),
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(3.0, 3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
@@ -45,12 +37,8 @@ public class FourBallRightSide extends SequentialCommandGroup {
         new IntakeAndIngest(towerSubsystem).withTimeout(1.0),
         new FunctionalCommand(
                 () -> {},
-                () -> {
-                  drivetrainSubsystem.driveVolts(-3.0, -3.0);
-                },
-                interrupted -> {
-                  drivetrainSubsystem.stop();
-                },
+                () -> drivetrainSubsystem.driveVolts(-3.0, -3.0),
+                interrupted -> drivetrainSubsystem.stop(),
                 () -> false,
                 drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
