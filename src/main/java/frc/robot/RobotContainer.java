@@ -102,8 +102,7 @@ public class RobotContainer {
     /// === AUTOMAGIC ===
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     // operator.buttonBack.toggleWhenPressed(new AutoAim(turretSubsystem, limelightSubsystem));
-    operator.buttonStart.whenHeld(
-        new ShootInterpolated(shooterSubsystem, limelightSubsystem));
+    operator.buttonStart.whenHeld(new ShootInterpolated(shooterSubsystem, limelightSubsystem));
 
     /// === MANUAL ===
     operator.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
@@ -117,9 +116,12 @@ public class RobotContainer {
     operator.buttonX.whenHeld(new ShootRpm(1900, shooterSubsystem)); // 1540
     operator.buttonY.whenHeld(new ShootRpm(2150, shooterSubsystem)); // 1700
     // operator.buttonA.whenHeld(new ShootRpmAndFeed(750, towerSubsystem, shooterSubsystem));
-    // operator.buttonB.whenHeld(new ShootRpmAndFeed(1600, towerSubsystem, shooterSubsystem)); // 1480
-    // operator.buttonX.whenHeld(new ShootRpmAndFeed(1900, towerSubsystem, shooterSubsystem)); // 1540
-    // operator.buttonY.whenHeld(new ShootRpmAndFeed(2150, towerSubsystem, shooterSubsystem)); // 1700
+    // operator.buttonB.whenHeld(new ShootRpmAndFeed(1600, towerSubsystem, shooterSubsystem)); //
+    // 1480
+    // operator.buttonX.whenHeld(new ShootRpmAndFeed(1900, towerSubsystem, shooterSubsystem)); //
+    // 1540
+    // operator.buttonY.whenHeld(new ShootRpmAndFeed(2150, towerSubsystem, shooterSubsystem)); //
+    // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));

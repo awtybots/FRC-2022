@@ -12,16 +12,15 @@ public class AutoAim extends CommandBase {
     this.turret = turretSubsystem;
     this.limelight = limelightSubsystem;
 
-    addRequirements(turretSubsystem, limelightSubsystem);
+    addRequirements(turretSubsystem);
   }
 
   @Override
-  public void initialize() {
-    limelight.enableShootingMode();
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
+    limelight.enableShootingMode(); // enable every frame in case other command disabled
     turret.trackTarget(limelight.hasVisibleTarget(), limelight.angleToTarget());
   }
 

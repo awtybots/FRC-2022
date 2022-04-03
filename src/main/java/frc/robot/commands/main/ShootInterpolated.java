@@ -9,8 +9,7 @@ public class ShootInterpolated extends CommandBase {
   private final LimelightSubsystem limelight;
 
   public ShootInterpolated(
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem) {
     this.shooter = shooterSubsystem;
     this.limelight = limelightSubsystem;
 
@@ -18,12 +17,12 @@ public class ShootInterpolated extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    limelight.enableShootingMode();
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
+    limelight.enableShootingMode(); // enable every frame in case other command disabled
+
     if (!limelight.hasVisibleTarget()) {
       shooter.stop();
       return;

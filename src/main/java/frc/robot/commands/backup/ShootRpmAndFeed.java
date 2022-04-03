@@ -11,7 +11,8 @@ public class ShootRpmAndFeed extends CommandBase {
   private final ShooterSubsystem shooter;
   private final double rpm;
 
-  public ShootRpmAndFeed(double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
+  public ShootRpmAndFeed(
+      double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.tower = towerSubsystem;
     this.shooter = shooterSubsystem;
     this.rpm = rpm;
