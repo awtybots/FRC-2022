@@ -1,22 +1,22 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.auton.smart.trajectories;
 
+import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import java.io.IOException;
-import java.nio.file.Path;
 
-public abstract class DrivePathweaverTrajectory extends RamseteCommand {
+public abstract class FollowPath extends RamseteCommand {
 
   private final Trajectory trajectory;
   private final DrivetrainSubsystem drivetrainSubsystem;
 
-  DrivePathweaverTrajectory(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
+  FollowPath(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
     super(
         trajectory,
         drivetrainSubsystem::getPose,
@@ -33,7 +33,7 @@ public abstract class DrivePathweaverTrajectory extends RamseteCommand {
     this.drivetrainSubsystem = drivetrainSubsystem;
   }
 
-  DrivePathweaverTrajectory(String fileName, DrivetrainSubsystem drivetrainSubsystem) {
+  FollowPath(String fileName, DrivetrainSubsystem drivetrainSubsystem) {
     this(loadTrajectoryFromFile(fileName), drivetrainSubsystem);
   }
 
@@ -50,14 +50,6 @@ public abstract class DrivePathweaverTrajectory extends RamseteCommand {
   }
 
   private static Trajectory loadTrajectoryFromFile(String pathName) {
-    try {
-      Path trajectoryPath =
-          Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
-      Trajectory t = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      return t;
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
-      return new Trajectory();
-    }
+    return PathPlanner.loadPath(pathName, 3, 2);
   }
 }
