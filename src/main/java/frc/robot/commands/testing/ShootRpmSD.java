@@ -10,5 +10,6 @@ public class ShootRpmSD extends ProxyScheduleCommand {
 
   public ShootRpmSD(TowerSubsystem tower, ShooterSubsystem shooter) {
     super(new ShootRpm(SmartDashboard.getNumber("SH - set rpm", 0), tower, shooter));
+    SmartDashboard.putNumber("SH - set rpm", 0);
   }
 }
