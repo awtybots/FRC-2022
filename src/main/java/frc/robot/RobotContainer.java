@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.auton.blind.*;
@@ -29,13 +30,13 @@ public class RobotContainer {
 
   // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
-  private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
-  private final TowerSubsystem towerSubsystem = new TowerSubsystem();
-  private final TurretSubsystem turretSubsystem = new TurretSubsystem();
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
-  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
-  public static final LedSubsystem ledSubsystem = new LedSubsystem();
+  private final DrivetrainSubsystem Drivetrain = new DrivetrainSubsystem();
+  private final TowerSubsystem Tower = new TowerSubsystem();
+  private final TurretSubsystem Turret = new TurretSubsystem();
+  private final ShooterSubsystem Shooter = new ShooterSubsystem();
+  private final ClimbSubsystem Climber = new ClimbSubsystem();
+  private final LimelightSubsystem Limelight = new LimelightSubsystem();
+  public static final LedSubsystem LEDs = new LedSubsystem();
 
   // private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final AutonManager autonManager = new AutonManager();
@@ -57,82 +58,51 @@ public class RobotContainer {
 
   private void addAutonomousChoices() {
     autonManager.addOption("Do Nothing", new InstantCommand());
-    autonManager.addOption("Taxi Only", new TaxiOnlyAuton(drivetrainSubsystem));
+    autonManager.addOption("Taxi Only", new TaxiOnlyAuton(Drivetrain));
     autonManager.addDefaultOption(
-        "1 and 1",
-        new OneAndOneAuton(
-            drivetrainSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem));
+        "1 and 1", new OneAndOneAuton(Drivetrain, Tower, Turret, Shooter, Limelight));
     autonManager.addOption(
-        "2 Ball Left Side",
-        new TwoBallLeftSide(
-            drivetrainSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem));
+        "2 Ball Left Side", new TwoBallLeftSide(Drivetrain, Tower, Turret, Shooter, Limelight));
     autonManager.addOption(
-        "2 Ball Right Side",
-        new TwoBallRightSide(
-            drivetrainSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem));
+        "2 Ball Right Side", new TwoBallRightSide(Drivetrain, Tower, Turret, Shooter, Limelight));
     autonManager.addOption(
-        "4 Ball Right Side",
-        new FourBallRightSide(
-            drivetrainSubsystem,
-            towerSubsystem,
-            turretSubsystem,
-            shooterSubsystem,
-            limelightSubsystem));
+        "4 Ball Right Side", new FourBallRightSide(Drivetrain, Tower, Turret, Shooter, Limelight));
   }
 
   private void configureButtonBindings() {
     // === DRIVER ===
-    drivetrainSubsystem.setDefaultCommand(new Drive(driver, drivetrainSubsystem));
-    driver.rightBumper.whenHeld(new IntakeAndIngest(towerSubsystem));
-    driver.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
+    Drivetrain.setDefaultCommand(new Drive(driver, Drivetrain));
+    driver.rightBumper.whenHeld(new IntakeAndIngest(Tower));
+    driver.leftBumper.whenHeld(new ReverseTower(Tower));
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
-    // operator.buttonBack.toggleWhenPressed(new AutoAim(turretSubsystem, limelightSubsystem));
-    operator.buttonStart.whenHeld(new ShootInterpolated(shooterSubsystem, limelightSubsystem));
+    operator.buttonBack.whenHeld(new AutoAim(Turret, Limelight));
+    operator.buttonStart.whenHeld(new ShootInterpolated(Shooter, Limelight));
 
     /// === MANUAL ===
-    operator.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
-    climbSubsystem.setDefaultCommand(new DriveClimber(operator, climbSubsystem));
+    operator.leftBumper.whenHeld(new ReverseTower(Tower));
+    Climber.setDefaultCommand(new DriveClimber(operator, Climber));
 
     /// === SHOOTING ===
-    operator.rightTrigger.whenHeld(
-        new FeedShooter(towerSubsystem, shooterSubsystem, turretSubsystem));
-    operator.buttonA.whenHeld(new ShootRpm(750, shooterSubsystem));
-    operator.buttonB.whenHeld(new ShootRpm(1600, shooterSubsystem)); // 1480
-    operator.buttonX.whenHeld(new ShootRpm(1900, shooterSubsystem)); // 1540
-    operator.buttonY.whenHeld(new ShootRpm(2150, shooterSubsystem)); // 1700
-    // operator.buttonA.whenHeld(new ShootRpmAndFeed(750, towerSubsystem, shooterSubsystem));
-    // operator.buttonB.whenHeld(new ShootRpmAndFeed(1600, towerSubsystem, shooterSubsystem)); //
-    // 1480
-    // operator.buttonX.whenHeld(new ShootRpmAndFeed(1900, towerSubsystem, shooterSubsystem)); //
-    // 1540
-    // operator.buttonY.whenHeld(new ShootRpmAndFeed(2150, towerSubsystem, shooterSubsystem)); //
-    // 1700
+    operator.rightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
+    operator.buttonA.whenHeld(new SpinupRpm(750, Shooter));
+    operator.buttonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
+    operator.buttonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
+    operator.buttonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
 
     /// === TURRET ===
-    turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
-    operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, turretSubsystem));
-    operator.dPadUp.whenHeld(new TurnTurretTo(0.0, turretSubsystem));
-    operator.dPadRight.whenHeld(new TurnTurretTo(90.0, turretSubsystem));
-    operator.dPadDown.whenHeld(new TurnTurretTo(180.0, turretSubsystem));
+    Turret.setDefaultCommand(new DriveTurret(operator, Turret));
+    operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, Turret));
+    operator.dPadUp.whenHeld(new TurnTurretTo(0.0, Turret));
+    operator.dPadRight.whenHeld(new TurnTurretTo(90.0, Turret));
+    operator.dPadDown.whenHeld(new TurnTurretTo(180.0, Turret));
 
     /// === PROGRAMMER TUNING ===
-    if (Constants.TUNING_MODE)
-      operator.leftTrigger.whenHeld(new ShootRpmSD(towerSubsystem, shooterSubsystem));
+    if (Constants.TUNING_MODE) {
+      SmartDashboard.putNumber("SH - set rpm", 0);
+      operator.leftTrigger.whenHeld(new ShootRpmSD(Tower, Shooter));
+    }
   }
 
   public Command getAutonomousCommand() {
@@ -140,10 +110,10 @@ public class RobotContainer {
   }
 
   public void turnOffLimelightLEDs() {
-    limelightSubsystem.enableDrivingMode();
+    Limelight.enableDrivingMode();
   }
 
   public void updateAlliance() {
-    towerSubsystem.updateAlliance();
+    Tower.updateAlliance();
   }
 }
