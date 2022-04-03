@@ -5,19 +5,16 @@ import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.*;
 
 public class ShootInterpolated extends CommandBase {
-  private final TowerSubsystem tower;
   private final ShooterSubsystem shooter;
   private final LimelightSubsystem limelight;
 
   public ShootInterpolated(
-      TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       LimelightSubsystem limelightSubsystem) {
-    this.tower = towerSubsystem;
     this.shooter = shooterSubsystem;
     this.limelight = limelightSubsystem;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(shooterSubsystem);
   }
 
   @Override
@@ -40,13 +37,10 @@ public class ShootInterpolated extends CommandBase {
 
     double launchRpm = Shooter.shotMap.calculateShot(goalDistance);
     shooter.shootRpm(launchRpm);
-
-    tower.feed(shooter.isAtTarget());
   }
 
   @Override
   public void end(boolean interrupted) {
-    tower.stop();
     shooter.stop();
     limelight.enableDrivingMode();
   }

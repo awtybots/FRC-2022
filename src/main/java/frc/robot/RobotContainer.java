@@ -103,7 +103,7 @@ public class RobotContainer {
     operator.buttonBack.whenHeld(new AutoAim(turretSubsystem, limelightSubsystem));
     // operator.buttonBack.toggleWhenPressed(new AutoAim(turretSubsystem, limelightSubsystem));
     operator.buttonStart.whenHeld(
-        new ShootInterpolated(towerSubsystem, shooterSubsystem, limelightSubsystem));
+        new ShootInterpolated(shooterSubsystem, limelightSubsystem));
 
     /// === MANUAL ===
     operator.leftBumper.whenHeld(new ReverseTower(towerSubsystem));
@@ -112,14 +112,14 @@ public class RobotContainer {
     /// === SHOOTING ===
     operator.rightTrigger.whenHeld(
         new FeedShooter(towerSubsystem, shooterSubsystem, turretSubsystem));
-    operator.buttonA.whenHeld(new SpinupRpm(750, shooterSubsystem));
-    operator.buttonB.whenHeld(new SpinupRpm(1600, shooterSubsystem)); // 1480
-    operator.buttonX.whenHeld(new SpinupRpm(1900, shooterSubsystem)); // 1540
-    operator.buttonY.whenHeld(new SpinupRpm(2150, shooterSubsystem)); // 1700
-    // operator.buttonA.whenHeld(new ShootRpm(750, towerSubsystem, shooterSubsystem));
-    // operator.buttonB.whenHeld(new ShootRpm(1600, towerSubsystem, shooterSubsystem)); // 1480
-    // operator.buttonX.whenHeld(new ShootRpm(1900, towerSubsystem, shooterSubsystem)); // 1540
-    // operator.buttonY.whenHeld(new ShootRpm(2150, towerSubsystem, shooterSubsystem)); // 1700
+    operator.buttonA.whenHeld(new ShootRpm(750, shooterSubsystem));
+    operator.buttonB.whenHeld(new ShootRpm(1600, shooterSubsystem)); // 1480
+    operator.buttonX.whenHeld(new ShootRpm(1900, shooterSubsystem)); // 1540
+    operator.buttonY.whenHeld(new ShootRpm(2150, shooterSubsystem)); // 1700
+    // operator.buttonA.whenHeld(new ShootRpmAndFeed(750, towerSubsystem, shooterSubsystem));
+    // operator.buttonB.whenHeld(new ShootRpmAndFeed(1600, towerSubsystem, shooterSubsystem)); // 1480
+    // operator.buttonX.whenHeld(new ShootRpmAndFeed(1900, towerSubsystem, shooterSubsystem)); // 1540
+    // operator.buttonY.whenHeld(new ShootRpmAndFeed(2150, towerSubsystem, shooterSubsystem)); // 1700
 
     /// === TURRET ===
     turretSubsystem.setDefaultCommand(new DriveTurret(operator, turretSubsystem));
