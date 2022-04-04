@@ -36,45 +36,36 @@ public class SpinupRpmOrSpit extends CommandBase {
     limelight.enableShootingMode();
   }
 
-  private void executeShoot(boolean idling) {
+  private void aimForTarget() {
     turret.trackTarget(limelight.hasVisibleTarget(), limelight.angleToTarget());
-
-    if (idling) shooter.stop();
-    else shooter.shootRpm(this.rpm);
   }
 
-  private void executeSpit() {
-    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
+  private void spinup() {
+    shooter.shootRpm(this.rpm);
+  }
+
+  private void spinupToSpit() {
     shooter.spit();
+  }
+
+  private void aimToSpit() {
+    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
   }
 
   @Override
   public void execute() {
-    // TODO port
-    // if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
-    //     executeShoot(false);
-    //   } else {
-    //     executeSpit();
-    //   }
+    if (!tower.upperBallPresent()) {
+      aimForTarget();
+      shooter.stop();
+    } else if (tower.upperBallOurs()) {
+      aimForTarget();
+      spinup();
+    } else {
+      aimToSpit();
+      spinupToSpit();
+    }
 
-    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //       towerSubsystem.feedFromUpper();
-    //     } else {
-    //       towerSubsystem.feedFromLower();
-    //     }
-    //   } else {
-    //     towerSubsystem.stopUpper();
-
-    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
-    //       towerSubsystem.stop();
-    //     }
-    //   }
-    // } else {
-    //   towerSubsystem.intake();
-    //   executeShoot(true);
-    // }
+    tower.feed(shooter.isAtTarget() && turret.isAtTarget());
   }
 
   @Override

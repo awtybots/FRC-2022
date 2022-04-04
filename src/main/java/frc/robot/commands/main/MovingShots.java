@@ -109,31 +109,15 @@ public class MovingShots extends CommandBase {
 
   @Override
   public void execute() {
-    // TODO port
-    // if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
-    //     executeShoot(false);
-    //   } else {
-    //     executeSpit();
-    //   }
+    if (!tower.upperBallPresent()) {
+      executeShoot(true);
+    } else if (tower.upperBallOurs()) {
+      executeShoot(false);
+    } else {
+      executeSpit();
+    }
 
-    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //       towerSubsystem.feedFromUpper();
-    //     } else {
-    //       towerSubsystem.feedFromLower();
-    //     }
-    //   } else {
-    //     towerSubsystem.stopUpper();
-
-    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
-    //       towerSubsystem.stop();
-    //     }
-    //   }
-    // } else {
-    //   executeShoot(true);
-    //   towerSubsystem.intake();
-    // }
+    tower.feed(shooter.isAtTarget() && turret.isAtTarget());
   }
 
   @Override

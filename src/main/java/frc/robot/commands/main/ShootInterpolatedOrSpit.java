@@ -26,7 +26,7 @@ public class ShootInterpolatedOrSpit extends CommandBase {
         towerSubsystem,
         shooterSubsystem,
         turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
+        limelightSubsystem); // drive subsystem not requirements
   }
 
   @Override
@@ -62,31 +62,15 @@ public class ShootInterpolatedOrSpit extends CommandBase {
 
   @Override
   public void execute() {
-    // TODO port
-    // if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
-    //     executeShoot();
-    //   } else {
-    //     executeSpit();
-    //   }
+    if (!tower.upperBallPresent()) {
+      executeShoot();
+    } else if (tower.upperBallOurs()) {
+      executeShoot();
+    } else {
+      executeSpit();
+    }
 
-    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //       towerSubsystem.feedFromUpper();
-    //     } else {
-    //       towerSubsystem.feedFromLower();
-    //     }
-    //   } else {
-    //     towerSubsystem.stopUpper();
-
-    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
-    //       towerSubsystem.stop();
-    //     }
-    //   }
-    // } else {
-    //   executeShoot();
-    //   towerSubsystem.intake();
-    // }
+    tower.feed(shooter.isAtTarget() && turret.isAtTarget());
   }
 
   @Override

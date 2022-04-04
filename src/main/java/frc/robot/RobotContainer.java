@@ -77,8 +77,8 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    Operator.rightBumper.toggleWhenPressed(new AutoAim(Turret, Limelight));
-    Operator.buttonStart.whenHeld(new ShootInterpolated(Shooter, Limelight));
+    Operator.buttonBack.toggleWhenPressed(new AutoAim(Turret, Limelight));
+    Operator.rightBumper.whenHeld(new SpinupInterpolated(Shooter, Limelight));
 
     /// === MANUAL ===
     Operator.leftBumper.whenHeld(new ReverseTower(Tower));

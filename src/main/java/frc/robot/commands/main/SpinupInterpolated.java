@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooter;
 import frc.robot.subsystems.*;
 
-public class ShootInterpolated extends CommandBase {
+public class SpinupInterpolated extends CommandBase {
   private final ShooterSubsystem shooter;
   private final LimelightSubsystem limelight;
 
-  public ShootInterpolated(
+  public SpinupInterpolated(
       ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem) {
     this.shooter = shooterSubsystem;
     this.limelight = limelightSubsystem;

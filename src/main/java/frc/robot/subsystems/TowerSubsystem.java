@@ -206,7 +206,7 @@ public class TowerSubsystem extends SubsystemBase {
         || (ballAlliance == Alliance.Invalid);
   }
 
-  private boolean upperBallPresent() {
+  public boolean upperBallPresent() {
     return upperSensor.ballPresent();
   }
 
