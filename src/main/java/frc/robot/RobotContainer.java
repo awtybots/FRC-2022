@@ -25,8 +25,8 @@ import frc.util.Controller;
  */
 public class RobotContainer {
 
-  private final Controller driver = new Controller(0);
-  private final Controller operator = new Controller(1);
+  private final Controller Driver = new Controller(0);
+  private final Controller Operator = new Controller(1);
 
   // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
 
@@ -71,37 +71,37 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     // === DRIVER ===
-    Drivetrain.setDefaultCommand(new Drive(driver, Drivetrain));
-    driver.rightBumper.whenHeld(new IntakeAndIngest(Tower));
-    driver.leftBumper.whenHeld(new ReverseTower(Tower));
+    Drivetrain.setDefaultCommand(new Drive(Driver, Drivetrain));
+    Driver.rightBumper.whenHeld(new IntakeAndIngest(Tower));
+    Driver.leftBumper.whenHeld(new ReverseTower(Tower));
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    operator.buttonBack.whenHeld(new AutoAim(Turret, Limelight));
-    operator.buttonStart.whenHeld(new ShootInterpolated(Shooter, Limelight));
+    Operator.rightBumper.toggleWhenPressed(new AutoAim(Turret, Limelight));
+    Operator.buttonStart.whenHeld(new ShootInterpolated(Shooter, Limelight));
 
     /// === MANUAL ===
-    operator.leftBumper.whenHeld(new ReverseTower(Tower));
-    Climber.setDefaultCommand(new DriveClimber(operator, Climber));
+    Operator.leftBumper.whenHeld(new ReverseTower(Tower));
+    Climber.setDefaultCommand(new DriveClimber(Operator, Climber));
 
     /// === SHOOTING ===
-    operator.rightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
-    operator.buttonA.whenHeld(new SpinupRpm(750, Shooter));
-    operator.buttonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
-    operator.buttonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
-    operator.buttonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
+    Operator.rightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
+    Operator.buttonA.whenHeld(new SpinupRpm(750, Shooter));
+    Operator.buttonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
+    Operator.buttonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
+    Operator.buttonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
 
     /// === TURRET ===
-    Turret.setDefaultCommand(new DriveTurret(operator, Turret));
-    operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, Turret));
-    operator.dPadUp.whenHeld(new TurnTurretTo(0.0, Turret));
-    operator.dPadRight.whenHeld(new TurnTurretTo(90.0, Turret));
-    operator.dPadDown.whenHeld(new TurnTurretTo(180.0, Turret));
+    Turret.setDefaultCommand(new DriveTurret(Operator, Turret));
+    Operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, Turret));
+    Operator.dPadUp.whenHeld(new TurnTurretTo(0.0, Turret));
+    Operator.dPadRight.whenHeld(new TurnTurretTo(90.0, Turret));
+    Operator.dPadDown.whenHeld(new TurnTurretTo(180.0, Turret));
 
     /// === PROGRAMMER TUNING ===
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("SH - set rpm", 0);
-      operator.leftTrigger.whenHeld(new ShootRpmSD(Tower, Shooter));
+      Operator.leftTrigger.whenHeld(new ShootRpmSD(Tower, Shooter));
     }
   }
 

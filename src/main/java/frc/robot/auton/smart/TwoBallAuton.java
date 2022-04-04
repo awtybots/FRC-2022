@@ -2,7 +2,7 @@ package frc.robot.auton.smart;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.auton.smart.trajectories.TwoBall0;
-import frc.robot.commands.backup.ShootRpmAndFeed;
+import frc.robot.commands.backup.SpinupRpmAndFeed;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.commands.main.IntakeAndIngest;
 import frc.robot.subsystems.*;
@@ -20,7 +20,7 @@ public class TwoBallAuton extends SequentialCommandGroup {
     addCommands(
         new TwoBall0(drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(5.0)),
-        new ShootRpmAndFeed(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+        new SpinupRpmAndFeed(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
 
     autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
   }

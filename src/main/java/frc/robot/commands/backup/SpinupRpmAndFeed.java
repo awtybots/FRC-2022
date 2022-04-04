@@ -1,19 +1,18 @@
 package frc.robot.commands.backup;
 
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.TowerSubsystem;
 
-public class ShootRpm extends StartEndCommand {
+public class SpinupRpmAndFeed extends CommandBase {
 
-<<<<<<< HEAD
-  public ShootRpm(double rpm, ShooterSubsystem shooter) {
-    super(() -> shooter.shootRpm(rpm), shooter::stop, shooter);
-=======
   private final TowerSubsystem tower;
   private final ShooterSubsystem shooter;
   private final double rpm;
 
-  public ShootRpm(double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
+  public SpinupRpmAndFeed(
+      double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.tower = towerSubsystem;
     this.shooter = shooterSubsystem;
     this.rpm = rpm;
@@ -37,6 +36,5 @@ public class ShootRpm extends StartEndCommand {
     shooter.stop();
     tower.stop();
     RobotContainer.LEDs.turnOn();
->>>>>>> 70a3692 (remove subsystem suffix from RobotContainer fields for readability)
   }
 }

@@ -6,7 +6,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
-public class ShootRpmOrSpit extends CommandBase {
+public class SpinupRpmOrSpit extends CommandBase {
   private final TowerSubsystem tower;
   private final ShooterSubsystem shooter;
   private final TurretSubsystem turret;
@@ -14,7 +14,7 @@ public class ShootRpmOrSpit extends CommandBase {
 
   private final double rpm;
 
-  public ShootRpmOrSpit(
+  public SpinupRpmOrSpit(
       double rpm,
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,

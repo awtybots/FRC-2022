@@ -26,7 +26,7 @@ public class FeedShooter extends CommandBase {
 
   @Override
   public void initialize() {
-    RobotContainer.ledSubsystem.blink();
+    RobotContainer.LEDs.blink();
   }
 
   @Override
@@ -37,6 +37,6 @@ public class FeedShooter extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     tower.stop();
-    RobotContainer.ledSubsystem.turnOn();
+    RobotContainer.LEDs.turnOn();
   }
 }
