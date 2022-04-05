@@ -1,6 +1,7 @@
 package frc.robot.commands.backup;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.TowerSubsystem;
@@ -15,20 +16,16 @@ public class SpinupRpmOrSpit extends CommandBase {
   private final double rpm;
 
   public SpinupRpmOrSpit(
-      double rpm,
-      TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      TurretSubsystem turretSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      double rpm, TowerSubsystem tower, ShooterSubsystem shooter, TurretSubsystem turret) {
 
-    this.tower = towerSubsystem;
-    this.shooter = shooterSubsystem;
-    this.turret = turretSubsystem;
-    this.limelight = limelightSubsystem;
+    this.tower = tower;
+    this.shooter = shooter;
+    this.turret = turret;
+    this.limelight = RobotContainer.Limelight;
 
     this.rpm = rpm;
 
-    addRequirements(towerSubsystem, shooterSubsystem, turretSubsystem, limelightSubsystem);
+    addRequirements(tower, shooter, turret);
   }
 
   @Override

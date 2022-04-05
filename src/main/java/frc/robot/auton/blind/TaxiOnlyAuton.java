@@ -5,14 +5,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class TaxiOnlyAuton extends SequentialCommandGroup {
-  public TaxiOnlyAuton(DrivetrainSubsystem drivetrainSubsystem) {
+  public TaxiOnlyAuton(DrivetrainSubsystem drivetrain) {
     addCommands(
         new FunctionalCommand(
                 () -> {},
-                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
-                interrupted -> drivetrainSubsystem.stop(),
+                () -> drivetrain.driveVolts(3.0, 3.0),
+                __ -> drivetrain.stop(),
                 () -> false,
-                drivetrainSubsystem)
+                drivetrain)
             .withTimeout(2.0));
   }
 }

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Field;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 import frc.util.math.ProjectileMotionSolver;
 import frc.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
@@ -25,22 +26,17 @@ public class MovingShots extends CommandBase {
   private final ProjectileMotionSolver projectileMotionSolver;
 
   public MovingShots(
-      TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      TurretSubsystem turretSubsystem,
-      DrivetrainSubsystem drivetrainSubsystem,
-      LimelightSubsystem limelightSubsystem) {
-    this.tower = towerSubsystem;
-    this.shooter = shooterSubsystem;
-    this.turret = turretSubsystem;
-    this.drivetrain = drivetrainSubsystem;
-    this.limelight = limelightSubsystem;
+      TowerSubsystem tower,
+      ShooterSubsystem shooter,
+      TurretSubsystem turret,
+      DrivetrainSubsystem drivetrain) {
+    this.tower = tower;
+    this.shooter = shooter;
+    this.turret = turret;
+    this.drivetrain = drivetrain;
+    this.limelight = RobotContainer.Limelight;
 
-    addRequirements(
-        towerSubsystem,
-        shooterSubsystem,
-        turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
+    addRequirements(tower, shooter, turret); // drive not requirement
 
     projectileMotionSolver =
         new ProjectileMotionSolver(

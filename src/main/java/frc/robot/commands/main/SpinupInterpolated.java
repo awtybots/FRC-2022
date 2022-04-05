@@ -2,18 +2,18 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooter;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
 public class SpinupInterpolated extends CommandBase {
   private final ShooterSubsystem shooter;
   private final LimelightSubsystem limelight;
 
-  public SpinupInterpolated(
-      ShooterSubsystem shooterSubsystem, LimelightSubsystem limelightSubsystem) {
-    this.shooter = shooterSubsystem;
-    this.limelight = limelightSubsystem;
+  public SpinupInterpolated(ShooterSubsystem shooter) {
+    this.shooter = shooter;
+    this.limelight = RobotContainer.Limelight;
 
-    addRequirements(shooterSubsystem);
+    addRequirements(shooter);
   }
 
   @Override

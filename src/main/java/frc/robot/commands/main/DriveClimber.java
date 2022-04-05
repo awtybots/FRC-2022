@@ -13,9 +13,9 @@ public class DriveClimber extends CommandBase {
   private final ClimbSubsystem climber;
   private final Controller controller;
 
-  public DriveClimber(Controller controller, ClimbSubsystem climbSubsystem) {
-    addRequirements(climbSubsystem);
-    this.climber = climbSubsystem;
+  public DriveClimber(Controller controller, ClimbSubsystem climber) {
+    addRequirements(climber);
+    this.climber = climber;
     this.controller = controller;
   }
 

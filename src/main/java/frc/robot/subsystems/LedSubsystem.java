@@ -1,20 +1,23 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LedSubsystem extends SubsystemBase {
 
   private final double kBlinkPeriod = 0.5;
+  private final PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
 
   private final Timer timer = new Timer();
   private State state = State.kOn;
+  private boolean blinkOn = false;
 
   private enum State {
+    kBlinking,
     kOn,
     kOff,
-    kBlinkingOn,
-    kBlinkingOff;
   }
 
   public LedSubsystem() {
@@ -23,45 +26,41 @@ public class LedSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    switch (state) {
-      case kBlinkingOn:
-        if (timer.get() > kBlinkPeriod) {
-          state = State.kBlinkingOff;
-          timer.reset();
-          toggle(false);
-        }
-        break;
-      case kBlinkingOff:
-        if (timer.get() > kBlinkPeriod) {
-          state = State.kBlinkingOn;
-          timer.reset();
-          toggle(true);
-        }
-      default:
-        break;
+    if (state != State.kBlinking) return;
+
+    if (timer.get() > kBlinkPeriod) {
+      blinkOn = !blinkOn;
+      toggle(blinkOn);
+      timer.reset();
     }
   }
 
   private void toggle(boolean on) {
-    // RobotContainer.pdh.setSwitchableChannel(on);
+    pdh.setSwitchableChannel(on);
   }
 
   // PUBLIC
 
   public void blink() {
-    state = State.kBlinkingOff;
-    timer.reset();
-    timer.start();
-    toggle(false);
+    if (state != State.kBlinking) {
+      state = State.kBlinking;
+      timer.reset();
+      timer.start();
+      toggle(false);
+    }
   }
 
   public void turnOn() {
-    state = State.kOn;
-    toggle(true);
+    if (state != State.kOn) {
+      state = State.kOn;
+      toggle(true);
+    }
   }
 
   public void turnOff() {
-    state = State.kOff;
-    toggle(false);
+    if (state != State.kOff) {
+      state = State.kOff;
+      toggle(false);
+    }
   }
 }

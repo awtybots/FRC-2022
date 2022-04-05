@@ -28,17 +28,15 @@ public class RobotContainer {
   private final Controller Driver = new Controller(0);
   private final Controller Operator = new Controller(1);
 
-  // public static final PowerDistribution pdh = new PowerDistribution(0, ModuleType.kRev);
+  public static final LimelightSubsystem Limelight = new LimelightSubsystem();
+  public static final LedSubsystem LEDs = new LedSubsystem();
 
   private final DrivetrainSubsystem Drivetrain = new DrivetrainSubsystem();
   private final TowerSubsystem Tower = new TowerSubsystem();
   private final TurretSubsystem Turret = new TurretSubsystem();
   private final ShooterSubsystem Shooter = new ShooterSubsystem();
   private final ClimbSubsystem Climber = new ClimbSubsystem();
-  private final LimelightSubsystem Limelight = new LimelightSubsystem();
-  public static final LedSubsystem LEDs = new LedSubsystem();
 
-  // private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   private final AutonManager autonManager = new AutonManager();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -59,17 +57,16 @@ public class RobotContainer {
   private void addAutonomousChoices() {
     autonManager.addOption("Do Nothing", new InstantCommand());
     autonManager.addOption("Taxi Only", new TaxiOnlyAuton(Drivetrain));
-    autonManager.addDefaultOption(
-        "1 and 1", new OneAndOneAuton(Drivetrain, Tower, Turret, Shooter, Limelight));
+    autonManager.addDefaultOption("1 and 1", new OneAndOneAuton(Drivetrain, Tower, Shooter));
+    autonManager.addOption("2 Ball Left Side", new TwoBallLeftSide(Drivetrain, Tower, Shooter));
     autonManager.addOption(
-        "2 Ball Left Side", new TwoBallLeftSide(Drivetrain, Tower, Turret, Shooter, Limelight));
+        "2 Ball Right Side", new TwoBallRightSide(Drivetrain, Tower, Turret, Shooter));
     autonManager.addOption(
-        "2 Ball Right Side", new TwoBallRightSide(Drivetrain, Tower, Turret, Shooter, Limelight));
-    autonManager.addOption(
-        "4 Ball Right Side", new FourBallRightSide(Drivetrain, Tower, Turret, Shooter, Limelight));
+        "4 Ball Right Side", new FourBallRightSide(Drivetrain, Tower, Turret, Shooter));
   }
 
   private void configureButtonBindings() {
+
     // === DRIVER ===
     Drivetrain.setDefaultCommand(new Drive(Driver, Drivetrain));
     Driver.RightBumper.whenHeld(new IntakeAndIngest(Tower));
@@ -77,8 +74,8 @@ public class RobotContainer {
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    Operator.ButtonBack.toggleWhenPressed(new AutoAim(Turret, Limelight));
-    Operator.RightBumper.whenHeld(new SpinupInterpolated(Shooter, Limelight));
+    Operator.ButtonBack.toggleWhenPressed(new AutoAim(Turret));
+    Operator.RightBumper.whenHeld(new SpinupInterpolated(Shooter));
 
     /// === MANUAL ===
     Operator.LeftBumper.whenHeld(new ReverseTower(Tower));

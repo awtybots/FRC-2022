@@ -11,13 +11,12 @@ public class SpinupRpmAndFeed extends CommandBase {
   private final ShooterSubsystem shooter;
   private final double rpm;
 
-  public SpinupRpmAndFeed(
-      double rpm, TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
-    this.tower = towerSubsystem;
-    this.shooter = shooterSubsystem;
+  public SpinupRpmAndFeed(double rpm, TowerSubsystem tower, ShooterSubsystem shooter) {
+    this.tower = tower;
+    this.shooter = shooter;
     this.rpm = rpm;
 
-    addRequirements(towerSubsystem, shooterSubsystem);
+    addRequirements(tower, shooter);
   }
 
   @Override

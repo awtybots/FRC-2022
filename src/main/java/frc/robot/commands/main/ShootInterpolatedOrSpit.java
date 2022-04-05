@@ -2,6 +2,7 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooter;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
 public class ShootInterpolatedOrSpit extends CommandBase {
@@ -12,21 +13,14 @@ public class ShootInterpolatedOrSpit extends CommandBase {
   private final LimelightSubsystem limelight;
 
   public ShootInterpolatedOrSpit(
-      TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      TurretSubsystem turretSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      TowerSubsystem tower, ShooterSubsystem shooter, TurretSubsystem turret) {
 
-    this.tower = towerSubsystem;
-    this.shooter = shooterSubsystem;
-    this.turret = turretSubsystem;
-    this.limelight = limelightSubsystem;
+    this.tower = tower;
+    this.shooter = shooter;
+    this.turret = turret;
+    this.limelight = RobotContainer.Limelight;
 
-    addRequirements(
-        towerSubsystem,
-        shooterSubsystem,
-        turretSubsystem,
-        limelightSubsystem); // drive subsystem not requirements
+    addRequirements(tower, shooter, turret);
   }
 
   @Override

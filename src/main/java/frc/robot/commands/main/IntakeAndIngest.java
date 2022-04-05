@@ -7,10 +7,10 @@ import frc.robot.subsystems.TowerSubsystem;
 public class IntakeAndIngest extends CommandBase {
   private final TowerSubsystem tower;
 
-  public IntakeAndIngest(TowerSubsystem towerSubsystem) {
-    addRequirements(towerSubsystem);
+  public IntakeAndIngest(TowerSubsystem tower) {
+    addRequirements(tower);
 
-    this.tower = towerSubsystem;
+    this.tower = tower;
   }
 
   @Override

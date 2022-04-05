@@ -8,9 +8,9 @@ public class TurnTurretTo extends CommandBase {
   private final TurretSubsystem turret;
   private final double angle;
 
-  public TurnTurretTo(double angle, TurretSubsystem turretSubsystem) {
-    addRequirements(turretSubsystem);
-    this.turret = turretSubsystem;
+  public TurnTurretTo(double angle, TurretSubsystem turret) {
+    addRequirements(turret);
+    this.turret = turret;
     this.angle = angle;
   }
 

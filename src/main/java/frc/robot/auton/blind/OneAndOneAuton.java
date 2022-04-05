@@ -9,21 +9,17 @@ import frc.robot.subsystems.*;
 public class OneAndOneAuton extends SequentialCommandGroup {
 
   public OneAndOneAuton(
-      DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
-      TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      DrivetrainSubsystem drivetrain, TowerSubsystem tower, ShooterSubsystem shooter) {
     addCommands(
-        new SpinupRpmAndFeed(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
+        new SpinupRpmAndFeed(1000, tower, shooter).withTimeout(4),
         new FunctionalCommand(
                 () -> {},
-                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
-                interrupted -> drivetrainSubsystem.stop(),
+                () -> drivetrain.driveVolts(3.0, 3.0),
+                __ -> drivetrain.stop(),
                 () -> false,
-                drivetrainSubsystem)
+                drivetrain)
             .withTimeout(2.0)
-            .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(3.0)),
-        new SpinupRpmAndFeed(2000, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+            .alongWith(new IntakeAndIngest(tower).withTimeout(3.0)),
+        new SpinupRpmAndFeed(2000, tower, shooter).withTimeout(5.0));
   }
 }
