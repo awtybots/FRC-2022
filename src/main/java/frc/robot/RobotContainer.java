@@ -72,36 +72,36 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // === DRIVER ===
     Drivetrain.setDefaultCommand(new Drive(Driver, Drivetrain));
-    Driver.rightBumper.whenHeld(new IntakeAndIngest(Tower));
-    Driver.leftBumper.whenHeld(new ReverseTower(Tower));
+    Driver.RightBumper.whenHeld(new IntakeAndIngest(Tower));
+    Driver.LeftBumper.whenHeld(new ReverseTower(Tower));
 
     // === OPERATOR ===
     /// === AUTOMAGIC ===
-    Operator.buttonBack.toggleWhenPressed(new AutoAim(Turret, Limelight));
-    Operator.rightBumper.whenHeld(new SpinupInterpolated(Shooter, Limelight));
+    Operator.ButtonBack.toggleWhenPressed(new AutoAim(Turret, Limelight));
+    Operator.RightBumper.whenHeld(new SpinupInterpolated(Shooter, Limelight));
 
     /// === MANUAL ===
-    Operator.leftBumper.whenHeld(new ReverseTower(Tower));
+    Operator.LeftBumper.whenHeld(new ReverseTower(Tower));
     Climber.setDefaultCommand(new DriveClimber(Operator, Climber));
 
     /// === SHOOTING ===
-    Operator.rightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
-    Operator.buttonA.whenHeld(new SpinupRpm(750, Shooter));
-    Operator.buttonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
-    Operator.buttonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
-    Operator.buttonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
+    Operator.RightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
+    Operator.ButtonA.whenHeld(new SpinupRpm(750, Shooter));
+    Operator.ButtonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
+    Operator.ButtonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
+    Operator.ButtonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
 
     /// === TURRET ===
     Turret.setDefaultCommand(new DriveTurret(Operator, Turret));
-    Operator.dPadLeft.whenHeld(new TurnTurretTo(-90.0, Turret));
-    Operator.dPadUp.whenHeld(new TurnTurretTo(0.0, Turret));
-    Operator.dPadRight.whenHeld(new TurnTurretTo(90.0, Turret));
-    Operator.dPadDown.whenHeld(new TurnTurretTo(180.0, Turret));
+    Operator.DPadLeft.whenHeld(new TurnTurretTo(-90.0, Turret));
+    Operator.DPadUp.whenHeld(new TurnTurretTo(0.0, Turret));
+    Operator.DPadRight.whenHeld(new TurnTurretTo(90.0, Turret));
+    Operator.DPadDown.whenHeld(new TurnTurretTo(180.0, Turret));
 
     /// === PROGRAMMER TUNING ===
     if (Constants.TUNING_MODE) {
       SmartDashboard.putNumber("SH - set rpm", 0);
-      Operator.leftTrigger.whenHeld(new ShootRpmSD(Tower, Shooter));
+      Operator.LeftTrigger.whenHeld(new ShootRpmSD(Tower, Shooter));
     }
   }
 
