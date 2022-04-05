@@ -24,9 +24,9 @@ public class TowerSubsystem extends SubsystemBase {
 
   private final Color kRed = new Color(0.41, 0.41, 0.18);
   private final Color kBlue = new Color(0.17, 0.41, 0.43);
-  private final int kMinProximityL = 250;
+  private final int kMinProximityL = 150;
   private final int kMinProximityU = 250;
-  private final double kMinConfidence = 0.90;
+  private final double kMinConfidence = 10.90;
 
   private Alliance ourAlliance = Alliance.Invalid;
   private final ColorSensor lowerSensor, upperSensor;
