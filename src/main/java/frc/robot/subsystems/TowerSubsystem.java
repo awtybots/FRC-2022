@@ -21,6 +21,7 @@ public class TowerSubsystem extends SubsystemBase {
 
   private State m_state = State.Idle;
   private boolean firing = false;
+  private boolean separated = true;
 
   private final Color kRed = new Color(0.41, 0.41, 0.18);
   private final Color kBlue = new Color(0.17, 0.41, 0.43);
@@ -81,6 +82,7 @@ public class TowerSubsystem extends SubsystemBase {
     Idle,
     Feeding,
     Loading,
+    Separating,
   }
 
   @Override
@@ -95,6 +97,21 @@ public class TowerSubsystem extends SubsystemBase {
           if (upperPresent) feedUpper();
           break;
         } // else, fallthrough to load
+
+      case Separating:
+        if (lowerPresent && upperPresent) stopBoth();
+        if (!separated && !lowerPresent) reverseBoth();
+
+        if (!separated && lowerPresent) {
+          stopBoth();
+          separated = true;
+          loadUpper();
+        }
+        if (separated && upperPresent && !lowerPresent) {
+          stopBoth();
+          reverseLower();
+        }
+        break;
 
       case Loading:
         if (!upperPresent) loadBoth();
@@ -133,9 +150,12 @@ public class TowerSubsystem extends SubsystemBase {
     m_state = State.Reversing;
   }
 
+  public void separateBalls() {
+    m_state = State.Separating;
+  }
+
   public void load() {
-    if (m_state == State.Feeding) return;
-    m_state = State.Loading;
+    if (m_state != State.Feeding) m_state = State.Loading;
   }
 
   /** if false, load for firing. if true, send up to fire */
@@ -173,6 +193,11 @@ public class TowerSubsystem extends SubsystemBase {
     upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
   }
 
+  private void reverseLower() {
+    upperMotor.set(ControlMode.PercentOutput, 0);
+    lowerMotor.set(ControlMode.PercentOutput, kReversingSpeedLower);
+  }
+
   private void stopBoth() {
     lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, 0.0);
@@ -180,6 +205,11 @@ public class TowerSubsystem extends SubsystemBase {
 
   private void loadBoth() {
     lowerMotor.set(ControlMode.PercentOutput, kLoadingSpeedLower);
+    upperMotor.set(ControlMode.PercentOutput, kLoadingSpeedUpper);
+  }
+
+  private void loadUpper() {
+    lowerMotor.set(ControlMode.PercentOutput, 0.0);
     upperMotor.set(ControlMode.PercentOutput, kLoadingSpeedUpper);
   }
 

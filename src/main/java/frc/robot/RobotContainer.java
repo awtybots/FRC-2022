@@ -78,8 +78,9 @@ public class RobotContainer {
     Operator.RightBumper.whenHeld(new SpinupInterpolated(Shooter));
 
     /// === MANUAL ===
-    Operator.LeftBumper.whenHeld(new ReverseTower(Tower));
     Climber.setDefaultCommand(new DriveClimber(Operator, Climber));
+    Operator.LeftBumper.whenHeld(new ReverseTower(Tower));
+    Operator.LeftTrigger.whenHeld(new SeparateBalls(Tower));
 
     /// === SHOOTING ===
     Operator.RightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
