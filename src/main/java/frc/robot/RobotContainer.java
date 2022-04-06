@@ -80,14 +80,14 @@ public class RobotContainer {
     /// === MANUAL ===
     Climber.setDefaultCommand(new DriveClimber(Operator, Climber));
     Operator.LeftBumper.whenHeld(new ReverseTower(Tower));
-    Operator.LeftTrigger.whenHeld(new SeparateBalls(Tower));
+    // Operator.LeftTrigger.whenHeld(new SeparateBalls(Tower));
 
     /// === SHOOTING ===
-    Operator.RightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
-    Operator.ButtonA.whenHeld(new SpinupRpm(750, Shooter));
-    Operator.ButtonB.whenHeld(new SpinupRpm(1600, Shooter)); // 1480
-    Operator.ButtonX.whenHeld(new SpinupRpm(1900, Shooter)); // 1540
-    Operator.ButtonY.whenHeld(new SpinupRpm(2150, Shooter)); // 1700
+    // Operator.RightTrigger.whenHeld(new FeedShooter(Tower, Shooter, Turret));
+    Operator.ButtonA.whenHeld(new SpinupRpmAndFeed(750, Tower, Shooter));
+    Operator.ButtonB.whenHeld(new SpinupRpmAndFeed(1600, Tower, Shooter)); // 1480
+    Operator.ButtonX.whenHeld(new SpinupRpmAndFeed(1900, Tower, Shooter)); // 1540
+    Operator.ButtonY.whenHeld(new SpinupRpmAndFeed(2150, Tower, Shooter)); // 1700
 
     /// === TURRET ===
     Turret.setDefaultCommand(new DriveTurret(Operator, Turret));
