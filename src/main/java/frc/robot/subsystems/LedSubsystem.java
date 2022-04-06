@@ -44,6 +44,7 @@ public class LedSubsystem extends SubsystemBase {
   public void blink() {
     if (state != State.kBlinking) {
       state = State.kBlinking;
+      blinkOn = false;
       timer.reset();
       timer.start();
       toggle(false);
