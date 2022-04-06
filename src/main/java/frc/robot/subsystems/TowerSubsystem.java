@@ -91,27 +91,30 @@ public class TowerSubsystem extends SubsystemBase {
     boolean lowerPresent = lowerBallPresent();
 
     switch (m_state) {
+      case Separating:
+        if (lowerPresent && upperPresent) { //  Complete
+          stopBoth();
+          m_state = State.Idle;
+          separated = true;
+        }
+        if (!separated && !lowerPresent) {
+          reverseBoth();
+        }
+        if (lowerPresent && !upperPresent) {
+          loadUpper();
+          separated = true;
+        }
+        if (separated && !lowerPresent && upperPresent) { // Retry
+          separated = false;
+        }
+        break;
+
       case Feeding:
         if (firing) {
           if (!upperPresent) feedBoth();
           if (upperPresent) feedUpper();
           break;
         } // else, fallthrough to load
-
-      case Separating:
-        if (lowerPresent && upperPresent) stopBoth();
-        if (!separated && !lowerPresent) reverseBoth();
-
-        if (!separated && lowerPresent) {
-          stopBoth();
-          separated = true;
-          loadUpper();
-        }
-        if (separated && upperPresent && !lowerPresent) {
-          stopBoth();
-          reverseLower();
-        }
-        break;
 
       case Loading:
         if (!upperPresent) loadBoth();
@@ -152,6 +155,28 @@ public class TowerSubsystem extends SubsystemBase {
 
   public void separateBalls() {
     m_state = State.Separating;
+
+    // if (separated && !lowerBallPresent() && upperBallPresent())
+    //   ; // try again? still not unstuck?
+    // if (separated && !lowerBallPresent() && !upperBallPresent())
+    //   ; // In between sensors, ignore
+
+    // if (separated && lowerBallPresent() && !upperBallPresent())
+    //   ; // Feed Upper (squished at bottom) [separated=true]
+    // if (!separated && lowerBallPresent() && !upperBallPresent())
+    //   ; // Feed Upper (squished at bottom) [separated=true]
+
+    // if (!separated && !lowerBallPresent() && upperBallPresent())
+    //   ; // Reverse Both (squished at top) [separated=false]
+    // if (!separated && !lowerBallPresent() && !upperBallPresent())
+    //   ; // Reverse Both (halfway down) [separated=false]
+
+    // if (separated && lowerBallPresent() && upperBallPresent())
+    //   ; // Complete [separated=true]
+    // if (!separated && lowerBallPresent() && upperBallPresent())
+    //   ; // Complete [separated=true]
+
+    // ---------- //
   }
 
   public void load() {
