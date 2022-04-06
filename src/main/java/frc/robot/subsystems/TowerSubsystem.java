@@ -47,9 +47,11 @@ public class TowerSubsystem extends SubsystemBase {
 
   public TowerSubsystem() {
     upperSensor =
-        new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
+        new ColorSensor(
+            "Upper", ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
     lowerSensor =
-        new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, kMinProximityL, kMinConfidence);
+        new ColorSensor(
+            "Lower", ColorSensors.kLowerSensorPort, kRed, kBlue, kMinProximityL, kMinConfidence);
 
     upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
     lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);

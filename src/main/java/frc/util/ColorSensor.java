@@ -6,6 +6,7 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorSensorV3.*;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensor {
@@ -17,12 +18,15 @@ public class ColorSensor {
 
   private final ColorSensorV3 sensor;
   private final ColorMatch colorMatch = new ColorMatch();
+  private final String name;
 
-  public ColorSensor(I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
+  public ColorSensor(
+      String name, I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
     this.minimumDistance = minDistance;
     this.minColorConfidence = minConfidence;
     this.redColor = red;
     this.blueColor = blue;
+    this.name = name;
 
     colorMatch.addColorMatch(red);
     colorMatch.addColorMatch(blue);
@@ -40,6 +44,7 @@ public class ColorSensor {
   }
 
   public boolean ballPresent() {
+    SmartDashboard.putNumber("PROXIMITY " + this.name, sensor.getProximity());
     return sensor.getProximity() > minimumDistance;
   }
 
