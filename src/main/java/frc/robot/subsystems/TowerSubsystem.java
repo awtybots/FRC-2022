@@ -22,9 +22,9 @@ public class TowerSubsystem extends SubsystemBase {
   private State m_state = State.Idle;
   private boolean firing = false;
 
-  private final Color kRed = new Color(0.41, 0.41, 0.18);
-  private final Color kBlue = new Color(0.17, 0.41, 0.43);
-  private final int kMinProximityL = 250;
+  private final Color kRed = new Color(0.45, 0.39, 0.17);
+  private final Color kBlue = new Color(0.18, 0.43, 0.39);
+  private final int kMinProximityL = 150;
   private final int kMinProximityU = 250;
   private final double kMinConfidence = 0.90;
 
@@ -66,7 +66,7 @@ public class TowerSubsystem extends SubsystemBase {
     upperMotor.configFactoryDefault();
     lowerMotor.configFactoryDefault();
 
-    upperMotor.setInverted(false);
+    upperMotor.setInverted(true);
     lowerMotor.setInverted(true);
 
     upperMotor.configVoltageCompSaturation(12.0);
@@ -120,6 +120,8 @@ public class TowerSubsystem extends SubsystemBase {
       SmartDashboard.putString("Lower Ball Alliance", lowerSensor.getBallAlliance().toString());
       SmartDashboard.putString("Upper Ball Color", upperSensor.rawColor());
       SmartDashboard.putString("Lower Ball Color", lowerSensor.rawColor());
+      SmartDashboard.putNumber("Lower Proximity", lowerSensor.getProximity());
+      SmartDashboard.putNumber("Upper Proximity", upperSensor.getProximity());
     }
   }
 
@@ -206,11 +208,11 @@ public class TowerSubsystem extends SubsystemBase {
         || (ballAlliance == Alliance.Invalid);
   }
 
-  private boolean upperBallPresent() {
+  public boolean upperBallPresent() {
     return upperSensor.ballPresent();
   }
 
-  private boolean lowerBallPresent() {
+  public boolean lowerBallPresent() {
     return lowerSensor.ballPresent();
   }
 

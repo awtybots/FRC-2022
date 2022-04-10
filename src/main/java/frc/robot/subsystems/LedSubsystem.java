@@ -1,14 +1,18 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LedSubsystem extends SubsystemBase {
 
-  private final double kBlinkPeriod = 0.5;
+  private final double kBlinkPeriod = .4;
 
   private final Timer timer = new Timer();
   private State state = State.kOn;
+
+  private final PowerDistribution pdh;
 
   private enum State {
     kOn,
@@ -18,11 +22,24 @@ public class LedSubsystem extends SubsystemBase {
   }
 
   public LedSubsystem() {
-    turnOn();
+    pdh = new PowerDistribution();
+    SmartDashboard.putBoolean("LED POWERRRRR", false);
+    SmartDashboard.putBoolean("blinky blinky", false);
+
+    turnOff();
   }
 
   @Override
   public void periodic() {
+    final boolean l = SmartDashboard.getBoolean("LED POWERRRRR", false);
+    final boolean b = SmartDashboard.getBoolean("blinky blinky", false);
+    if (b) {
+      blink();
+    } else if (l) {
+      turnOn();
+    } else {
+      turnOff();
+    }
     switch (state) {
       case kBlinkingOn:
         if (timer.get() > kBlinkPeriod) {
@@ -43,12 +60,13 @@ public class LedSubsystem extends SubsystemBase {
   }
 
   private void toggle(boolean on) {
-    // RobotContainer.pdh.setSwitchableChannel(on);
+    pdh.setSwitchableChannel(on);
   }
 
   // PUBLIC
 
   public void blink() {
+    if (state == State.kBlinkingOn || state == State.kBlinkingOff) return;
     state = State.kBlinkingOff;
     timer.reset();
     timer.start();

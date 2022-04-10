@@ -9,6 +9,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Climber;
@@ -16,6 +19,8 @@ import frc.util.math.Convert;
 import frc.util.math.Convert.Encoder;
 
 public class ClimbSubsystem extends SubsystemBase {
+
+  private final DoubleSolenoid pistons;
 
   private final WPI_TalonFX leftMotor;
   private final WPI_TalonFX rightMotor;
@@ -28,12 +33,20 @@ public class ClimbSubsystem extends SubsystemBase {
   private static final double kMaxPercentOutput = 1.0;
   private static final double kRamp = 0.2;
 
+  private boolean pistonState = false;
+
   public ClimbSubsystem() {
+    pistons =
+        new DoubleSolenoid(
+            PneumaticsModuleType.REVPH, Climber.kTraverseSolenoidF, Climber.kTraverseSolenoidR);
     leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
     rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
     motors = new WPI_TalonFX[] {leftMotor, rightMotor};
 
     configMotors();
+
+    rotateVertical();
+    stop();
   }
 
   @Override
@@ -80,5 +93,23 @@ public class ClimbSubsystem extends SubsystemBase {
 
   public void stop() {
     for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public void rotateTilted() {
+    pistons.set(Value.kReverse);
+    pistonState = false;
+  }
+
+  public void rotateVertical() {
+    pistons.set(Value.kForward);
+    pistonState = true;
+  }
+
+  public void togglePistons() {
+    if (pistonState) { // we are currently vertical
+      rotateTilted();
+    } else { // we are currently tilted
+      rotateVertical();
+    }
   }
 }

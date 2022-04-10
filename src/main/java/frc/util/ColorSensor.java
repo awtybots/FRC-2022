@@ -55,11 +55,15 @@ public class ColorSensor {
     return Alliance.Invalid;
   }
 
+  private String rgbToString(Color c) {
+    return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
+  }
+
   public String rawColor() {
     return rgbToString(sensor.getColor());
   }
 
-  private String rgbToString(Color c) {
-    return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
+  public int getProximity() {
+    return sensor.getProximity();
   }
 }

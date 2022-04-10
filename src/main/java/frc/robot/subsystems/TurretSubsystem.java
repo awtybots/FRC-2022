@@ -18,26 +18,27 @@ import frc.util.math.Convert.Encoder;
 
 public class TurretSubsystem extends SubsystemBase {
 
-  private static final double kAngleMin = -120.0;
-  private static final double kAngleMax = 230.0;
+  private static final double kAngleMin = -60.0;
+  private static final double kAngleMax = 240.0;
   private static final double kAngleHalf = (kAngleMin + kAngleMax) / 2.0;
   private static final double kAngleStart = 180.0;
 
   public static final double kSpitAngle = 45.0;
   public static final double kSpitRelativeAngle = 45.0;
 
-  private static final double kMaxAcceptableAngleError = 5.0;
+  private static final double kMaxAcceptableAngleError = 2.0;
   private static final double kManualEndzoneSize = 5.0;
 
   private static final double kManualPeakPercentOutput = 0.4;
 
-  private static final double kClosedLoopPeakOutput = 0.5;
-  private static final double kMaxAngularSpeed = 90.0;
+  private static final double kNominalOutput = 0.00;
+  private static final double kClosedLoopPeakOutput = 0.4;
+  private static final double kMaxAngularSpeed = 110.0;
   private static final double kMaxAngularAccel = 90.0;
 
   private static final double kGearRatio = -1.0 / 4.0 / 10.8;
 
-  private static final double kP = 0.15;
+  private static final double kP = 0.3;
   private static final double kI = 0.001;
   private static final double kD = 3.5;
   private static final double kIZone = 500.0;
@@ -84,6 +85,9 @@ public class TurretSubsystem extends SubsystemBase {
     mMotor.config_kI(0, kI);
     mMotor.config_kD(0, kD);
     mMotor.config_IntegralZone(0, kIZone);
+    mMotor.configNeutralDeadband(kNominalOutput);
+    mMotor.configNominalOutputForward(kNominalOutput);
+    mMotor.configNominalOutputReverse(-kNominalOutput);
     mMotor.configClosedLoopPeakOutput(0, kClosedLoopPeakOutput);
     mMotor.configMotionCruiseVelocity(
         Convert.angularVelToEncoderVel(
@@ -109,9 +113,9 @@ public class TurretSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("TU - actual angle", mCurrentAngle);
 
     if (Constants.TUNING_MODE) {
-      SmartDashboard.putBoolean("TU - at goal", isAtTarget());
-      SmartDashboard.putNumber("TU - target angle", mTargetAngle);
-      SmartDashboard.putString("TU - state", mState.toString());
+      // SmartDashboard.putBoolean("TU - at goal", isAtTarget());
+      // SmartDashboard.putNumber("TU - target angle", mTargetAngle);
+      // SmartDashboard.putString("TU - state", mState.toString());
 
       // mMotor.config_kP(0, SmartDashboard.getNumber("TU - kP", kP));
       // mMotor.config_kI(0, SmartDashboard.getNumber("TU - kI", kI));
@@ -176,7 +180,7 @@ public class TurretSubsystem extends SubsystemBase {
       if (hasTarget) {
         turnToPrivate(boundedGoalAngle);
       } else {
-        if (mCurrentAngle > kAngleHalf && false) { // ! TODO fix bandaid
+        if (mCurrentAngle > kAngleHalf) {
           mState = State.kSeekingRight;
           turnToPrivate(kAngleMax);
         } else {

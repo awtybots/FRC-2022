@@ -5,12 +5,13 @@ import edu.wpi.first.wpilibj2.command.button.*;
 
 public class Controller {
   private final XboxController controller;
-  private final double kDeadzoneStick = 0.01;
+  private final double kDeadzoneStick = 0.1;
   private final double kDeadzoneTrigger = 0.0;
 
   public final JoystickButton buttonA, buttonX, buttonY, buttonB;
   public final JoystickButton buttonBack, buttonStart;
   public final JoystickButton leftBumper, rightBumper;
+  public final JoystickButton leftStickClick, rightStickClick;
 
   // D-Pad
   public POVButton dPadUp, dPadRight, dPadDown, dPadLeft;
@@ -31,6 +32,9 @@ public class Controller {
 
     leftBumper = createButton(XboxController.Button.kLeftBumper.value);
     rightBumper = createButton(XboxController.Button.kRightBumper.value);
+
+    leftStickClick = createButton(XboxController.Button.kLeftStick.value);
+    rightStickClick = createButton(XboxController.Button.kRightStick.value);
 
     dPadUp = new POVButton(controller, 0);
     dPadRight = new POVButton(controller, 90);

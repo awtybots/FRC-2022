@@ -21,10 +21,10 @@ public final class Constants {
 
   public static final class Tower {
     public static final int kUpperMotorCanId = 7;
-    public static final int kLowerMotorCanId = 14;
+    public static final int kLowerMotorCanId = 8;
 
-    public static final int kSolenoidUp = 0;
-    public static final int kSolenoidDown = 15;
+    public static final int kSolenoidUp = 10;
+    public static final int kSolenoidDown = 8;
   }
 
   public static final class Turret {
@@ -37,7 +37,7 @@ public final class Constants {
     public static final ShotMap shotMap = new ShotMap();
 
     static { // distance (meters), RPM
-      shotMap.addShot(3.90, 1500);
+      shotMap.addShot(3.90, 1600);
       shotMap.addShot(4.20, 1630);
       shotMap.addShot(5.80, 2000);
       shotMap.addShot(6.37, 2200);
@@ -48,8 +48,11 @@ public final class Constants {
     public static final int kLeftMotorCanId = 11;
     public static final int kRightMotorCanId = 12;
 
-    public static final int kLeftMotorChannel = 19;
-    public static final int kRightMotorChannel = 0;
+    public static final int kTraverseSolenoidF = 0;
+    public static final int kTraverseSolenoidR = 15;
+
+    // public static final int kLeftMotorChannel = 19;
+    // public static final int kRightMotorChannel = 0;
   }
 
   public static final class Field {

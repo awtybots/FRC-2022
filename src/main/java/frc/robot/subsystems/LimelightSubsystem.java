@@ -17,6 +17,7 @@ public class LimelightSubsystem extends SubsystemBase {
   private final VisionTarget upperHub;
 
   private final int filterSize = 10;
+  private final double kAngleLatencyGain = 0.5;
 
   private final MedianFilter distFilter = new MedianFilter(filterSize);
   private final MedianFilter thetaFilter = new MedianFilter(filterSize);
@@ -65,7 +66,7 @@ public class LimelightSubsystem extends SubsystemBase {
   }
 
   public double angleToTarget() {
-    return angleToTarget;
+    return angleToTarget * kAngleLatencyGain;
   }
 
   public void enableDrivingMode() {

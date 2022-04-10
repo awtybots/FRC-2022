@@ -29,10 +29,11 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    robotContainer.turnOffLimelightLEDs();
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    robotContainer.toggleLimelightLeds(false); // don't blind us
   }
 
   /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
@@ -44,6 +45,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.schedule();
     }
+
+    robotContainer.toggleLimelightLeds(true);
   }
 
   @Override
@@ -52,6 +55,8 @@ public class Robot extends TimedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    robotContainer.toggleLimelightLeds(true);
   }
 
   @Override

@@ -22,7 +22,7 @@ public class ShootRpm extends CommandBase {
   @Override
   public void initialize() {
     shooter.shootRpm(this.rpm);
-    RobotContainer.ledSubsystem.blink();
+    RobotContainer.LEDs.blink();
   }
 
   @Override
@@ -34,6 +34,6 @@ public class ShootRpm extends CommandBase {
   public void end(boolean interrupted) {
     shooter.stop();
     tower.stop();
-    RobotContainer.ledSubsystem.turnOn();
+    RobotContainer.LEDs.turnOn();
   }
 }

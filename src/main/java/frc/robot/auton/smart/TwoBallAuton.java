@@ -15,14 +15,13 @@ public class TwoBallAuton extends SequentialCommandGroup {
       DrivetrainSubsystem drivetrainSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      ShooterSubsystem shooterSubsystem) {
     addCommands(
         new TwoBall0(drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(5.0)),
         new ShootRpm(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
 
-    autoAimCommand = new AutoAim(turretSubsystem, limelightSubsystem);
+    autoAimCommand = new AutoAim(turretSubsystem);
   }
 
   @Override

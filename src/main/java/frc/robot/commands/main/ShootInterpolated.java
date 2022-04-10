@@ -2,37 +2,31 @@ package frc.robot.commands.main;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Shooter;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 
 public class ShootInterpolated extends CommandBase {
   private final TowerSubsystem tower;
   private final ShooterSubsystem shooter;
-  private final LimelightSubsystem limelight;
 
-  public ShootInterpolated(
-      TowerSubsystem towerSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+  public ShootInterpolated(TowerSubsystem towerSubsystem, ShooterSubsystem shooterSubsystem) {
     this.tower = towerSubsystem;
     this.shooter = shooterSubsystem;
-    this.limelight = limelightSubsystem;
 
     addRequirements(towerSubsystem, shooterSubsystem);
   }
 
   @Override
-  public void initialize() {
-    limelight.enableShootingMode();
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
-    if (!limelight.hasVisibleTarget()) {
+    if (!RobotContainer.Limelight.hasVisibleTarget()) {
       shooter.stop();
       return;
     }
 
-    double goalDistance = limelight.distToTarget();
+    double goalDistance = RobotContainer.Limelight.distToTarget();
     if (goalDistance == -1) {
       shooter.stop();
       return;
@@ -48,6 +42,5 @@ public class ShootInterpolated extends CommandBase {
   public void end(boolean interrupted) {
     tower.stop();
     shooter.stop();
-    limelight.enableDrivingMode();
   }
 }

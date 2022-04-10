@@ -1,7 +1,7 @@
 package frc.robot.auton.blind;
 
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.auton.blind.segments.DrivePercent;
 import frc.robot.commands.backup.ShootRpm;
 import frc.robot.commands.main.AutoAim;
 import frc.robot.commands.main.IntakeAndIngest;
@@ -13,36 +13,21 @@ public class FourBallRightSide extends SequentialCommandGroup {
       DrivetrainSubsystem drivetrainSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      ShooterSubsystem shooterSubsystem) {
     addCommands(
-        new FunctionalCommand(
-                () -> {},
-                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
-                interrupted -> drivetrainSubsystem.stop(),
-                () -> false,
-                drivetrainSubsystem)
+        new DrivePercent(1.0, 1.0, drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
-            .withTimeout(3.0),
-        new AutoAim(turretSubsystem, limelightSubsystem).withTimeout(2.0),
+            .alongWith(new AutoAim(turretSubsystem))
+            .withTimeout(1.0),
+        new AutoAim(turretSubsystem).withTimeout(1.0),
         new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0),
-        new FunctionalCommand(
-                () -> {},
-                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
-                interrupted -> drivetrainSubsystem.stop(),
-                () -> false,
-                drivetrainSubsystem)
+        new DrivePercent(1.0, 1.0, drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
-            .withTimeout(4.0),
+            .withTimeout(1.0),
         new IntakeAndIngest(towerSubsystem).withTimeout(1.0),
-        new FunctionalCommand(
-                () -> {},
-                () -> drivetrainSubsystem.driveVolts(-3.0, -3.0),
-                interrupted -> drivetrainSubsystem.stop(),
-                () -> false,
-                drivetrainSubsystem)
+        new DrivePercent(-1.0, -1.0, drivetrainSubsystem)
             .alongWith(new IntakeAndIngest(towerSubsystem))
-            .withTimeout(4.5),
+            .withTimeout(1.0),
         new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0));
   }
 }

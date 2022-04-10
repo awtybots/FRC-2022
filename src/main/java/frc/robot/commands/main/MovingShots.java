@@ -1,9 +1,9 @@
 package frc.robot.commands.main;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Field;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.*;
 import frc.util.math.ProjectileMotionSolver;
 import frc.util.math.ProjectileMotionSolver.CommonProjectiles.Sphere;
@@ -19,7 +19,6 @@ public class MovingShots extends CommandBase {
   private final TowerSubsystem tower;
   private final ShooterSubsystem shooter;
   private final TurretSubsystem turret;
-  private final LimelightSubsystem limelight;
   private final DrivetrainSubsystem drivetrain;
 
   private final ProjectileMotionSolver projectileMotionSolver;
@@ -28,19 +27,13 @@ public class MovingShots extends CommandBase {
       TowerSubsystem towerSubsystem,
       ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem,
-      DrivetrainSubsystem drivetrainSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      DrivetrainSubsystem drivetrainSubsystem) {
     this.tower = towerSubsystem;
     this.shooter = shooterSubsystem;
     this.turret = turretSubsystem;
     this.drivetrain = drivetrainSubsystem;
-    this.limelight = limelightSubsystem;
 
-    addRequirements(
-        towerSubsystem,
-        shooterSubsystem,
-        turretSubsystem,
-        limelightSubsystem); // drive and color sensor subsystems not requirements
+    addRequirements(towerSubsystem, shooterSubsystem, turretSubsystem);
 
     projectileMotionSolver =
         new ProjectileMotionSolver(
@@ -51,25 +44,23 @@ public class MovingShots extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    limelight.enableShootingMode();
-  }
+  public void initialize() {}
 
-  private void executeShoot(boolean idling) {
-    if (!limelight.hasVisibleTarget()) {
+  private void executeShoot() {
+    if (!RobotContainer.Limelight.hasVisibleTarget()) {
       turret.trackTarget(false);
       shooter.stop();
       return;
     }
 
-    double goalDisplacement = limelight.distToTarget();
+    double goalDisplacement = RobotContainer.Limelight.distToTarget();
     if (goalDisplacement == -1) {
       turret.trackTarget(false);
       shooter.stop();
       return;
     }
 
-    double visionTargetXOffset = limelight.angleToTarget();
+    double visionTargetXOffset = RobotContainer.Limelight.angleToTarget();
     double robotSpeed = drivetrain.getSpeed();
     double driveToGoalAngle = visionTargetXOffset + turret.getCurrentAngle();
     Vector2 robotVelocity = Vector2.fromPolar(robotSpeed, -driveToGoalAngle);
@@ -95,45 +86,28 @@ public class MovingShots extends CommandBase {
 
     turret.trackTarget(true, visionTargetXOffset + horizontalLaunchAngle);
 
-    if (idling) {
-      shooter.stop();
-    } else {
-      // shooterSubsystem.shootRpm(launchRpm);
-      SmartDashboard.putNumber("moving shots rpm", launchRpm);
-    }
+    shooter.shootRpm(launchRpm);
   }
 
   private void executeSpit() {
-    turret.spit(limelight.hasVisibleTarget(), limelight.angleToTarget());
+    turret.spit(
+        RobotContainer.Limelight.hasVisibleTarget(), RobotContainer.Limelight.angleToTarget());
   }
 
   @Override
   public void execute() {
-    // TODO port
-    // if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //   if (colorSensorsSubsystem.isUpperBallOurs()) {
-    //     executeShoot(false);
-    //   } else {
-    //     executeSpit();
-    //   }
+    if (tower.upperBallPresent()) {
+      if (tower.upperBallOurs()) {
+        executeShoot();
+      } else {
+        executeSpit();
+      }
 
-    //   if (turretSubsystem.isAtTarget() && shooterSubsystem.isAtTarget()) {
-    //     if (colorSensorsSubsystem.isUpperBallPresent()) {
-    //       towerSubsystem.feedFromUpper();
-    //     } else {
-    //       towerSubsystem.feedFromLower();
-    //     }
-    //   } else {
-    //     towerSubsystem.stopUpper();
-
-    //     if (colorSensorsSubsystem.isLowerBallPresent()) {
-    //       towerSubsystem.stop();
-    //     }
-    //   }
-    // } else {
-    //   executeShoot(true);
-    //   towerSubsystem.intake();
-    // }
+      tower.feed(turret.isAtTarget() && shooter.isAtTarget());
+    } else {
+      executeShoot(); // idle shooter
+      tower.intake();
+    }
   }
 
   @Override
@@ -141,6 +115,5 @@ public class MovingShots extends CommandBase {
     tower.stop();
     shooter.stop();
     turret.idle();
-    limelight.enableDrivingMode();
   }
 }

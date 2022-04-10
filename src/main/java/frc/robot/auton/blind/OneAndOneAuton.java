@@ -12,8 +12,7 @@ public class OneAndOneAuton extends SequentialCommandGroup {
       DrivetrainSubsystem drivetrainSubsystem,
       TowerSubsystem towerSubsystem,
       TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem,
-      LimelightSubsystem limelightSubsystem) {
+      ShooterSubsystem shooterSubsystem) {
     addCommands(
         new ShootRpm(1000, towerSubsystem, shooterSubsystem).withTimeout(4),
         new FunctionalCommand(
