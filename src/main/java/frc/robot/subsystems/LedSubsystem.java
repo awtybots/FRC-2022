@@ -23,7 +23,7 @@ public class LedSubsystem extends SubsystemBase {
   public LedSubsystem() {
     pdh = new PowerDistribution();
 
-    turnOff();
+    turnOn();
   }
 
   @Override
