@@ -68,13 +68,8 @@ public class Limelight extends SubsystemBase {
      * @param pipeline integer from 0 to 9, inclusive
      */
     public void setPipeline(int pipeline) {
-        if (pipeline < 10 && pipeline > -1) setValue(TableEntry.CurrentPipeline, pipeline);
+        if (0 >= pipeline && pipeline <= 9) setValue(TableEntry.CurrentPipeline, pipeline);
     }
-
-    // @Deprecated
-    // public void toggleDriverMode(boolean enabled) {
-    //   setValue(TableEntry.OperationMode, enabled ? 1.0 : 0.0);
-    // }
 
     public void toggleLED(LEDMode state) {
         setValue(TableEntry.LEDMode, state.ordinal());

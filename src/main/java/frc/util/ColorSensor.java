@@ -13,20 +13,20 @@ public class ColorSensor {
     private final int minimumDistance;
     private final double minColorConfidence;
 
-    private final Color redColor, blueColor;
+    private final Color kRedColor, kBlueColor;
 
     private final ColorSensorV3 sensor;
     private final ColorMatch colorMatch = new ColorMatch();
 
     public ColorSensor(
-            I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
+            I2C.Port port, Color kRed, Color kBlue, int minDistance, double minConfidence) {
         this.minimumDistance = minDistance;
         this.minColorConfidence = minConfidence;
-        this.redColor = red;
-        this.blueColor = blue;
+        this.kRedColor = kRed;
+        this.kBlueColor = kBlue;
 
-        colorMatch.addColorMatch(red);
-        colorMatch.addColorMatch(blue);
+        colorMatch.addColorMatch(kRed);
+        colorMatch.addColorMatch(kBlue);
         colorMatch.setConfidenceThreshold(minColorConfidence);
 
         sensor = new ColorSensorV3(port);
@@ -50,8 +50,8 @@ public class ColorSensor {
         ColorMatchResult match = colorMatch.matchColor(detectedColor);
 
         if (match != null) {
-            if (match.color == redColor) return Alliance.Red;
-            if (match.color == blueColor) return Alliance.Blue;
+            if (match.color == kRedColor) return Alliance.Red;
+            if (match.color == kBlueColor) return Alliance.Blue;
         }
 
         return Alliance.Invalid;
@@ -61,7 +61,7 @@ public class ColorSensor {
         return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
     }
 
-    public String rawColor() {
+    public String rawRGB() {
         return rgbToString(sensor.getColor());
     }
 

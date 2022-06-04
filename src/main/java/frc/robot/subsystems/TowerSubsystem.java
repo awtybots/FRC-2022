@@ -124,8 +124,8 @@ public class TowerSubsystem extends SubsystemBase {
                     "Upper Ball Alliance", upperSensor.getBallAlliance().toString());
             SmartDashboard.putString(
                     "Lower Ball Alliance", lowerSensor.getBallAlliance().toString());
-            SmartDashboard.putString("Upper Ball Color", upperSensor.rawColor());
-            SmartDashboard.putString("Lower Ball Color", lowerSensor.rawColor());
+            SmartDashboard.putString("Upper Ball Color", upperSensor.rawRGB());
+            SmartDashboard.putString("Lower Ball Color", lowerSensor.rawRGB());
             SmartDashboard.putNumber("Lower Proximity", lowerSensor.getProximity());
             SmartDashboard.putNumber("Upper Proximity", upperSensor.getProximity());
         }
