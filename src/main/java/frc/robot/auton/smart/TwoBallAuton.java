@@ -9,32 +9,32 @@ import frc.robot.subsystems.*;
 
 public class TwoBallAuton extends SequentialCommandGroup {
 
-  private final AutoAim autoAimCommand;
+    private final AutoAim autoAimCommand;
 
-  public TwoBallAuton(
-      DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
-      TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem) {
-    addCommands(
-        new TwoBall0(drivetrainSubsystem)
-            .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(5.0)),
-        new ShootRpm(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
+    public TwoBallAuton(
+            DrivetrainSubsystem drivetrainSubsystem,
+            TowerSubsystem towerSubsystem,
+            TurretSubsystem turretSubsystem,
+            ShooterSubsystem shooterSubsystem) {
+        addCommands(
+                new TwoBall0(drivetrainSubsystem)
+                        .alongWith(new IntakeAndIngest(towerSubsystem).withTimeout(5.0)),
+                new ShootRpm(1950.0, towerSubsystem, shooterSubsystem).withTimeout(5.0));
 
-    autoAimCommand = new AutoAim(turretSubsystem);
-  }
+        autoAimCommand = new AutoAim(turretSubsystem);
+    }
 
-  @Override
-  public void initialize() {
-    autoAimCommand.schedule();
+    @Override
+    public void initialize() {
+        autoAimCommand.schedule();
 
-    super.initialize();
-  }
+        super.initialize();
+    }
 
-  @Override
-  public void cancel() {
-    super.cancel();
+    @Override
+    public void cancel() {
+        super.cancel();
 
-    autoAimCommand.cancel();
-  }
+        autoAimCommand.cancel();
+    }
 }

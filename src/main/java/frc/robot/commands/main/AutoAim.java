@@ -6,33 +6,34 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.TurretSubsystem;
 
 public class AutoAim extends CommandBase {
-  private final TurretSubsystem turret;
+    private final TurretSubsystem turret;
 
-  private static final String sdKey = "AutoAim Status";
+    private static final String sdKey = "AutoAim Status";
 
-  public AutoAim(TurretSubsystem turretSubsystem) {
-    this.turret = turretSubsystem;
+    public AutoAim(TurretSubsystem turretSubsystem) {
+        this.turret = turretSubsystem;
 
-    addRequirements(turretSubsystem);
+        addRequirements(turretSubsystem);
 
-    SmartDashboard.putBoolean(sdKey, false);
-  }
+        SmartDashboard.putBoolean(sdKey, false);
+    }
 
-  @Override
-  public void initialize() {
-    SmartDashboard.putBoolean(sdKey, true);
-  }
+    @Override
+    public void initialize() {
+        SmartDashboard.putBoolean(sdKey, true);
+    }
 
-  @Override
-  public void execute() {
-    turret.trackTarget(
-        RobotContainer.Limelight.hasVisibleTarget(), RobotContainer.Limelight.angleToTarget());
-  }
+    @Override
+    public void execute() {
+        turret.trackTarget(
+                RobotContainer.Limelight.hasVisibleTarget(),
+                RobotContainer.Limelight.angleToTarget());
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    turret.idle();
+    @Override
+    public void end(boolean interrupted) {
+        turret.idle();
 
-    SmartDashboard.putBoolean(sdKey, false);
-  }
+        SmartDashboard.putBoolean(sdKey, false);
+    }
 }

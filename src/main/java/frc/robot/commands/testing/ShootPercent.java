@@ -5,7 +5,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootPercent extends StartEndCommand {
 
-  public ShootPercent(double percent, ShooterSubsystem shooter) {
-    super(() -> shooter.shootPercent(percent), shooter::stop, shooter);
-  }
+    public ShootPercent(double percent, ShooterSubsystem shooter) {
+        super(() -> shooter.shootPercent(percent), shooter::stop, shooter);
+    }
 }

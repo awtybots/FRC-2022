@@ -9,21 +9,21 @@ import frc.robot.subsystems.*;
 
 public class TwoBallRightSide extends SequentialCommandGroup {
 
-  public TwoBallRightSide(
-      DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
-      TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem) {
-    addCommands(
-        new FunctionalCommand(
-                () -> {},
-                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
-                interrupted -> drivetrainSubsystem.stop(),
-                () -> false,
-                drivetrainSubsystem)
-            .alongWith(new IntakeAndIngest(towerSubsystem))
-            .withTimeout(3.0),
-        new AutoAim(turretSubsystem).withTimeout(2.0),
-        new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0));
-  }
+    public TwoBallRightSide(
+            DrivetrainSubsystem drivetrainSubsystem,
+            TowerSubsystem towerSubsystem,
+            TurretSubsystem turretSubsystem,
+            ShooterSubsystem shooterSubsystem) {
+        addCommands(
+                new FunctionalCommand(
+                                () -> {},
+                                () -> drivetrainSubsystem.driveVolts(3.0, 3.0),
+                                interrupted -> drivetrainSubsystem.stop(),
+                                () -> false,
+                                drivetrainSubsystem)
+                        .alongWith(new IntakeAndIngest(towerSubsystem))
+                        .withTimeout(3.0),
+                new AutoAim(turretSubsystem).withTimeout(2.0),
+                new ShootRpm(1950, towerSubsystem, shooterSubsystem).withTimeout(3.0));
+    }
 }

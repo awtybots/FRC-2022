@@ -10,31 +10,31 @@ import frc.util.Controller;
 
 public class DriveTurret extends CommandBase {
 
-  private final TurretSubsystem turret;
-  private final Controller controller;
+    private final TurretSubsystem turret;
+    private final Controller controller;
 
-  public DriveTurret(Controller controller, TurretSubsystem turret) {
-    addRequirements(turret);
-    this.turret = turret;
-    this.controller = controller;
-  }
+    public DriveTurret(Controller controller, TurretSubsystem turret) {
+        addRequirements(turret);
+        this.turret = turret;
+        this.controller = controller;
+    }
 
-  @Override
-  public void initialize() {}
+    @Override
+    public void initialize() {}
 
-  @Override
-  public void execute() {
-    double rate = -controller.getLeftStickX();
-    turret.drive(rate);
-  }
+    @Override
+    public void execute() {
+        double rate = -controller.getLeftStickX();
+        turret.drive(rate);
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    turret.idle();
-  }
+    @Override
+    public void end(boolean interrupted) {
+        turret.idle();
+    }
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }

@@ -10,60 +10,62 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensor {
 
-  private final int minimumDistance;
-  private final double minColorConfidence;
+    private final int minimumDistance;
+    private final double minColorConfidence;
 
-  private final Color redColor, blueColor;
+    private final Color redColor, blueColor;
 
-  private final ColorSensorV3 sensor;
-  private final ColorMatch colorMatch = new ColorMatch();
+    private final ColorSensorV3 sensor;
+    private final ColorMatch colorMatch = new ColorMatch();
 
-  public ColorSensor(I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
-    this.minimumDistance = minDistance;
-    this.minColorConfidence = minConfidence;
-    this.redColor = red;
-    this.blueColor = blue;
+    public ColorSensor(
+            I2C.Port port, Color red, Color blue, int minDistance, double minConfidence) {
+        this.minimumDistance = minDistance;
+        this.minColorConfidence = minConfidence;
+        this.redColor = red;
+        this.blueColor = blue;
 
-    colorMatch.addColorMatch(red);
-    colorMatch.addColorMatch(blue);
-    colorMatch.setConfidenceThreshold(minColorConfidence);
+        colorMatch.addColorMatch(red);
+        colorMatch.addColorMatch(blue);
+        colorMatch.setConfidenceThreshold(minColorConfidence);
 
-    sensor = new ColorSensorV3(port);
+        sensor = new ColorSensorV3(port);
 
-    sensor.configureColorSensor(
-        ColorSensorResolution.kColorSensorRes17bit,
-        ColorSensorMeasurementRate.kColorRate25ms,
-        GainFactor.kGain3x);
+        sensor.configureColorSensor(
+                ColorSensorResolution.kColorSensorRes17bit,
+                ColorSensorMeasurementRate.kColorRate25ms,
+                GainFactor.kGain3x);
 
-    sensor.configureProximitySensor(
-        ProximitySensorResolution.kProxRes11bit, ProximitySensorMeasurementRate.kProxRate6ms);
-  }
-
-  public boolean ballPresent() {
-    return sensor.getProximity() > minimumDistance;
-  }
-
-  public Alliance getBallAlliance() {
-    Color detectedColor = sensor.getColor();
-    ColorMatchResult match = colorMatch.matchColor(detectedColor);
-
-    if (match != null) {
-      if (match.color == redColor) return Alliance.Red;
-      if (match.color == blueColor) return Alliance.Blue;
+        sensor.configureProximitySensor(
+                ProximitySensorResolution.kProxRes11bit,
+                ProximitySensorMeasurementRate.kProxRate6ms);
     }
 
-    return Alliance.Invalid;
-  }
+    public boolean ballPresent() {
+        return sensor.getProximity() > minimumDistance;
+    }
 
-  private String rgbToString(Color c) {
-    return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
-  }
+    public Alliance getBallAlliance() {
+        Color detectedColor = sensor.getColor();
+        ColorMatchResult match = colorMatch.matchColor(detectedColor);
 
-  public String rawColor() {
-    return rgbToString(sensor.getColor());
-  }
+        if (match != null) {
+            if (match.color == redColor) return Alliance.Red;
+            if (match.color == blueColor) return Alliance.Blue;
+        }
 
-  public int getProximity() {
-    return sensor.getProximity();
-  }
+        return Alliance.Invalid;
+    }
+
+    private String rgbToString(Color c) {
+        return String.format("RGB(%.2f, %.2f, %.2f)", c.red, c.green, c.blue);
+    }
+
+    public String rawColor() {
+        return rgbToString(sensor.getColor());
+    }
+
+    public int getProximity() {
+        return sensor.getProximity();
+    }
 }

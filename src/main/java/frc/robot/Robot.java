@@ -15,84 +15,85 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command autonomousCommand;
+    private Command autonomousCommand;
 
-  private RobotContainer robotContainer;
+    private RobotContainer robotContainer;
 
-  /** This function is run when the robot is first started up. */
-  @Override
-  public void robotInit() {
-    // This will perform all our button bindings, and put the autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
-  }
-
-  /** This function is called once each time the robot enters Disabled mode. */
-  @Override
-  public void disabledInit() {
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
+    /** This function is run when the robot is first started up. */
+    @Override
+    public void robotInit() {
+        // This will perform all our button bindings, and put the autonomous chooser on the
+        // dashboard.
+        robotContainer = new RobotContainer();
     }
 
-    robotContainer.toggleLimelightLeds(false); // don't blind us
-  }
+    /** This function is called once each time the robot enters Disabled mode. */
+    @Override
+    public void disabledInit() {
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
 
-  /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
-  @Override
-  public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
+        robotContainer.toggleLimelightLeds(false); // don't blind us
     }
 
-    robotContainer.toggleLimelightLeds(true);
-  }
+    /** This autonomous runs the autonomous command provided by <pre> RobotContainer.getAutonomousCommand(). */
+    @Override
+    public void autonomousInit() {
+        autonomousCommand = robotContainer.getAutonomousCommand();
 
-  @Override
-  public void teleopInit() {
-    // Prevents autonomous from continuing into teleop
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
+        // schedule the autonomous command
+        if (autonomousCommand != null) {
+            autonomousCommand.schedule();
+        }
+
+        robotContainer.toggleLimelightLeds(true);
     }
 
-    robotContainer.toggleLimelightLeds(true);
-  }
+    @Override
+    public void teleopInit() {
+        // Prevents autonomous from continuing into teleop
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        }
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+        robotContainer.toggleLimelightLeds(true);
+    }
 
-  /**
-   * This function is called every robot packet, no matter the mode. Use this for items like
-   * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
-    // commands, running already-scheduled commands, removing finished or interrupted commands,
-    // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
-  }
+    @Override
+    public void testInit() {
+        // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
 
-  @Override
-  public void disabledPeriodic() {}
+    /**
+     * This function is called every robot packet, no matter the mode. Use this for items like
+     * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
+     *
+     * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+     * SmartDashboard integrated updating.
+     */
+    @Override
+    public void robotPeriodic() {
+        // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
+        // commands, running already-scheduled commands, removing finished or interrupted commands,
+        // and running subsystem periodic() methods.  This must be called from the robot's periodic
+        // block in order for anything in the Command-based framework to work.
+        CommandScheduler.getInstance().run();
+    }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {}
+    @Override
+    public void disabledPeriodic() {}
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
+    /** This function is called periodically during autonomous. */
+    @Override
+    public void autonomousPeriodic() {}
 
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {}
+    /** This function is called periodically during operator control. */
+    @Override
+    public void teleopPeriodic() {}
+
+    /** This function is called periodically during test mode. */
+    @Override
+    public void testPeriodic() {}
 }

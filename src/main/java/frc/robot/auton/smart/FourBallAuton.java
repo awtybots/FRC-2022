@@ -10,35 +10,35 @@ import frc.robot.subsystems.*;
 
 public class FourBallAuton extends SequentialCommandGroup {
 
-  private final AutoAim autoAimCommand;
+    private final AutoAim autoAimCommand;
 
-  public FourBallAuton(
-      DrivetrainSubsystem drivetrainSubsystem,
-      TowerSubsystem towerSubsystem,
-      TurretSubsystem turretSubsystem,
-      ShooterSubsystem shooterSubsystem) {
-    addCommands(
-        new InstantCommand(towerSubsystem::intake, towerSubsystem),
-        new FourBall0(drivetrainSubsystem),
-        new ShootRpm(3000.0, towerSubsystem, shooterSubsystem).withTimeout(3.0),
-        new InstantCommand(towerSubsystem::intake, towerSubsystem),
-        new FourBall1(drivetrainSubsystem),
-        new ShootRpm(4000.0, towerSubsystem, shooterSubsystem));
+    public FourBallAuton(
+            DrivetrainSubsystem drivetrainSubsystem,
+            TowerSubsystem towerSubsystem,
+            TurretSubsystem turretSubsystem,
+            ShooterSubsystem shooterSubsystem) {
+        addCommands(
+                new InstantCommand(towerSubsystem::intake, towerSubsystem),
+                new FourBall0(drivetrainSubsystem),
+                new ShootRpm(3000.0, towerSubsystem, shooterSubsystem).withTimeout(3.0),
+                new InstantCommand(towerSubsystem::intake, towerSubsystem),
+                new FourBall1(drivetrainSubsystem),
+                new ShootRpm(4000.0, towerSubsystem, shooterSubsystem));
 
-    autoAimCommand = new AutoAim(turretSubsystem);
-  }
+        autoAimCommand = new AutoAim(turretSubsystem);
+    }
 
-  @Override
-  public void initialize() {
-    autoAimCommand.schedule();
+    @Override
+    public void initialize() {
+        autoAimCommand.schedule();
 
-    super.initialize();
-  }
+        super.initialize();
+    }
 
-  @Override
-  public void cancel() {
-    super.cancel();
+    @Override
+    public void cancel() {
+        super.cancel();
 
-    autoAimCommand.cancel();
-  }
+        autoAimCommand.cancel();
+    }
 }

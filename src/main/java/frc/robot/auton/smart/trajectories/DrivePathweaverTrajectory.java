@@ -13,51 +13,53 @@ import java.nio.file.Path;
 
 public abstract class DrivePathweaverTrajectory extends RamseteCommand {
 
-  private final Trajectory trajectory;
-  private final DrivetrainSubsystem drivetrainSubsystem;
+    private final Trajectory trajectory;
+    private final DrivetrainSubsystem drivetrainSubsystem;
 
-  DrivePathweaverTrajectory(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
-    super(
-        trajectory,
-        drivetrainSubsystem::getPose,
-        new RamseteController(),
-        DrivetrainSubsystem.kFeedforward,
-        DrivetrainSubsystem.kKinematics,
-        drivetrainSubsystem::getWheelSpeeds,
-        new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
-        new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
-        drivetrainSubsystem::driveVolts,
-        drivetrainSubsystem);
+    DrivePathweaverTrajectory(Trajectory trajectory, DrivetrainSubsystem drivetrainSubsystem) {
+        super(
+                trajectory,
+                drivetrainSubsystem::getPose,
+                new RamseteController(),
+                DrivetrainSubsystem.kFeedforward,
+                DrivetrainSubsystem.kKinematics,
+                drivetrainSubsystem::getWheelSpeeds,
+                new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
+                new PIDController(DrivetrainSubsystem.kP, 0.0, 0.0),
+                drivetrainSubsystem::driveVolts,
+                drivetrainSubsystem);
 
-    this.trajectory = trajectory;
-    this.drivetrainSubsystem = drivetrainSubsystem;
-  }
-
-  DrivePathweaverTrajectory(String fileName, DrivetrainSubsystem drivetrainSubsystem) {
-    this(loadTrajectoryFromFile(fileName), drivetrainSubsystem);
-  }
-
-  @Override
-  public void initialize() {
-    drivetrainSubsystem.initOdometry(trajectory.getInitialPose());
-    super.initialize();
-  }
-
-  @Override
-  public void end(boolean interrupted) {
-    super.end(interrupted);
-    drivetrainSubsystem.stop();
-  }
-
-  private static Trajectory loadTrajectoryFromFile(String pathName) {
-    try {
-      Path trajectoryPath =
-          Filesystem.getDeployDirectory().toPath().resolve("paths/" + pathName + ".wpilib.json");
-      Trajectory t = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      return t;
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
-      return new Trajectory();
+        this.trajectory = trajectory;
+        this.drivetrainSubsystem = drivetrainSubsystem;
     }
-  }
+
+    DrivePathweaverTrajectory(String fileName, DrivetrainSubsystem drivetrainSubsystem) {
+        this(loadTrajectoryFromFile(fileName), drivetrainSubsystem);
+    }
+
+    @Override
+    public void initialize() {
+        drivetrainSubsystem.initOdometry(trajectory.getInitialPose());
+        super.initialize();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        super.end(interrupted);
+        drivetrainSubsystem.stop();
+    }
+
+    private static Trajectory loadTrajectoryFromFile(String pathName) {
+        try {
+            Path trajectoryPath =
+                    Filesystem.getDeployDirectory()
+                            .toPath()
+                            .resolve("paths/" + pathName + ".wpilib.json");
+            Trajectory t = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            return t;
+        } catch (IOException ex) {
+            DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
+            return new Trajectory();
+        }
+    }
 }

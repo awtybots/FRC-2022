@@ -20,96 +20,99 @@ import frc.util.math.Convert.Encoder;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  private final DoubleSolenoid pistons;
+    private final DoubleSolenoid pistons;
 
-  private final WPI_TalonFX leftMotor;
-  private final WPI_TalonFX rightMotor;
+    private final WPI_TalonFX leftMotor;
+    private final WPI_TalonFX rightMotor;
 
-  private final WPI_TalonFX[] motors;
+    private final WPI_TalonFX[] motors;
 
-  private static final double kWinchDiameter = Convert.inchesToMeters(1.0);
-  private static final double kGearRatio = 1.0 / 5.0 / 5.0 * 34.0 / 44.0;
+    private static final double kWinchDiameter = Convert.inchesToMeters(1.0);
+    private static final double kGearRatio = 1.0 / 5.0 / 5.0 * 34.0 / 44.0;
 
-  private static final double kMaxPercentOutput = 1.0;
-  private static final double kRamp = 0.2;
+    private static final double kMaxPercentOutput = 1.0;
+    private static final double kRamp = 0.2;
 
-  private boolean pistonState = false;
+    private boolean pistonState = false;
 
-  public ClimbSubsystem() {
-    pistons =
-        new DoubleSolenoid(
-            PneumaticsModuleType.REVPH, Climber.kTraverseSolenoidF, Climber.kTraverseSolenoidR);
-    leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
-    rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
-    motors = new WPI_TalonFX[] {leftMotor, rightMotor};
+    public ClimbSubsystem() {
+        pistons =
+                new DoubleSolenoid(
+                        PneumaticsModuleType.REVPH,
+                        Climber.kTraverseSolenoidF,
+                        Climber.kTraverseSolenoidR);
+        leftMotor = new WPI_TalonFX(Climber.kLeftMotorCanId);
+        rightMotor = new WPI_TalonFX(Climber.kRightMotorCanId);
+        motors = new WPI_TalonFX[] {leftMotor, rightMotor};
 
-    configMotors();
+        configMotors();
 
-    rotateVertical();
-    stop();
-  }
-
-  @Override
-  public void periodic() {
-    SmartDashboard.putNumber("CL - position", Convert.metersToInches(getPosition()));
-  }
-
-  private double getPosition() {
-    double sum = 0.0;
-    for (WPI_TalonFX motor : motors) {
-      sum +=
-          Convert.encoderPosToDistance(
-              motor.getSelectedSensorPosition(),
-              kGearRatio,
-              kWinchDiameter,
-              Encoder.TalonFXIntegrated);
+        rotateVertical();
+        stop();
     }
-    return sum / motors.length;
-  }
 
-  private void configMotors() {
-    leftMotor.configFactoryDefault();
-    rightMotor.configFactoryDefault();
-
-    leftMotor.setInverted(TalonFXInvertType.Clockwise);
-
-    for (WPI_TalonFX motor : motors) {
-      motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-      motor.setSelectedSensorPosition(0.0);
-
-      motor.setNeutralMode(NeutralMode.Brake);
-
-      motor.configOpenloopRamp(kRamp);
-      motor.configClosedloopRamp(kRamp);
-      motor.configPeakOutputForward(kMaxPercentOutput);
-      motor.configPeakOutputReverse(-kMaxPercentOutput);
-      motor.configClosedLoopPeakOutput(0, kMaxPercentOutput);
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("CL - position", Convert.metersToInches(getPosition()));
     }
-  }
 
-  public void drive(double pct) {
-    for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, pct * kMaxPercentOutput);
-  }
-
-  public void stop() {
-    for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
-  }
-
-  public void rotateTilted() {
-    pistons.set(Value.kReverse);
-    pistonState = false;
-  }
-
-  public void rotateVertical() {
-    pistons.set(Value.kForward);
-    pistonState = true;
-  }
-
-  public void togglePistons() {
-    if (pistonState) { // we are currently vertical
-      rotateTilted();
-    } else { // we are currently tilted
-      rotateVertical();
+    private double getPosition() {
+        double sum = 0.0;
+        for (WPI_TalonFX motor : motors) {
+            sum +=
+                    Convert.encoderPosToDistance(
+                            motor.getSelectedSensorPosition(),
+                            kGearRatio,
+                            kWinchDiameter,
+                            Encoder.TalonFXIntegrated);
+        }
+        return sum / motors.length;
     }
-  }
+
+    private void configMotors() {
+        leftMotor.configFactoryDefault();
+        rightMotor.configFactoryDefault();
+
+        leftMotor.setInverted(TalonFXInvertType.Clockwise);
+
+        for (WPI_TalonFX motor : motors) {
+            motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+            motor.setSelectedSensorPosition(0.0);
+
+            motor.setNeutralMode(NeutralMode.Brake);
+
+            motor.configOpenloopRamp(kRamp);
+            motor.configClosedloopRamp(kRamp);
+            motor.configPeakOutputForward(kMaxPercentOutput);
+            motor.configPeakOutputReverse(-kMaxPercentOutput);
+            motor.configClosedLoopPeakOutput(0, kMaxPercentOutput);
+        }
+    }
+
+    public void drive(double pct) {
+        for (WPI_TalonFX motor : motors)
+            motor.set(ControlMode.PercentOutput, pct * kMaxPercentOutput);
+    }
+
+    public void stop() {
+        for (WPI_TalonFX motor : motors) motor.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    public void rotateTilted() {
+        pistons.set(Value.kReverse);
+        pistonState = false;
+    }
+
+    public void rotateVertical() {
+        pistons.set(Value.kForward);
+        pistonState = true;
+    }
+
+    public void togglePistons() {
+        if (pistonState) { // we are currently vertical
+            rotateTilted();
+        } else { // we are currently tilted
+            rotateVertical();
+        }
+    }
 }

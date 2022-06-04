@@ -88,6 +88,9 @@ wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
 
 gradle.startParameter.excludedTaskNames << "verifyGoogleJavaFormat"
+googleJavaFormat {
+  options style: 'AOSP'
+}
 task format(type: com.github.sherter.googlejavaformatgradleplugin.GoogleJavaFormat) {
   source 'src'
   include '**/*.java'

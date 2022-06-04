@@ -19,204 +19,210 @@ import frc.util.ColorSensor;
 
 public class TowerSubsystem extends SubsystemBase {
 
-  private State m_state = State.Idle;
-  private boolean firing = false;
+    private State m_state = State.Idle;
+    private boolean firing = false;
 
-  private final Color kRed = new Color(0.45, 0.39, 0.17);
-  private final Color kBlue = new Color(0.18, 0.43, 0.39);
-  private final int kMinProximityL = 150;
-  private final int kMinProximityU = 250;
-  private final double kMinConfidence = 0.90;
+    private final Color kRed = new Color(0.45, 0.39, 0.17);
+    private final Color kBlue = new Color(0.18, 0.43, 0.39);
+    private final int kMinProximityL = 150;
+    private final int kMinProximityU = 250;
+    private final double kMinConfidence = 0.90;
 
-  private Alliance ourAlliance = Alliance.Invalid;
-  private final ColorSensor lowerSensor, upperSensor;
+    private Alliance ourAlliance = Alliance.Invalid;
+    private final ColorSensor lowerSensor, upperSensor;
 
-  private final WPI_TalonSRX upperMotor;
-  private final WPI_TalonFX lowerMotor;
-  private final DoubleSolenoid pistons;
+    private final WPI_TalonSRX upperMotor;
+    private final WPI_TalonFX lowerMotor;
+    private final DoubleSolenoid pistons;
 
-  private static final double kLoadingSpeedLower = 0.5;
-  private static final double kLoadingSpeedUpper = 0.3;
+    private static final double kLoadingSpeedLower = 0.5;
+    private static final double kLoadingSpeedUpper = 0.3;
 
-  private static final double kReversingSpeedLower = 0.5;
-  private static final double kReversingSpeedUpper = 0.4;
+    private static final double kReversingSpeedLower = 0.5;
+    private static final double kReversingSpeedUpper = 0.4;
 
-  private static final double kShootingSpeedLower = 0.75;
-  private static final double kShootingSpeedUpper = 0.75;
+    private static final double kShootingSpeedLower = 0.75;
+    private static final double kShootingSpeedUpper = 0.75;
 
-  public TowerSubsystem() {
-    upperSensor =
-        new ColorSensor(ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
-    lowerSensor =
-        new ColorSensor(ColorSensors.kLowerSensorPort, kRed, kBlue, kMinProximityL, kMinConfidence);
+    public TowerSubsystem() {
+        upperSensor =
+                new ColorSensor(
+                        ColorSensors.kUpperSensorPort, kRed, kBlue, kMinProximityU, kMinConfidence);
+        lowerSensor =
+                new ColorSensor(
+                        ColorSensors.kLowerSensorPort, kRed, kBlue, kMinProximityL, kMinConfidence);
 
-    upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
-    lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);
+        upperMotor = new WPI_TalonSRX(Tower.kUpperMotorCanId);
+        lowerMotor = new WPI_TalonFX(Tower.kLowerMotorCanId);
 
-    pistons =
-        new DoubleSolenoid(
-            PneumaticsModuleType.REVPH, Constants.Tower.kSolenoidUp, Constants.Tower.kSolenoidDown);
+        pistons =
+                new DoubleSolenoid(
+                        PneumaticsModuleType.REVPH,
+                        Constants.Tower.kSolenoidUp,
+                        Constants.Tower.kSolenoidDown);
 
-    configMotors();
+        configMotors();
 
-    stopBoth();
-  }
-
-  private void configMotors() {
-    upperMotor.configFactoryDefault();
-    lowerMotor.configFactoryDefault();
-
-    upperMotor.setInverted(true);
-    lowerMotor.setInverted(true);
-
-    upperMotor.configVoltageCompSaturation(12.0);
-    lowerMotor.configVoltageCompSaturation(12.0);
-
-    upperMotor.setNeutralMode(NeutralMode.Brake);
-    lowerMotor.setNeutralMode(NeutralMode.Brake);
-  }
-
-  public enum State {
-    Reversing,
-    Idle,
-    Feeding,
-    Loading,
-  }
-
-  @Override
-  public void periodic() {
-    boolean upperPresent = upperBallPresent();
-    boolean lowerPresent = lowerBallPresent();
-
-    switch (m_state) {
-      case Feeding:
-        if (firing) {
-          if (!upperPresent) feedBoth();
-          if (upperPresent) feedUpper();
-          break;
-        } // else, fallthrough to load
-
-      case Loading:
-        if (!upperPresent) loadBoth();
-        if (upperPresent && !lowerPresent) loadLower();
-        if (upperPresent && lowerPresent) stop();
-        break;
-
-      case Reversing:
-        reverseBoth();
-        break;
-
-      case Idle:
         stopBoth();
-        break;
     }
 
-    SmartDashboard.putBoolean("Upper Ball Present", upperPresent);
-    SmartDashboard.putBoolean("Lower Ball Present", lowerPresent);
+    private void configMotors() {
+        upperMotor.configFactoryDefault();
+        lowerMotor.configFactoryDefault();
 
-    if (Constants.TUNING_MODE) {
-      SmartDashboard.putString("Tower State", m_state.toString());
-      SmartDashboard.putString("Upper Ball Alliance", upperSensor.getBallAlliance().toString());
-      SmartDashboard.putString("Lower Ball Alliance", lowerSensor.getBallAlliance().toString());
-      SmartDashboard.putString("Upper Ball Color", upperSensor.rawColor());
-      SmartDashboard.putString("Lower Ball Color", lowerSensor.rawColor());
-      SmartDashboard.putNumber("Lower Proximity", lowerSensor.getProximity());
-      SmartDashboard.putNumber("Upper Proximity", upperSensor.getProximity());
+        upperMotor.setInverted(true);
+        lowerMotor.setInverted(true);
+
+        upperMotor.configVoltageCompSaturation(12.0);
+        lowerMotor.configVoltageCompSaturation(12.0);
+
+        upperMotor.setNeutralMode(NeutralMode.Brake);
+        lowerMotor.setNeutralMode(NeutralMode.Brake);
     }
-  }
 
-  /// -------- State Machine API -------- ///
+    public enum State {
+        Reversing,
+        Idle,
+        Feeding,
+        Loading,
+    }
 
-  public void stop() {
-    m_state = State.Idle;
-  }
+    @Override
+    public void periodic() {
+        boolean upperPresent = upperBallPresent();
+        boolean lowerPresent = lowerBallPresent();
 
-  public void reverse() {
-    m_state = State.Reversing;
-  }
+        switch (m_state) {
+            case Feeding:
+                if (firing) {
+                    if (!upperPresent) feedBoth();
+                    if (upperPresent) feedUpper();
+                    break;
+                } // else, fallthrough to load
 
-  public void load() {
-    if (m_state == State.Feeding) return;
-    m_state = State.Loading;
-  }
+            case Loading:
+                if (!upperPresent) loadBoth();
+                if (upperPresent && !lowerPresent) loadLower();
+                if (upperPresent && lowerPresent) stop();
+                break;
 
-  /** if false, load for firing. if true, send up to fire */
-  public void feed(boolean ready) {
-    m_state = State.Feeding;
-    firing = ready;
-  }
+            case Reversing:
+                reverseBoth();
+                break;
 
-  public void intake() {
-    load();
-    deployIntake();
-  }
+            case Idle:
+                stopBoth();
+                break;
+        }
 
-  public void stopIntaking() {
-    stop();
-    retractIntake();
-  }
+        SmartDashboard.putBoolean("Upper Ball Present", upperPresent);
+        SmartDashboard.putBoolean("Lower Ball Present", lowerPresent);
 
-  public boolean isFull() {
-    return upperBallPresent() && lowerBallPresent();
-  }
+        if (Constants.TUNING_MODE) {
+            SmartDashboard.putString("Tower State", m_state.toString());
+            SmartDashboard.putString(
+                    "Upper Ball Alliance", upperSensor.getBallAlliance().toString());
+            SmartDashboard.putString(
+                    "Lower Ball Alliance", lowerSensor.getBallAlliance().toString());
+            SmartDashboard.putString("Upper Ball Color", upperSensor.rawColor());
+            SmartDashboard.putString("Lower Ball Color", lowerSensor.rawColor());
+            SmartDashboard.putNumber("Lower Proximity", lowerSensor.getProximity());
+            SmartDashboard.putNumber("Upper Proximity", upperSensor.getProximity());
+        }
+    }
 
-  /// -------- Actuator Control -------- ///
+    /// -------- State Machine API -------- ///
 
-  public void deployIntake() {
-    pistons.set(Value.kForward);
-  }
+    public void stop() {
+        m_state = State.Idle;
+    }
 
-  public void retractIntake() {
-    pistons.set(Value.kReverse);
-  }
+    public void reverse() {
+        m_state = State.Reversing;
+    }
 
-  private void reverseBoth() {
-    lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
-    upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
-  }
+    public void load() {
+        if (m_state == State.Feeding) return;
+        m_state = State.Loading;
+    }
 
-  private void stopBoth() {
-    lowerMotor.set(ControlMode.PercentOutput, 0.0);
-    upperMotor.set(ControlMode.PercentOutput, 0.0);
-  }
+    /** if false, load for firing. if true, send up to fire */
+    public void feed(boolean ready) {
+        m_state = State.Feeding;
+        firing = ready;
+    }
 
-  private void loadBoth() {
-    lowerMotor.set(ControlMode.PercentOutput, kLoadingSpeedLower);
-    upperMotor.set(ControlMode.PercentOutput, kLoadingSpeedUpper);
-  }
+    public void intake() {
+        load();
+        deployIntake();
+    }
 
-  private void loadLower() {
-    lowerMotor.set(ControlMode.PercentOutput, kLoadingSpeedLower);
-    upperMotor.set(ControlMode.PercentOutput, 0.0);
-  }
+    public void stopIntaking() {
+        stop();
+        retractIntake();
+    }
 
-  private void feedBoth() {
-    lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
-    upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
-  }
+    public boolean isFull() {
+        return upperBallPresent() && lowerBallPresent();
+    }
 
-  private void feedUpper() {
-    lowerMotor.set(ControlMode.PercentOutput, 0.0);
-    upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
-  }
+    /// -------- Actuator Control -------- ///
 
-  /// -------- Color Sensors -------- ///
-  /** Note: will return false if no ball present */
-  public boolean upperBallOurs() {
-    final var ballAlliance = upperSensor.getBallAlliance();
-    return upperBallPresent() && (ballAlliance == ourAlliance)
-        || (ballAlliance == Alliance.Invalid);
-  }
+    public void deployIntake() {
+        pistons.set(Value.kForward);
+    }
 
-  public boolean upperBallPresent() {
-    return upperSensor.ballPresent();
-  }
+    public void retractIntake() {
+        pistons.set(Value.kReverse);
+    }
 
-  public boolean lowerBallPresent() {
-    return lowerSensor.ballPresent();
-  }
+    private void reverseBoth() {
+        lowerMotor.set(ControlMode.PercentOutput, -kReversingSpeedLower);
+        upperMotor.set(ControlMode.PercentOutput, -kReversingSpeedUpper);
+    }
 
-  public void updateAlliance() {
-    this.ourAlliance = DriverStation.getAlliance();
-  }
+    private void stopBoth() {
+        lowerMotor.set(ControlMode.PercentOutput, 0.0);
+        upperMotor.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    private void loadBoth() {
+        lowerMotor.set(ControlMode.PercentOutput, kLoadingSpeedLower);
+        upperMotor.set(ControlMode.PercentOutput, kLoadingSpeedUpper);
+    }
+
+    private void loadLower() {
+        lowerMotor.set(ControlMode.PercentOutput, kLoadingSpeedLower);
+        upperMotor.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    private void feedBoth() {
+        lowerMotor.set(ControlMode.PercentOutput, kShootingSpeedLower);
+        upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
+    }
+
+    private void feedUpper() {
+        lowerMotor.set(ControlMode.PercentOutput, 0.0);
+        upperMotor.set(ControlMode.PercentOutput, kShootingSpeedUpper);
+    }
+
+    /// -------- Color Sensors -------- ///
+    /** Note: will return false if no ball present */
+    public boolean upperBallOurs() {
+        final var ballAlliance = upperSensor.getBallAlliance();
+        return upperBallPresent() && (ballAlliance == ourAlliance)
+                || (ballAlliance == Alliance.Invalid);
+    }
+
+    public boolean upperBallPresent() {
+        return upperSensor.ballPresent();
+    }
+
+    public boolean lowerBallPresent() {
+        return lowerSensor.ballPresent();
+    }
+
+    public void updateAlliance() {
+        this.ourAlliance = DriverStation.getAlliance();
+    }
 }
