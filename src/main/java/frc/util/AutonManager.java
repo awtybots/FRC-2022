@@ -40,33 +40,46 @@ public class AutonManager {
     }
 
     public Command getSelected() {
-        String autoChoice =
+        String dashboardSelection =
                 NetworkTableInstance.getDefault()
                         .getTable("SmartDashboard")
                         .getSubTable(autonSelectorKey)
                         .getEntry("selected")
                         .getString("_");
 
-        if (autoChoice == "_") {
-            System.out.println(
-                    "No auton retrieved from NetworkTablesEntry `SmartDashboard/"
-                            + autonSelectorKey
-                            + "/selected`");
+        if (dashboardSelection == "_") {
+            System.out.printf(
+                    "No auton retrieved from NetworkTablesEntry `SmartDashboard/%s/selected`\n",
+                    autonSelectorKey);
             if (defaultCommand == null) {
                 System.out.println("Doing nothing for autonomous.");
                 return new InstantCommand();
             } else {
-                System.out.println("Runnning `" + defaultCommand.getName() + "` for autonomous");
+                System.out.printf("Running default autonomous: `%s`", defaultCommand.getName());
                 return defaultCommand;
             }
         } else {
-            System.out.print("obj");
-            if (autonSequences.containsKey(autoChoice)) {
-                return autonSequences.get(autoChoice);
+            final Command autonCommand = autonSequences.get(dashboardSelection);
+
+            System.out.printf(
+                    "Retrieved auton selection: `%s` from `SmartDashboard/%s/selected`\n",
+                    dashboardSelection, autonSelectorKey);
+
+            if (autonCommand != null) {
+                System.out.printf("Running `%s` for autonomous\n", autonCommand.getName());
+                return autonSequences.get(dashboardSelection);
             } else {
+                System.out.printf("Auton selection of `%s` was not found\n", dashboardSelection);
+                // If it ever reaches this branch of the code, it is most likely the fault of
+                // something within this file. Either that or NetworkTables somehow sent us an
+                // invalid selection back; however, that seems highly unlikely.
                 if (defaultCommand != null) {
+                    System.out.printf(
+                            "Running default autonomous `%s`\n", defaultCommand.getName());
                     return defaultCommand;
                 } else {
+                    System.out.println(
+                            "No default autonomous was selected. Doing nothing for autonomous.");
                     return new InstantCommand();
                 }
             }
