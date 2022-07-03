@@ -111,8 +111,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new TwoBallLeftSide(Drivetrain, Tower, Turret, Shooter);
-        // return autonManager.getSelected();
+        // return new TwoBallLeftSide(Drivetrain, Tower, Turret, Shooter);
+        return autonManager.getSelected();
     }
 
     public void toggleLimelightLeds(boolean on) {

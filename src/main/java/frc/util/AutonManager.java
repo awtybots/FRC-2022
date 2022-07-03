@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.HashMap;
 
 public class AutonManager {
-    private HashMap<String, Command> autonSequences;
-    private SendableChooser<String> dashboardSelector = new SendableChooser<String>();
+    private final HashMap<String, Command> autonSequences;
+    private final SendableChooser<String> dashboardSelector;
 
     private Command defaultCommand = null;
 
@@ -17,10 +17,14 @@ public class AutonManager {
 
     public AutonManager() {
         autonSequences = new HashMap<String, Command>();
+        dashboardSelector = new SendableChooser<String>();
         defaultCommand = null;
     }
 
     private void addOption(String name, Command seq, boolean isDefault) {
+        if (name == null) {
+            throw new IllegalArgumentException("Must provide a non-null autonomous name");
+        }
         autonSequences.put(name, seq);
 
         if (isDefault) {
@@ -40,39 +44,40 @@ public class AutonManager {
     }
 
     public Command getSelected() {
-        String dashboardSelection =
+        final String dashboardSelection =
                 NetworkTableInstance.getDefault()
                         .getTable("SmartDashboard")
                         .getSubTable(autonSelectorKey)
-                        .getEntry("selected")
+                        .getEntry("active")
                         .getString("_");
 
         if (dashboardSelection == "_") {
             System.out.printf(
-                    "No auton retrieved from NetworkTablesEntry `SmartDashboard/%s/selected`\n",
+                    "No auton retrieved from NetworkTablesEntry 'SmartDashboard/%s/active'\n",
                     autonSelectorKey);
-            if (defaultCommand == null) {
-                System.out.println("Doing nothing for autonomous.");
-                return new InstantCommand();
-            } else {
-                System.out.printf("Running default autonomous: `%s`", defaultCommand.getName());
+
+            if (defaultCommand != null) {
+                System.out.printf("Running default autonomous: '%s'", defaultCommand.getName());
                 return defaultCommand;
+            } else {
+                System.out.println("No default command set, doing nothing for autonomous");
+                return new InstantCommand();
             }
         } else {
-            final Command autonCommand = autonSequences.get(dashboardSelection);
-
             System.out.printf(
-                    "Retrieved auton selection: `%s` from `SmartDashboard/%s/selected`\n",
+                    "Retrieved auton selection: '%s' from NetworkTables key '/SmartDashboard/%s/active'\n",
                     dashboardSelection, autonSelectorKey);
 
-            if (autonCommand != null) {
-                System.out.printf("Running `%s` for autonomous\n", autonCommand.getName());
-                return autonSequences.get(dashboardSelection);
+            final Command selectedCommand = autonSequences.get(dashboardSelection);
+
+            if (selectedCommand != null) {
+                System.out.printf("Running '%s' for autonomous\n", selectedCommand.getName());
+                return selectedCommand;
             } else {
+                // Somehow NetworkTables has returned a value that was not in the list of
+                // options we gave it. Either that or we failed to remember the options we gave it
                 System.out.printf("Auton selection of `%s` was not found\n", dashboardSelection);
-                // If it ever reaches this branch of the code, it is most likely the fault of
-                // something within this file. Either that or NetworkTables somehow sent us an
-                // invalid selection back; however, that seems highly unlikely.
+
                 if (defaultCommand != null) {
                     System.out.printf(
                             "Running default autonomous `%s`\n", defaultCommand.getName());
