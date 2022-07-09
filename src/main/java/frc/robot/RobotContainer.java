@@ -86,7 +86,7 @@ public class RobotContainer {
     Operator.buttonStart.whenHeld(new ShootInterpolated(Tower, Shooter));
 
     /// === MANUAL ===
-    Climber.setDefaultCommand(new DriveClimber(Operator, Climber));
+    Climber.setDefaultCommand(new DriveClimber(Operator, Climber, Turret));
     Operator.leftTrigger.whenHeld(new ReverseTower(Tower));
     Operator.leftBumper.whenPressed(new ActuateTraversalPistons(Climber));
     // ! TODO feed shooter
